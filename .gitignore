@@ -1,0 +1,20 @@
+# macOS junk
+.DS_Store
+**/.DS_Store
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+*~
+
+# Logs and local env
+*.log
+.env
+.env.local
+
+# Claude Code workspace (contains personal settings/transcripts)
+.claude/
+
+# Archived prior versions — kept locally, not tracked
+older versions/

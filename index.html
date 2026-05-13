@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+  <title>ThatDailyDeal — Prototype</title>
+  <link rel="stylesheet" href="styles.css?v=2" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+</head>
+<body data-screen="deals" data-action-side="right">
+
+  <!-- ============== INLINE ICON LIBRARY (referenced via <use href="#icon-id">) ============== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-tag" viewBox="0 0 24 24">
+        <path d="M6.5 7.5a1 1 0 1 0 2 0 1 1 0 0 0-2 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M3 6v5.172A2 2 0 0 0 3.586 12.586l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592-5.592a2.41 2.41 0 0 0 0-3.408l-7.71-7.71A2 2 0 0 0 11.172 3H6a3 3 0 0 0-3 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </symbol>
+      <symbol id="i-tag-filled" viewBox="0 0 24 24">
+        <path d="M3 6v5.172A2 2 0 0 0 3.586 12.586l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592-5.592a2.41 2.41 0 0 0 0-3.408l-7.71-7.71A2 2 0 0 0 11.172 3H6a3 3 0 0 0-3 3Zm4.5 1.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="i-award" viewBox="0 0 24 24">
+        <path d="M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm0 0 3.4 5.89 1.598-3.233L20.596 17.89 17.196 12M6.802 12 3.402 17.89l3.598-.233 1.598 3.232L12 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </symbol>
+      <symbol id="i-award-filled" viewBox="0 0 24 24">
+        <path d="M12 3a6 6 0 1 1 0 12 6 6 0 0 1 0-12Zm-5.198 9 .57.328-3.97 6.872 4.398-.285 1.954 3.95 4.246-7.353A7 7 0 0 1 12 16a7 7 0 0 1-2-.292l-4.235 7.337-1.954-3.95-4.398.285 4.39-6.6Zm10.396 0 .57-.328 4.39 6.6-4.398-.285-1.954 3.95L11.56 14.585A7.005 7.005 0 0 0 17.198 12Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="i-gift" viewBox="0 0 24 24">
+        <path d="M12 8v13M12 8c-.362-1.49-.985-2.765-1.787-3.657C9.41 3.45 8.465 2.983 7.5 3a2.5 2.5 0 1 0 0 5M12 8c.362-1.49.985-2.765 1.787-3.657C14.59 3.45 15.535 2.983 16.5 3a2.5 2.5 0 1 1 0 5M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M3 9a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </symbol>
+      <symbol id="i-gift-filled" viewBox="0 0 24 24">
+        <path d="M11 14v7H7a2 2 0 0 1-2-2v-7h6v2Zm2 0v7h4a2 2 0 0 0 2-2v-7h-6v2ZM21 9v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1Zm-9 0V8c-.362-1.49-.985-2.765-1.787-3.657C9.41 3.45 8.465 2.983 7.5 3a2.5 2.5 0 1 0 0 5h4.5Zm0 0h4.5a2.5 2.5 0 1 0 0-5c-.965-.017-1.91.45-2.713 1.343C12.985 5.235 12.362 6.51 12 8v1Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="i-calendar" viewBox="0 0 24 24">
+        <path d="M16 3v4M8 3v4M4 11h16M11 15h1v3M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </symbol>
+      <symbol id="i-calendar-filled" viewBox="0 0 24 24">
+        <path d="M18 5h-1V3a1 1 0 0 0-2 0v2H9V3a1 1 0 0 0-2 0v2H6a3 3 0 0 0-3 3v1h18V8a3 3 0 0 0-3-3ZM3 11h18v8a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-8Zm9 4a1 1 0 0 0-1 1v2h-1a1 1 0 0 0 0 2h2a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="i-heart" viewBox="0 0 24 24">
+        <path d="m12 20-7.5-7.428a5 5 0 0 1 7.5-6.566 5 5 0 0 1 7.5 6.566L12 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </symbol>
+      <symbol id="i-heart-filled" viewBox="0 0 24 24">
+        <path d="M6.979 3.074a6.5 6.5 0 0 1 5.025 1.453l.04-.025A6.5 6.5 0 0 1 21.86 10.282a6.5 6.5 0 0 1-1.66 2.81l-.18.184-.048.041-7.45 7.379a1 1 0 0 1-1.316.084l-.094-.082L3.62 13.288A6.5 6.5 0 0 1 6.979 3.074Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="i-share" viewBox="0 0 24 24">
+        <path d="M13 4v4C6.425 9.028 3.98 14.788 3 20c-.037.206 5.384-5.962 10-6v4l8-7-8-7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </symbol>
+      <symbol id="i-volume" viewBox="0 0 24 24">
+        <path d="M15 8a5 5 0 0 1 0 8M17.7 5a10 10 0 0 1 0 14M6 15H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h2l3.5-4.5a.75.75 0 0 1 1.5.5v14a.75.75 0 0 1-1.5.5L6 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </symbol>
+      <symbol id="i-volume-off" viewBox="0 0 24 24">
+        <path d="M15 8a5 5 0 0 1 1.912 4.934M15.535 15.536A4.5 4.5 0 0 1 15 16M17.7 5a10 10 0 0 1 2.362 11.086M18.386 18.385A10 10 0 0 1 17.7 19M9.069 5.054 9.5 4.5a.75.75 0 0 1 1.5.5v2M11 11v8a.75.75 0 0 1-1.5.5L6 15H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h2l1.294-1.664M3 3l18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </symbol>
+      <symbol id="i-play" viewBox="0 0 24 24">
+        <path d="M7 4v16l13-8L7 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24">
+        <path d="M6 6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M14 6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </symbol>
+      <symbol id="i-x" viewBox="0 0 24 24">
+        <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24">
+        <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </symbol>
+      <symbol id="i-minus" viewBox="0 0 24 24">
+        <path d="M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- ============== TOP HEADER ============== -->
+  <header class="top-header">
+    <div class="flag">
+      <img src="assets/USflag.png" alt="" />
+    </div>
+    <img class="logo" src="assets/logo.png" alt="ThatDailyDeal" />
+    <button class="avatar" id="avatarBtn" aria-label="Settings">
+      <img src="assets/avatar.png" alt="" />
+    </button>
+  </header>
+
+  <!-- ============== MAIN STAGE ============== -->
+  <main class="stage">
+
+    <!-- ----- DEALS SCREEN ----- -->
+    <section class="screen screen-deals" data-tab="deals">
+      <div class="deck" id="deck">
+        <!-- Cards inserted by app.js -->
+      </div>
+      <div class="empty-state" id="emptyState" hidden>
+        <div class="empty-icon">📭</div>
+        <h2>No more deals today</h2>
+        <p>Come back tomorrow for fresh deals.</p>
+      </div>
+    </section>
+
+    <!-- ----- PLACEHOLDER SCREENS ----- -->
+    <section class="screen screen-placeholder" data-tab="contests">
+      <svg class="ph-icon" width="64" height="64"><use href="#i-award"/></svg>
+      <h2>Contests</h2>
+      <p>Coming soon</p>
+    </section>
+    <section class="screen screen-placeholder" data-tab="rewards">
+      <svg class="ph-icon" width="64" height="64"><use href="#i-gift"/></svg>
+      <h2>Rewards</h2>
+      <p>Coming soon</p>
+    </section>
+    <section class="screen screen-placeholder" data-tab="events">
+      <svg class="ph-icon" width="64" height="64"><use href="#i-calendar"/></svg>
+      <h2>Events</h2>
+      <p>Coming soon</p>
+    </section>
+    <section class="screen screen-placeholder" data-tab="cart">
+      <img class="ph-icon ph-icon-img" src="assets/cartIcon.png" alt="" />
+      <h2>Cart</h2>
+      <p id="cartCount">0 items</p>
+    </section>
+  </main>
+
+  <!-- ============== FLOATING BOTTOM NAV ============== -->
+  <nav class="bottom-nav" aria-label="Primary">
+    <button class="nav-item" data-tab="deals" aria-label="Deals">
+      <span class="nav-icon-wrap"><svg class="nav-icon" width="24" height="24"><use href="#i-tag"/></svg><svg class="nav-icon nav-icon-filled" width="24" height="24"><use href="#i-tag-filled"/></svg></span>
+      <span class="nav-label">Deals</span>
+    </button>
+    <button class="nav-item" data-tab="contests" aria-label="Contests">
+      <span class="nav-icon-wrap"><svg class="nav-icon" width="24" height="24"><use href="#i-award"/></svg><svg class="nav-icon nav-icon-filled" width="24" height="24"><use href="#i-award-filled"/></svg></span>
+      <span class="nav-label">Contests</span>
+    </button>
+    <button class="nav-item" data-tab="rewards" aria-label="Rewards">
+      <span class="nav-icon-wrap"><svg class="nav-icon" width="24" height="24"><use href="#i-gift"/></svg><svg class="nav-icon nav-icon-filled" width="24" height="24"><use href="#i-gift-filled"/></svg></span>
+      <span class="nav-label">Rewards</span>
+    </button>
+    <button class="nav-item" data-tab="events" aria-label="Events">
+      <span class="nav-icon-wrap"><svg class="nav-icon" width="24" height="24"><use href="#i-calendar"/></svg><svg class="nav-icon nav-icon-filled" width="24" height="24"><use href="#i-calendar-filled"/></svg></span>
+      <span class="nav-label">Events</span>
+    </button>
+    <button class="nav-item" data-tab="cart" aria-label="Cart">
+      <span class="nav-icon-wrap nav-icon-cart">
+        <img class="nav-icon-img" src="assets/cartIcon.png" alt="" />
+      </span>
+      <span class="nav-label">Cart</span>
+    </button>
+  </nav>
+
+  <!-- ============== SETTINGS POPOVER ============== -->
+  <div class="popover" id="settingsPopover" role="dialog" aria-hidden="true" aria-label="Settings">
+    <div class="popover-inner">
+      <div class="popover-row">
+        <div>
+          <div class="popover-title">Action buttons side</div>
+          <div class="popover-sub">Move actions for left-handed use</div>
+        </div>
+        <div class="seg" id="actionSideSeg">
+          <button data-side="left">Left</button>
+          <button data-side="right" class="active">Right</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============== PRODUCT DETAILS OVERLAY ============== -->
+  <div class="sheet" id="detailsSheet" role="dialog" aria-hidden="true" aria-label="Product details">
+    <div class="sheet-backdrop" data-close="details"></div>
+    <div class="sheet-card sheet-card--tall">
+      <div class="sheet-handle"></div>
+      <button class="sheet-close" data-close="details" aria-label="Close">
+        <svg width="20" height="20"><use href="#i-x"/></svg>
+      </button>
+      <div class="details-media">
+        <video id="detailsVideo" muted loop playsinline></video>
+      </div>
+      <div class="details-body">
+        <h2 id="detailsTitle">Product</h2>
+        <div class="price-row">
+          <span class="price-old" id="detailsOld">$0</span>
+          <span class="price-now" id="detailsNow">$0</span>
+          <span class="price-badge" id="detailsBadge">% off</span>
+        </div>
+        <p class="details-desc">Limited-time deal. Free shipping on 4 or more units. Tap "Add to Cart" to see quantity discounts.</p>
+        <ul class="details-bullets">
+          <li>30-day return policy</li>
+          <li>Ships in 1–2 business days</li>
+          <li>Quantity discounts available</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============== CART SHEET (after right-swipe) ============== -->
+  <div class="sheet" id="cartSheet" role="dialog" aria-hidden="true" aria-label="Add to cart">
+    <div class="sheet-backdrop" data-close="cart"></div>
+    <div class="sheet-card">
+      <div class="sheet-handle"></div>
+
+      <div class="cart-header">
+        <div class="cart-thumb">
+          <video id="cartThumbVideo" muted loop playsinline></video>
+        </div>
+        <div class="cart-title" id="cartTitle">Product Name</div>
+      </div>
+
+      <div class="qty">
+        <button class="qty-btn" id="qtyMinus" aria-label="Decrease"><svg width="20" height="20"><use href="#i-minus"/></svg></button>
+        <div class="qty-value"><span id="qtyVal">1</span> piece<span id="qtyPlural"></span></div>
+        <button class="qty-btn" id="qtyPlus" aria-label="Increase"><svg width="20" height="20"><use href="#i-plus"/></svg></button>
+      </div>
+
+      <h3 class="cart-section">Quantity Discounts</h3>
+      <div class="discount-row">
+        <span class="discount-pill"><svg width="16" height="16"><use href="#i-plus"/></svg> 4–11 pieces</span>
+        <span class="discount-text">Unlocks Free Shipping</span>
+      </div>
+      <div class="discount-row">
+        <span class="discount-pill"><svg width="16" height="16"><use href="#i-plus"/></svg> 12+ pieces</span>
+        <span class="discount-text">Free Shipping + $1.99 each</span>
+      </div>
+
+      <div class="line"><span>Added to cart</span><span id="cartItemTotal">$0.00</span></div>
+      <div class="line"><span>Shipping</span><span id="cartShipping">$1.89</span></div>
+      <div class="line line-total"><span>Total</span><span id="cartTotal">$0.00</span></div>
+
+      <button class="cta" id="confirmCartBtn">Add to Cart</button>
+      <button class="link-btn" data-close="cart">Dismiss</button>
+    </div>
+  </div>
+
+  <!-- ============== TOAST ============== -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js?v=2"></script>
+</body>
+</html>

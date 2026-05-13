@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ThatDailyDeal</title>
+  <link rel="stylesheet" href="v6.css" />
+</head>
+<body>
+<div class="phone-frame">
+<div class="phone-screen">
+
+  <!-- iOS status bar + home indicator (system overlay; top.png includes both) -->
+  <img class="status-bar" src="assets/Frame 47.png" alt="" aria-hidden="true" />
+
+  <!-- ============== TOP HEADER ============== -->
+  <header class="top-header">
+    <div class="flag" aria-hidden="true">
+      <img src="assets/USflag.png" alt="" />
+    </div>
+    <img class="brand-logo" src="assets/logo.png" alt="ThatDailyDeal" />
+    <button class="avatar" aria-label="Profile">JM</button>
+  </header>
+
+  <!-- ============== TODAY'S DEALS COUNTDOWN BANNER ============== -->
+  <div class="deals-banner" role="status" aria-live="polite">
+    <svg class="deals-banner-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="13" r="8"/>
+      <line x1="12" y1="9" x2="12" y2="13"/>
+      <line x1="12" y1="13" x2="15" y2="15"/>
+      <line x1="9" y1="2" x2="15" y2="2"/>
+    </svg>
+    <span>Today's deals end in</span>
+    <span class="deals-banner-time" id="dealsBannerTime">00:00:00</span>
+  </div>
+
+  <!-- ============== SCREENS ============== -->
+  <section class="screen screen-deals" data-tab="deals">
+    <div class="deck" id="deck"></div>
+
+    <div class="deals-done" id="dealsDone" hidden>
+      <span class="dd-check">
+        <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </span>
+      <h2>All Deals Viewed!</h2>
+      <p>You've seen all of today's amazing offers</p>
+
+      <div class="dd-timer-card">
+        <h3>Next Deals Available In</h3>
+        <div class="dd-timer">
+          <div class="dd-cell">
+            <div class="dd-num" id="ddHrs">00</div>
+            <div class="dd-label">HRS</div>
+          </div>
+          <span class="dd-sep">:</span>
+          <div class="dd-cell">
+            <div class="dd-num" id="ddMin">00</div>
+            <div class="dd-label">MIN</div>
+          </div>
+          <span class="dd-sep">:</span>
+          <div class="dd-cell">
+            <div class="dd-num" id="ddSec">00</div>
+            <div class="dd-label">SEC</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="dd-btn dd-btn-primary" id="ddCheckout">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"/>
+          <circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        Proceed to Checkout
+      </button>
+      <button class="dd-btn dd-btn-secondary" id="ddRestart">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
+          <polyline points="21 3 21 8 16 8"/>
+          <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+          <polyline points="3 21 3 16 8 16"/>
+        </svg>
+        View Deals Again
+      </button>
+    </div>
+  </section>
+
+  <section class="screen screen-coming-soon" data-tab="contests">
+    <div class="cs-placeholder">
+      <span class="cs-placeholder-icon">
+        <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+          <path d="M4 22h16"/>
+          <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+          <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+          <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
+        </svg>
+      </span>
+      <h2>Contests</h2>
+      <p>Coming soon</p>
+    </div>
+  </section>
+
+  <section class="screen screen-coming-soon" data-tab="rewards">
+    <div class="cs-placeholder">
+      <span class="cs-placeholder-icon">
+        <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 12 20 22 4 22 4 12"/>
+          <rect x="2" y="7" width="20" height="5"/>
+          <line x1="12" y1="22" x2="12" y2="7"/>
+          <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+          <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+        </svg>
+      </span>
+      <h2>Rewards</h2>
+      <p>Coming soon</p>
+    </div>
+  </section>
+
+  <section class="screen screen-coming-soon" data-tab="events">
+    <div class="cs-placeholder">
+      <span class="cs-placeholder-icon">
+        <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+      </span>
+      <h2>Events</h2>
+      <p>Coming soon</p>
+    </div>
+  </section>
+
+  <section class="screen screen-coming-soon" data-tab="cart">
+    <div class="cs-placeholder">
+      <span class="cs-placeholder-icon">
+        <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+      </span>
+      <h2>Cart</h2>
+      <p>Coming soon</p>
+    </div>
+  </section>
+
+  <!-- Tap toast (small, dark — incidental feedback) -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Rich toast (white card — high-stakes confirmations) -->
+  <div class="rich-toast" id="richToast" role="status" aria-live="polite">
+    <span class="rich-toast-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+      </svg>
+    </span>
+    <div class="rich-toast-text">
+      <div class="rich-toast-title" id="richToastTitle">You're on the list</div>
+      <div class="rich-toast-sub" id="richToastSub"></div>
+    </div>
+  </div>
+
+  <!-- ============== BOTTOM NAV ============== -->
+  <nav class="bottom-nav" aria-label="Primary">
+    <span class="nav-indicator" aria-hidden="true"></span>
+    <button class="nav-btn active" data-tab="deals" aria-label="Deals">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+        <path d="M13.5 0c-.5 4-3.5 5-3.5 9 0 3 2 4.5 2 4.5s-2-1-2-3.5c-3 1.5-5 4.5-5 7.5 0 4 3 7 7 7s7-3 7-7c0-5-5-9-5.5-17.5z"/>
+      </svg>
+      <span class="nav-label">Deals</span>
+    </button>
+    <button class="nav-btn" data-tab="contests" aria-label="Contests">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+        <path d="M4 22h16"/>
+        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+        <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
+      </svg>
+      <span class="nav-label">Contests</span>
+    </button>
+    <button class="nav-btn" data-tab="rewards" aria-label="Rewards">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 12 20 22 4 22 4 12"/>
+        <rect x="2" y="7" width="20" height="5"/>
+        <line x1="12" y1="22" x2="12" y2="7"/>
+        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+        <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+      </svg>
+      <span class="nav-label">Rewards</span>
+    </button>
+    <button class="nav-btn" data-tab="events" aria-label="Events">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      <span class="nav-label">Events</span>
+    </button>
+    <button class="nav-btn cart-btn" data-tab="cart" aria-label="Cart">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      <span class="nav-label">Cart</span>
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+  </nav>
+
+  <!-- ============== PRODUCT DETAILS SHEET ============== -->
+  <div class="details-backdrop" id="detailsBackdrop" aria-hidden="true"></div>
+
+  <div class="details-sheet" id="detailsSheet" role="dialog" aria-modal="true" aria-labelledby="dtTitle">
+    <button class="dt-close" id="dtClose" aria-label="Close details">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+        <line x1="6" y1="6" x2="18" y2="18"/>
+        <line x1="6" y1="18" x2="18" y2="6"/>
+      </svg>
+    </button>
+
+    <div class="dt-scroll" id="dtScroll">
+      <div class="dt-carousel" id="dtCarousel" role="region" aria-label="Product photos"></div>
+      <div class="dt-dots" id="dtDots" aria-hidden="true"></div>
+
+      <div class="dt-content">
+        <h2 class="dt-title" id="dtTitle"></h2>
+        <div class="dt-prices">
+          <span class="dt-now" id="dtNow"></span>
+          <span class="dt-old" id="dtOld"></span>
+          <span class="dt-discount" id="dtDiscount"></span>
+        </div>
+        <div class="dt-restock" id="dtRestock" hidden>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/>
+            <polyline points="12 7 12 12 15 14"/>
+          </svg>
+          <span>Back in stock <strong id="dtRestockDate"></strong></span>
+        </div>
+        <h3 class="dt-section-heading">About this deal</h3>
+        <p class="dt-description" id="dtDesc"></p>
+      </div>
+    </div>
+
+    <div class="dt-cta-bar">
+      <button class="dt-cta" id="dtAddToCart" aria-label="Add to cart">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        Add to Cart
+      </button>
+    </div>
+  </div>
+
+  <!-- ============== ADD-TO-CART SHEET ============== -->
+  <div class="sheet-backdrop" id="sheetBackdrop" aria-hidden="true"></div>
+
+  <div class="cart-sheet" id="cartSheet" role="dialog" aria-modal="true" aria-labelledby="csName">
+    <div class="cs-handle" aria-hidden="true"></div>
+
+    <div class="cs-product">
+      <video class="cs-thumb" id="csThumb" muted loop playsinline></video>
+      <h2 class="cs-product-name" id="csName">Product</h2>
+    </div>
+
+    <div class="cs-qty">
+      <button class="cs-qty-btn" id="csMinus" aria-label="Decrease quantity">−</button>
+      <span class="cs-qty-value" id="csQtyLabel">1 piece</span>
+      <button class="cs-qty-btn" id="csPlus" aria-label="Increase quantity">+</button>
+    </div>
+
+    <h3 class="cs-heading">Quantity Discounts</h3>
+
+    <div class="cs-tier">
+      <span class="cs-tier-left">
+        <span class="cs-tier-plus">+</span>
+        <span>4-11 pieces</span>
+      </span>
+      <span class="cs-tier-perk">Unlocks Free Shipping</span>
+    </div>
+
+    <div class="cs-tier">
+      <span class="cs-tier-left">
+        <span class="cs-tier-plus">+</span>
+        <span>12+ pieces</span>
+      </span>
+      <span class="cs-tier-perk" id="csTier2Perk">Free Shipping + Price drops to $0 each</span>
+    </div>
+
+    <div class="cs-totals">
+      <div class="cs-row"><span>Added to cart</span><span id="csSubtotal">$0.00</span></div>
+      <div class="cs-row"><span>Shipping</span><span id="csShipping">$0.00</span></div>
+      <div class="cs-row cs-row-total"><span>Total</span><span id="csTotal">$0.00</span></div>
+    </div>
+
+    <button class="cs-cta" id="csConfirm">Add to Cart</button>
+    <button class="cs-dismiss" id="csDismiss">Dismiss</button>
+  </div>
+
+  <!-- ============== NOTIFY-ME SHEET (sold-out flow) ============== -->
+  <div class="notify-backdrop" id="notifyBackdrop" aria-hidden="true"></div>
+
+  <div class="notify-sheet" id="notifySheet" role="dialog" aria-modal="true" aria-labelledby="nsTitle">
+    <div class="cs-handle" aria-hidden="true"></div>
+
+    <button class="ns-close" id="nsClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+        <line x1="6" y1="6" x2="18" y2="18"/>
+        <line x1="6" y1="18" x2="18" y2="6"/>
+      </svg>
+    </button>
+
+    <div class="ns-header">
+      <span class="ns-icon-circle" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+      </span>
+      <h2 class="ns-title" id="nsTitle">Get notified</h2>
+      <p class="ns-subtitle">We'll let you know the moment this is back in stock.</p>
+    </div>
+
+    <div class="ns-product">
+      <video class="ns-thumb" id="nsThumb" muted loop playsinline></video>
+      <div class="ns-product-info">
+        <h3 class="ns-product-name" id="nsName">Product</h3>
+        <span class="ns-product-tag">Sold out</span>
+      </div>
+    </div>
+
+    <h4 class="ns-section">Notify me by</h4>
+
+    <!-- Push channel -->
+    <label class="ns-channel" id="nsPushRow">
+      <span class="ns-channel-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+      </span>
+      <span class="ns-channel-text">
+        <span class="ns-channel-label">Push notification</span>
+        <span class="ns-channel-sub" id="nsPushSub">Instant alert, one tap</span>
+      </span>
+      <span class="ns-switch" data-on="false">
+        <input type="checkbox" id="nsPushToggle" hidden>
+        <span class="ns-switch-track" aria-hidden="true"><span class="ns-switch-thumb"></span></span>
+      </span>
+    </label>
+
+    <!-- Email channel -->
+    <label class="ns-channel" id="nsEmailRow">
+      <span class="ns-channel-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="18" height="14" rx="2"/>
+          <polyline points="3 7 12 13 21 7"/>
+        </svg>
+      </span>
+      <span class="ns-channel-text">
+        <span class="ns-channel-label">Email</span>
+        <span class="ns-channel-sub">Sent to your account email</span>
+      </span>
+      <span class="ns-switch" data-on="false">
+        <input type="checkbox" id="nsEmailToggle" hidden>
+        <span class="ns-switch-track" aria-hidden="true"><span class="ns-switch-thumb"></span></span>
+      </span>
+    </label>
+
+    <button class="ns-cta" id="nsSubmit" disabled>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+      </svg>
+      Notify me
+    </button>
+    <button class="ns-dismiss" id="nsSkip">Skip this deal</button>
+  </div>
+
+  <script src="v6.js"></script>
+</div>
+</div>
+</body>
+</html>
