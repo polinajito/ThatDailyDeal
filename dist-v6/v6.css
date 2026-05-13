@@ -106,6 +106,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   height: auto;
   z-index: 50;
   pointer-events: none;
+  clip-path: inset(0 0 90% 0);
 }
 
 /* ============== TODAY'S DEALS COUNTDOWN BANNER ============== */
@@ -121,16 +122,19 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  background: rgba(0, 0, 0, .55);
-  border: 1px solid rgba(255, 255, 255, .12);
+  background: rgba(20, 20, 20, .55);
+  border: 1px solid rgba(255, 255, 255, .18);
   border-radius: 999px;
   color: rgba(255, 255, 255, .92);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: .2px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, .25);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, .45),
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    inset 0 -1px 0 rgba(0, 0, 0, .25);
 }
 .deals-banner[hidden] { display: none; }
 .deals-banner-icon {
@@ -147,10 +151,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* ============== SCREENS (tab routing) ============== */
 .screen {
   position: absolute;
-  top: 122px;
-  bottom: 82px;
-  left: 0;
-  right: 0;
+  inset: 0;
   z-index: 1;
   display: none;
 }
@@ -331,7 +332,7 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   inset: 0;
   overflow: hidden;
   background: #111;
-  border-radius: 24px;
+  border-radius: 0;
   will-change: transform, opacity;
   transition: transform .42s cubic-bezier(.32, .72, 0, 1), opacity .42s cubic-bezier(.32, .72, 0, 1);
   touch-action: pan-y;
@@ -544,7 +545,7 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
 .actions-right {
   position: absolute;
   right: 12px;
-  bottom: 124px;
+  bottom: 180px;
   z-index: 5;
   display: flex;
   flex-direction: column;
@@ -553,13 +554,20 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
 .act-btn {
   width: 44px; height: 44px;
   border-radius: 50%;
-  background: rgba(0,0,0,.5);
+  background: rgba(20, 20, 20, .55);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, .18);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, .45),
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    inset 0 -1px 0 rgba(0, 0, 0, .25);
   display: flex; align-items: center; justify-content: center;
   color: var(--white);
   position: relative;
   transition: background-color .18s var(--ease-out), transform .12s var(--ease-out), color .18s var(--ease-out);
 }
-.act-btn:hover { background: rgba(0,0,0,.7); }
+.act-btn:hover { background: rgba(40, 40, 40, .65); }
 .act-btn:active { transform: scale(.92); }
 
 /* Like icon swap */
@@ -585,19 +593,22 @@ body.is-paused .act-btn[data-act="pause"] .ic-pause { display: none; }
   position: absolute;
   left: 14px;
   right: 14px;
-  top: 14px;
+  top: 140px;
   z-index: 3;
-  background: rgba(20,22,28,.55);
+  background: rgba(20, 20, 20, .55);
   color: var(--white);
   border-radius: 18px;
   padding: 10px 16px;
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 10px 24px rgba(0,0,0,.35);
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-  border: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, .18);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, .45),
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    inset 0 -1px 0 rgba(0, 0, 0, .25);
 }
 .pp-info { flex: 1 1 auto; min-width: 0; }
 .pp-name {
@@ -630,16 +641,31 @@ body.is-paused .act-btn[data-act="pause"] .ic-pause { display: none; }
   bottom: 16px;
   transform: translateX(-50%);
   z-index: 10;
-  background: rgba(20, 20, 20, .92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(20, 20, 20, .55);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, .18);
   border-radius: 999px;
   padding: 4px 8px;
   display: flex;
   align-items: center;
   gap: 4px;
-  box-shadow: 0 12px 32px rgba(0,0,0,.5);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, .45),
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    inset 0 -1px 0 rgba(0, 0, 0, .25);
 }
+.bottom-nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .18) 0%, rgba(255, 255, 255, 0) 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+.nav-indicator,
+.nav-btn { position: relative; z-index: 2; }
 .nav-indicator {
   position: absolute;
   top: 4px;
@@ -647,12 +673,17 @@ body.is-paused .act-btn[data-act="pause"] .ic-pause { display: none; }
   width: 64px;
   height: 50px;
   border-radius: 999px;
-  background: var(--brand-gold);
-  box-shadow: 0 4px 14px rgba(230,167,69,.5);
+  background: rgba(230, 167, 69, .85);
+  backdrop-filter: blur(6px) saturate(160%);
+  -webkit-backdrop-filter: blur(6px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, .22);
+  box-shadow:
+    0 4px 14px rgba(230, 167, 69, .45),
+    inset 0 1px 0 rgba(255, 255, 255, .45),
+    inset 0 -1px 0 rgba(0, 0, 0, .15);
   transform: translateX(0);
   transition: transform .35s var(--ease-out);
   pointer-events: none;
-  z-index: 1;
 }
 .nav-btn {
   width: 64px;
@@ -1098,7 +1129,7 @@ body.sheet-open .cart-sheet { transform: translate(-50%, 0); }
   position: absolute;
   left: 14px;
   right: 14px;
-  bottom: 16px;
+  bottom: 88px;
   z-index: 6;
   pointer-events: auto;
   display: flex;
