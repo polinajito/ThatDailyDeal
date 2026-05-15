@@ -18,6 +18,10 @@ Mini handoff covering four components in the out-of-stock experience: the persis
 
 The running prototype lives at `../../dist-v6/index.html` — open it for the full UX context (gesture feel, timing, surrounding screens).
 
+## Ignore the iPhone frame in the prototype
+
+The desktop view of `dist-v6/index.html` wraps the screen in an iPhone 15 Pro chrome (device PNG + status-bar PNG). That's pure preview scaffolding — it only renders at viewports ≥ 768 px and disappears on phone-sized viewports. Flutter handles real device chrome itself via `SafeArea` and the OS-drawn status bar / notch / home indicator. Nothing to implement from those visuals.
+
 ## What is NOT in this handoff (yet)
 
 - Full theme / design tokens as a Dart file. The CSS variables in `dist-v6/v6.css:5-22` are the source of truth; the snippets inline the values they need. A proper `AppColors` / `AppTheme` lands with the UI library handoff later.
