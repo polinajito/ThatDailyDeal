@@ -110,13 +110,14 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 
 /* ============== TODAY'S DEALS COUNTDOWN BANNER ============== */
-/* Floats on top of the existing layout — does NOT push the deck down. */
+/* Lives inside each deal-card, just below the price-pill.
+   Price-pill is at top:100 with height ~64 → banner sits at top:172 with an 8px gap. */
 .deals-banner {
   position: absolute;
-  top: 100px;
+  top: 172px;
   left: 14px;
   right: 14px;
-  z-index: 6;
+  z-index: 3;
   padding: 7px 14px;
   display: flex;
   align-items: center;
@@ -545,7 +546,7 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
 .actions-right {
   position: absolute;
   right: 12px;
-  bottom: 180px;
+  bottom: 84px;
   z-index: 5;
   display: flex;
   flex-direction: column;
@@ -593,7 +594,7 @@ body.is-paused .act-btn[data-act="pause"] .ic-pause { display: none; }
   position: absolute;
   left: 14px;
   right: 14px;
-  top: 140px;
+  top: 100px;
   z-index: 3;
   background: rgba(20, 20, 20, .55);
   color: var(--white);
