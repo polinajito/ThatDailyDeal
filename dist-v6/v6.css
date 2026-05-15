@@ -543,7 +543,7 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
 .actions-right {
   position: absolute;
   right: 12px;
-  bottom: 180px;
+  bottom: 84px;
   z-index: 5;
   display: flex;
   flex-direction: column;
