@@ -230,6 +230,17 @@ function buildCard(deal, dealIdx, isUnder) {
         </div>
       </div>
     </div>
+
+    <div class="deals-banner" role="status" aria-live="polite">
+      <svg class="deals-banner-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="13" r="8"/>
+        <line x1="12" y1="9" x2="12" y2="13"/>
+        <line x1="12" y1="13" x2="15" y2="15"/>
+        <line x1="9" y1="2" x2="15" y2="2"/>
+      </svg>
+      <span>Today's deals end in</span>
+      <span class="deals-banner-time">00:00:00</span>
+    </div>
   `;
 
   // Wire up all interactive elements inside this card.
@@ -321,6 +332,7 @@ function mountDeck() {
     bindSwipe(topCard);
   }
 
+  tickBanner();
   applyVideoState();
 }
 
@@ -450,6 +462,7 @@ function flyOff(direction, cardEl) {
       deck.insertBefore(newUnder, deck.firstChild);
     }
 
+    tickBanner();
     applyVideoState();
   } else {
     // No more deals — show the "All Deals Viewed!" screen after the fly-off
@@ -648,9 +661,6 @@ const dealsDoneEl = document.getElementById('dealsDone');
 const ddHrs = document.getElementById('ddHrs');
 const ddMin = document.getElementById('ddMin');
 const ddSec = document.getElementById('ddSec');
-const dealsBannerTime = document.getElementById('dealsBannerTime');
-const dealsBannerEl   = document.querySelector('.deals-banner');
-
 let countdownTimer = null;
 
 function pad2(n) { return String(n).padStart(2, '0'); }
@@ -669,12 +679,12 @@ function tickCountdown() {
 }
 
 function tickBanner() {
-  if (!dealsBannerTime) return;
   const diff = midnightDiff();
   const h = pad2(Math.floor(diff / 3600000));
   const m = pad2(Math.floor((diff % 3600000) / 60000));
   const s = pad2(Math.floor((diff % 60000) / 1000));
-  dealsBannerTime.textContent = `${h}:${m}:${s}`;
+  const text = `${h}:${m}:${s}`;
+  document.querySelectorAll('.deals-banner-time').forEach(el => { el.textContent = text; });
 }
 
 tickBanner();
@@ -682,7 +692,6 @@ setInterval(tickBanner, 1000);
 
 function showDealsDone() {
   dealsDoneEl.hidden = false;
-  if (dealsBannerEl) dealsBannerEl.hidden = true;
   // Pause any video on the (now-removed) top card
   const v = deck.querySelector('.card-video');
   if (v) v.pause();
@@ -693,7 +702,6 @@ function showDealsDone() {
 
 function hideDealsDone() {
   dealsDoneEl.hidden = true;
-  if (dealsBannerEl) dealsBannerEl.hidden = false;
   if (countdownTimer) {
     clearInterval(countdownTimer);
     countdownTimer = null;
