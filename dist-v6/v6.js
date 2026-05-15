@@ -243,23 +243,6 @@ function buildCard(deal, dealIdx, isUnder) {
         <span class="deals-banner-time">00:00:00</span>
       </div>
     </div>
-    ${soldOut ? `
-    <div class="card-cta-bar">
-      ${deal.restockAt ? `<div class="card-cta-restock">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="9"/>
-          <polyline points="12 7 12 12 15 14"/>
-        </svg>
-        <span>Back in stock <strong>${formatRestockDate(deal.restockAt)}</strong></span>
-      </div>` : ''}
-      <button class="card-cta" data-act="notify" aria-label="Notify me when back in stock">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
-          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-        </svg>
-        <span class="card-cta-label">Notify me when back in stock</span>
-      </button>
-    </div>` : ''}
   `;
 
   // Wire up all interactive elements inside this card.
