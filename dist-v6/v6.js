@@ -764,7 +764,7 @@ function showRichToast({ title, subtitle, duration = 2800 }) {
 function notifyBackInStock() {
   showRichToast({
     title: 'Great choice!',
-    subtitle: "We'll notify you when this item is back in stock using your enabled notification preferences.",
+    subtitle: "We'll notify you when this item is back in stock.",
   });
 }
 
