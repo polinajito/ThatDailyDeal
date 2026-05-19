@@ -25,4 +25,7 @@
   --color-gray-300:    #C8CCD3;
   --color-gray-500:    #8A8F99;
   --color-gray-700:    #4A4F58;
+
+  /* ============== TYPOGRAPHY ============== */
+  --font-family-primary: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
