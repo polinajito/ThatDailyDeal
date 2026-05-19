@@ -377,6 +377,83 @@
         </button>
       </div>
     </div>
+
+    <div class="lib-btn-group">
+      <h3 class="lib-btn-group-title">Icon-only — toggle states</h3>
+      <p class="lib-btn-group-note">Embed both icon variants in the button (<code>.btn-icon-default</code> + <code>.btn-icon-active</code>). Toggle <code>.is-active</code> on the button to swap which one is visible. Compose with <code>.btn-favorite</code> for a red color shift when active (heart pattern).</p>
+      <div class="lib-btn-stage" style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="lib-btn-state-pair">
+          <span class="lib-btn-state-label">Favorite</span>
+          <button class="btn btn-glass btn-md btn-icon-only btn-favorite" aria-label="Like">
+            <svg class="btn-icon btn-icon-default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            <svg class="btn-icon btn-icon-active" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+          <span class="lib-btn-state-arrow">→</span>
+          <button class="btn btn-glass btn-md btn-icon-only btn-favorite is-active" aria-label="Liked">
+            <svg class="btn-icon btn-icon-default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            <svg class="btn-icon btn-icon-active" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="lib-btn-state-pair">
+          <span class="lib-btn-state-label">Mute</span>
+          <button class="btn btn-glass btn-md btn-icon-only" aria-label="Unmute (sound is on)">
+            <svg class="btn-icon btn-icon-default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            </svg>
+            <svg class="btn-icon btn-icon-active" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <line x1="23" y1="9" x2="17" y2="15"/>
+              <line x1="17" y1="9" x2="23" y2="15"/>
+            </svg>
+          </button>
+          <span class="lib-btn-state-arrow">→</span>
+          <button class="btn btn-glass btn-md btn-icon-only is-active" aria-label="Mute (sound is off)">
+            <svg class="btn-icon btn-icon-default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            </svg>
+            <svg class="btn-icon btn-icon-active" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <line x1="23" y1="9" x2="17" y2="15"/>
+              <line x1="17" y1="9" x2="23" y2="15"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="lib-btn-state-pair">
+          <span class="lib-btn-state-label">Pause</span>
+          <button class="btn btn-glass btn-md btn-icon-only" aria-label="Pause (video is playing)">
+            <svg class="btn-icon btn-icon-default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="9" y1="5" x2="9" y2="19"/><line x1="15" y1="5" x2="15" y2="19"/>
+            </svg>
+            <svg class="btn-icon btn-icon-active" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <polygon points="6 4 20 12 6 20 6 4"/>
+            </svg>
+          </button>
+          <span class="lib-btn-state-arrow">→</span>
+          <button class="btn btn-glass btn-md btn-icon-only is-active" aria-label="Play (video is paused)">
+            <svg class="btn-icon btn-icon-default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="9" y1="5" x2="9" y2="19"/><line x1="15" y1="5" x2="15" y2="19"/>
+            </svg>
+            <svg class="btn-icon btn-icon-active" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <polygon points="6 4 20 12 6 20 6 4"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section class="lib-component" id="deals-banner">
