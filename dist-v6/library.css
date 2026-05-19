@@ -697,6 +697,105 @@ code {
   font-size: 14px;
 }
 
+/* Menu-item demo: stacks the label ABOVE the item (rather than to the
+   left like .lib-btn-state-pair) since menu items are compact. */
+.lib-mi-pair {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ============================================================
+   MENU COMPONENT
+   Container (.menu) is a primary-glass pill. Items (.menu-item)
+   stack vertically: icon over label. .is-selected adds a gold pill
+   background. Optional .menu-item-badge for counts.
+   ============================================================ */
+.menu {
+  position: relative;
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: var(--radius-pill);
+  padding: 4px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+  font-family: var(--font-family-primary);
+}
+.menu::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .18) 0%, rgba(255, 255, 255, 0) 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.menu-item {
+  position: relative;
+  z-index: 1;
+  width: 64px;
+  min-height: 50px;
+  padding-top: 7px;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: rgba(255, 255, 255, .65);
+  cursor: pointer;
+  transition: color .2s ease, background-color .2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.menu-item:hover { color: var(--color-white); }
+
+.menu-item.is-selected {
+  color: var(--color-white);
+  background: rgba(240, 161, 42, .85);
+  border: 1px solid rgba(255, 255, 255, .22);
+  box-shadow:
+    0 4px 14px rgba(240, 161, 42, .45),
+    inset 0 1px 0 rgba(255, 255, 255, .45),
+    inset 0 -1px 0 rgba(0, 0, 0, .15);
+}
+
+.menu-item-icon { width: 22px; height: 22px; flex-shrink: 0; }
+.menu-item-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .1px;
+  line-height: 1;
+  color: inherit;
+}
+
+.menu-item-badge {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  background: var(--color-red);
+  color: var(--color-white);
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-ink);
+  line-height: 1;
+}
+
 /* ============== DEALS-BANNER DEMO ============== */
 .demo-deals-banner {
   display: inline-flex;

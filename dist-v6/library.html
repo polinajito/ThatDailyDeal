@@ -35,6 +35,8 @@
       <ul>
         <li><a href="#price-pill" class="lib-nav-link">Price pill</a></li>
         <li><a href="#button" class="lib-nav-link">Button</a></li>
+        <li><a href="#menu-item" class="lib-nav-link">Menu item</a></li>
+        <li><a href="#menu" class="lib-nav-link">Menu</a></li>
         <li><a href="#deals-banner" class="lib-nav-link">Deals banner</a></li>
       </ul>
     </div>
@@ -452,6 +454,116 @@
             </svg>
           </button>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lib-component" id="menu-item">
+    <header class="lib-component-header">
+      <h2>Menu item</h2>
+      <p class="lib-component-desc">Atomic building block for the bottom nav: vertical icon-over-label tap target. <code>.is-selected</code> turns it into a gold-tinted pill. Optional <code>.menu-item-badge</code> for unread / count indicators (cart pattern).</p>
+      <p class="lib-source">Source: <code>v6.css:688-746</code> (<code>.nav-btn</code>, <code>.nav-label</code>, <code>.cart-badge</code>). The prototype uses a separate animated <code>.nav-indicator</code> element instead of styling the selected item directly (<code>v6.css:690-708</code>) — this component simplifies to a self-contained selected state. Tokens: <code>--color-gold</code>, <code>--color-white</code>, <code>--color-red</code>, <code>--color-ink</code>, <code>--font-family-primary</code>.</p>
+    </header>
+
+    <div class="lib-btn-group">
+      <h3 class="lib-btn-group-title">States</h3>
+      <div class="lib-btn-row lib-btn-stage">
+        <div class="lib-mi-pair">
+          <span class="lib-btn-state-label">Default</span>
+          <button class="menu-item" aria-label="Contests">
+            <svg class="menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+              <path d="M4 22h16"/>
+              <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+              <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+              <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
+            </svg>
+            <span class="menu-item-label">Contests</span>
+          </button>
+        </div>
+        <div class="lib-mi-pair">
+          <span class="lib-btn-state-label">Selected</span>
+          <button class="menu-item is-selected" aria-label="Deals" aria-current="page">
+            <svg class="menu-item-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M13.5 0c-.5 4-3.5 5-3.5 9 0 3 2 4.5 2 4.5s-2-1-2-3.5c-3 1.5-5 4.5-5 7.5 0 4 3 7 7 7s7-3 7-7c0-5-5-9-5.5-17.5z"/>
+            </svg>
+            <span class="menu-item-label">Deals</span>
+          </button>
+        </div>
+        <div class="lib-mi-pair">
+          <span class="lib-btn-state-label">With badge</span>
+          <button class="menu-item" aria-label="Cart, 0 items">
+            <svg class="menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+            <span class="menu-item-label">Cart</span>
+            <span class="menu-item-badge">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lib-component" id="menu">
+    <header class="lib-component-header">
+      <h2>Menu</h2>
+      <p class="lib-component-desc">Primary-glass pill container holding <code>.menu-item</code> children. Distributes items in a horizontal row with consistent spacing. Mirrors the prototype's bottom navigation.</p>
+      <p class="lib-source">Source: <code>v6.css:659-687</code> (<code>.bottom-nav</code> + inner-highlight <code>::before</code>). Tokens: <code>--glass-bg</code>, <code>--glass-border</code>, <code>--glass-blur</code>, <code>--glass-shadow</code>, <code>--radius-pill</code>.</p>
+    </header>
+
+    <div class="lib-btn-group">
+      <h3 class="lib-btn-group-title">Default</h3>
+      <div class="lib-btn-row lib-btn-stage" style="justify-content: center;">
+        <nav class="menu" aria-label="Primary">
+          <button class="menu-item is-selected" aria-label="Deals" aria-current="page">
+            <svg class="menu-item-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M13.5 0c-.5 4-3.5 5-3.5 9 0 3 2 4.5 2 4.5s-2-1-2-3.5c-3 1.5-5 4.5-5 7.5 0 4 3 7 7 7s7-3 7-7c0-5-5-9-5.5-17.5z"/>
+            </svg>
+            <span class="menu-item-label">Deals</span>
+          </button>
+          <button class="menu-item" aria-label="Contests">
+            <svg class="menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+              <path d="M4 22h16"/>
+              <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+              <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+              <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
+            </svg>
+            <span class="menu-item-label">Contests</span>
+          </button>
+          <button class="menu-item" aria-label="Rewards">
+            <svg class="menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 12 20 22 4 22 4 12"/>
+              <rect x="2" y="7" width="20" height="5"/>
+              <line x1="12" y1="22" x2="12" y2="7"/>
+              <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+              <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+            </svg>
+            <span class="menu-item-label">Rewards</span>
+          </button>
+          <button class="menu-item" aria-label="Events">
+            <svg class="menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <span class="menu-item-label">Events</span>
+          </button>
+          <button class="menu-item" aria-label="Cart, 0 items">
+            <svg class="menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+            <span class="menu-item-label">Cart</span>
+            <span class="menu-item-badge">0</span>
+          </button>
+        </nav>
       </div>
     </div>
   </section>
