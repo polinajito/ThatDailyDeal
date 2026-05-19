@@ -556,6 +556,116 @@ code {
   font-weight: 700;
 }
 
+/* ============================================================
+   BUTTON COMPONENT
+   Composable: .btn (base) + .btn-primary/secondary (color) +
+   .btn-sm/md/lg (size) + optional .btn-ghost / .btn-icon-only /
+   .btn-glass. Icon position is DOM order (icon first = left).
+   ============================================================ */
+.btn {
+  font-family: var(--font-family-primary);
+  font-weight: 700;
+  border: 0;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color .18s ease, color .18s ease, transform .12s ease, filter .18s ease, box-shadow .18s ease;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.btn:active { transform: scale(.97); }
+
+/* Sizes */
+.btn-sm { height: 36px; font-size: 13px; padding: 0 14px; }
+.btn-md { height: 44px; font-size: 14px; padding: 0 20px; }
+.btn-lg { height: 54px; font-size: 16px; padding: 0 28px; }
+
+/* Color — filled */
+.btn-primary {
+  background: var(--color-gold);
+  color: var(--color-white);
+  box-shadow: var(--shadow-gold-glow);
+}
+.btn-primary:hover { background: var(--color-gold-dark); }
+
+.btn-secondary {
+  background: var(--color-blue);
+  color: var(--color-white);
+  box-shadow: 0 4px 14px rgba(60, 101, 189, .35);
+}
+.btn-secondary:hover { background: var(--color-blue-dark); }
+
+/* Ghost — transparent fill, colored border + text. Composes on top of
+   a color variant: .btn-primary.btn-ghost or .btn-secondary.btn-ghost. */
+.btn-ghost {
+  background: transparent;
+  box-shadow: none;
+  border: 1.5px solid currentColor;
+}
+.btn-primary.btn-ghost   { color: var(--color-gold); }
+.btn-secondary.btn-ghost { color: var(--color-blue); }
+.btn-primary.btn-ghost:hover   { background: rgba(240, 161, 42, .08); }
+.btn-secondary.btn-ghost:hover { background: rgba(60, 101, 189, .08); }
+
+/* Icon-only — square aspect, equal padding, perfect circle. */
+.btn-icon-only { padding: 0; aspect-ratio: 1 / 1; }
+.btn-sm.btn-icon-only { width: 36px; }
+.btn-md.btn-icon-only { width: 44px; }
+.btn-lg.btn-icon-only { width: 54px; }
+
+/* Glass — replaces solid bg with the primary liquid-glass tokens.
+   Primarily for icon-only (action-stack pattern), works on filled too. */
+.btn-glass {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  color: var(--color-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+}
+.btn-glass:hover { background: rgba(40, 40, 40, .65); }
+
+/* Icon sizing by parent size — scales with .btn-sm / md / lg. */
+.btn-icon { flex-shrink: 0; }
+.btn-sm .btn-icon { width: 16px; height: 16px; }
+.btn-md .btn-icon { width: 18px; height: 18px; }
+.btn-lg .btn-icon { width: 20px; height: 20px; }
+
+/* ============== BUTTON LIBRARY-SECTION SCAFFOLD ============== */
+.lib-btn-group {
+  margin-top: 24px;
+}
+.lib-btn-group:first-of-type { margin-top: 0; }
+.lib-btn-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: var(--lib-text-dim);
+  margin: 0 0 10px;
+}
+.lib-btn-group-note {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: var(--lib-text-muted);
+}
+.lib-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+/* When buttons need a colored surface to read (glass variants). */
+.lib-btn-stage {
+  padding: 20px;
+  border-radius: 14px;
+  background: var(--color-blue);
+}
+
 /* ============== DEALS-BANNER DEMO ============== */
 .demo-deals-banner {
   display: inline-flex;

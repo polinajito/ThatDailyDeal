@@ -34,6 +34,7 @@
       <h2 class="lib-nav-heading">Components</h2>
       <ul>
         <li><a href="#price-pill" class="lib-nav-link">Price pill</a></li>
+        <li><a href="#button" class="lib-nav-link">Button</a></li>
         <li><a href="#deals-banner" class="lib-nav-link">Deals banner</a></li>
       </ul>
     </div>
@@ -259,6 +260,122 @@
           </div>
         </div>
       </figure>
+    </div>
+  </section>
+
+  <section class="lib-component" id="button">
+    <header class="lib-component-header">
+      <h2>Button</h2>
+      <p class="lib-component-desc">Composable button. Pick a color (<code>.btn-primary</code> = gold, <code>.btn-secondary</code> = blue), a size (<code>.btn-sm</code> / <code>.btn-md</code> / <code>.btn-lg</code>), optionally a fill modifier (<code>.btn-ghost</code> for outlined), and optionally <code>.btn-icon-only</code> for square icon buttons. The <code>.btn-glass</code> modifier swaps the solid bg for liquid glass — designed for the action-stack pattern. Icon position is determined by DOM order (icon first = left, icon last = right).</p>
+      <p class="lib-source">Source patterns in prototype: <code>v6.css:318-342</code> (<code>.dd-btn</code>), <code>v6.css:1177-1194</code> (<code>.card-cta</code>), <code>v6.css:575-612</code> (<code>.act-btn</code>). Tokens: <code>--color-gold</code>, <code>--color-blue</code>, <code>--color-white</code>, <code>--glass-*</code>, <code>--radius-pill</code>, <code>--font-family-primary</code>, <code>--shadow-gold-glow</code>.</p>
+    </header>
+
+    <div class="lib-btn-group">
+      <h3 class="lib-btn-group-title">Sizes — filled</h3>
+      <div class="lib-btn-row">
+        <button class="btn btn-primary btn-sm">Save sm</button>
+        <button class="btn btn-primary btn-md">Save md</button>
+        <button class="btn btn-primary btn-lg">Save lg</button>
+        <button class="btn btn-secondary btn-sm">View sm</button>
+        <button class="btn btn-secondary btn-md">View md</button>
+        <button class="btn btn-secondary btn-lg">View lg</button>
+      </div>
+    </div>
+
+    <div class="lib-btn-group">
+      <h3 class="lib-btn-group-title">Ghost</h3>
+      <div class="lib-btn-row">
+        <button class="btn btn-primary btn-md btn-ghost">Maybe later</button>
+        <button class="btn btn-secondary btn-md btn-ghost">Cancel</button>
+      </div>
+    </div>
+
+    <div class="lib-btn-group">
+      <h3 class="lib-btn-group-title">With icon — left</h3>
+      <div class="lib-btn-row">
+        <button class="btn btn-primary btn-md">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          Add to cart
+        </button>
+        <button class="btn btn-secondary btn-md">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+          Schedule
+        </button>
+      </div>
+    </div>
+
+    <div class="lib-btn-group">
+      <h3 class="lib-btn-group-title">With icon — right</h3>
+      <div class="lib-btn-row">
+        <button class="btn btn-primary btn-md">
+          Continue
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+        <button class="btn btn-secondary btn-md">
+          View deal
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="lib-btn-group">
+      <h3 class="lib-btn-group-title">Icon-only — solid</h3>
+      <div class="lib-btn-row">
+        <button class="btn btn-primary btn-md btn-icon-only" aria-label="Like">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </button>
+        <button class="btn btn-secondary btn-md btn-icon-only" aria-label="Share">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="lib-btn-group">
+      <h3 class="lib-btn-group-title">Icon-only — liquid glass</h3>
+      <p class="lib-btn-group-note">The action-stack pattern: <code>.btn-glass.btn-icon-only</code>. Sits on a colored surface (here a blue tile) so the blur reads.</p>
+      <div class="lib-btn-row lib-btn-stage">
+        <button class="btn btn-glass btn-md btn-icon-only" aria-label="Like">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </button>
+        <button class="btn btn-glass btn-md btn-icon-only" aria-label="Share">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+        </button>
+        <button class="btn btn-glass btn-md btn-icon-only" aria-label="Mute">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+        </button>
+        <button class="btn btn-glass btn-md btn-icon-only" aria-label="Pause">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="9" y1="5" x2="9" y2="19"/><line x1="15" y1="5" x2="15" y2="19"/>
+          </svg>
+        </button>
+        <button class="btn btn-glass btn-md btn-icon-only" aria-label="Details">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </section>
 
