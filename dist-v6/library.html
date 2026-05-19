@@ -24,6 +24,7 @@
       <ul>
         <li><a href="#colors" class="lib-nav-link">Colors</a></li>
         <li><a href="#typography" class="lib-nav-link">Typography</a></li>
+        <li><a href="#spacing" class="lib-nav-link">Spacing</a></li>
       </ul>
     </div>
     <div class="lib-nav-group">
@@ -122,6 +123,24 @@
     </div>
   </section>
 
+  <section class="lib-section" id="spacing">
+    <header class="lib-section-header">
+      <h2>Spacing</h2>
+      <p class="lib-section-desc">4px base scale. Each bar's width equals the token value so the relative steps are visible at a glance. Use these for padding, margin, and gap throughout.</p>
+    </header>
+
+    <div class="lib-spacing-list">
+      <div class="lib-spacing-row" data-space="--space-1"></div>
+      <div class="lib-spacing-row" data-space="--space-2"></div>
+      <div class="lib-spacing-row" data-space="--space-3"></div>
+      <div class="lib-spacing-row" data-space="--space-4"></div>
+      <div class="lib-spacing-row" data-space="--space-5"></div>
+      <div class="lib-spacing-row" data-space="--space-6"></div>
+      <div class="lib-spacing-row" data-space="--space-7"></div>
+      <div class="lib-spacing-row" data-space="--space-8"></div>
+    </div>
+  </section>
+
   <section class="lib-component" id="per-card-banner">
     <header class="lib-component-header">
       <h2>Deal card — countdown banner</h2>
@@ -169,6 +188,17 @@
           <code class="lib-swatch-name">${name}</code>
           <code class="lib-swatch-value">${value}</code>
         </div>
+      `;
+    });
+
+    // Spacing bars — width = the token's pixel value.
+    document.querySelectorAll('[data-space]').forEach((el) => {
+      const name = el.dataset.space;
+      const value = root.getPropertyValue(name).trim();
+      el.innerHTML = `
+        <div class="lib-spacing-bar" style="width: ${value};"></div>
+        <code class="lib-spacing-name">${name}</code>
+        <code class="lib-spacing-value">${value}</code>
       `;
     });
   })();
