@@ -1,0 +1,28 @@
+/* ============================================================
+   ThatDailyDeal — Design tokens
+   Source of truth for the design library. Currently linked from
+   library.html only; the prototype (v6.css) does not reference
+   these yet — that happens in a later phase.
+   ============================================================ */
+
+:root {
+  /* ============== COLORS ============== */
+  /* Brand */
+  --color-blue:        #3C65BD; /* primary / light blue */
+  --color-blue-dark:   #1E3464; /* dark blue */
+  --color-blue-deep:   #14224a; /* gradient depth — derived darker */
+  --color-blue-night:  #0c1530; /* gradient depth — derived darkest */
+  --color-gold:        #F0A12A; /* accent / CTA */
+  --color-gold-dark:   #D08818; /* derived darker for button gradients */
+
+  /* System accents */
+  --color-red:         #D43A36; /* sale / urgency */
+  --color-green:       #36c980; /* success / confirmation */
+
+  /* Neutrals */
+  --color-white:       #ffffff;
+  --color-ink:         #1A1A1A;
+  --color-gray-300:    #C8CCD3;
+  --color-gray-500:    #8A8F99;
+  --color-gray-700:    #4A4F58;
+}

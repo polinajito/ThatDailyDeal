@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ThatDailyDeal — Design Library</title>
+  <link rel="stylesheet" href="tokens.css" />
   <link rel="stylesheet" href="library.css" />
 </head>
 <body>
@@ -14,7 +15,13 @@
     <span class="lib-brand-sub">Design Library</span>
   </div>
 
-  <nav class="lib-nav" aria-label="Components">
+  <nav class="lib-nav" aria-label="Foundations and components">
+    <div class="lib-nav-group">
+      <h2 class="lib-nav-heading">Foundations</h2>
+      <ul>
+        <li><a href="#colors" class="lib-nav-link">Colors</a></li>
+      </ul>
+    </div>
     <div class="lib-nav-group">
       <h2 class="lib-nav-heading">Components</h2>
       <ul>
@@ -30,6 +37,44 @@
     <h1>Design Library</h1>
     <p class="lib-lede">Live previews of the prototype in each documented state. Editing <code>v6.css</code> updates every variant on the next refresh — no duplication, no drift.</p>
   </header>
+
+  <section class="lib-section" id="colors">
+    <header class="lib-section-header">
+      <h2>Colors</h2>
+      <p class="lib-section-desc">Brand, system and neutral colors. Each tile reads its hex value live from <code>tokens.css</code> — edit a value there and the swatch updates on the next refresh.</p>
+    </header>
+
+    <div class="lib-swatch-group">
+      <h3 class="lib-swatch-group-title">Brand</h3>
+      <div class="lib-swatches">
+        <div class="lib-swatch" data-token="--color-blue"></div>
+        <div class="lib-swatch" data-token="--color-blue-dark"></div>
+        <div class="lib-swatch" data-token="--color-blue-deep"></div>
+        <div class="lib-swatch" data-token="--color-blue-night"></div>
+        <div class="lib-swatch" data-token="--color-gold"></div>
+        <div class="lib-swatch" data-token="--color-gold-dark"></div>
+      </div>
+    </div>
+
+    <div class="lib-swatch-group">
+      <h3 class="lib-swatch-group-title">System</h3>
+      <div class="lib-swatches">
+        <div class="lib-swatch" data-token="--color-red"></div>
+        <div class="lib-swatch" data-token="--color-green"></div>
+      </div>
+    </div>
+
+    <div class="lib-swatch-group">
+      <h3 class="lib-swatch-group-title">Neutrals</h3>
+      <div class="lib-swatches">
+        <div class="lib-swatch" data-token="--color-white"></div>
+        <div class="lib-swatch" data-token="--color-ink"></div>
+        <div class="lib-swatch" data-token="--color-gray-300"></div>
+        <div class="lib-swatch" data-token="--color-gray-500"></div>
+        <div class="lib-swatch" data-token="--color-gray-700"></div>
+      </div>
+    </div>
+  </section>
 
   <section class="lib-component" id="per-card-banner">
     <header class="lib-component-header">
@@ -61,6 +106,27 @@
   </section>
 
 </main>
+
+<script>
+  // Read each [data-token] swatch's live computed value from tokens.css
+  // and render the sample + label. Edit tokens.css and refresh: the
+  // displayed value always matches the source.
+  (() => {
+    const root = getComputedStyle(document.documentElement);
+    document.querySelectorAll('[data-token]').forEach((el) => {
+      const name = el.dataset.token;
+      const value = root.getPropertyValue(name).trim();
+      el.style.setProperty('--swatch-color', value);
+      el.innerHTML = `
+        <div class="lib-swatch-sample"></div>
+        <div class="lib-swatch-meta">
+          <code class="lib-swatch-name">${name}</code>
+          <code class="lib-swatch-value">${value}</code>
+        </div>
+      `;
+    });
+  })();
+</script>
 
 </body>
 </html>
