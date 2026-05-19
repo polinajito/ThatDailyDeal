@@ -490,15 +490,12 @@ code {
 }
 
 /* ============== PRICE-PILL DEMO ============== */
-/* Each stage is a contrasting tile so the dark glass pill is visible
-   against the light library page. Uses the brand palette for variety. */
+/* Solid brand-blue tile so the dark glass component reads clearly
+   on the light library page. */
 .lib-pp-stage {
   padding: 28px 24px;
   border-radius: 14px;
-  background:
-    radial-gradient(circle at 20% 30%, var(--color-gold) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, var(--color-blue-dark) 0%, transparent 55%),
-    linear-gradient(135deg, var(--color-blue) 0%, var(--color-blue-deep) 100%);
+  background: var(--color-blue);
 }
 
 .demo-price-pill {
