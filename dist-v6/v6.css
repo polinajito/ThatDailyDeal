@@ -97,6 +97,25 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   }
 }
 
+/* ============== TOP SCRIM ============== */
+/* Dark-to-transparent gradient sitting above the cards but below the
+   status bar and header content. Improves legibility of icons + logo
+   against bright video frames. */
+.top-scrim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(0, 0, 0, .62) 0%,
+    rgba(0, 0, 0, .42) 40%,
+    rgba(0, 0, 0, 0)   100%);
+}
+body.no-scrim .top-scrim { display: none; }
+
 /* ============== iOS SYSTEM OVERLAYS ============== */
 .status-bar {
   position: absolute;
@@ -138,6 +157,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
     inset 0 -1px 0 rgba(0, 0, 0, .25);
 }
 .deals-banner[hidden] { display: none; }
+body.no-banner .deals-banner { display: none; }
 .deals-banner-icon {
   color: var(--brand-red);
   flex-shrink: 0;
@@ -1429,3 +1449,72 @@ body.notify-open .notify-sheet { transform: translate(-50%, 0); }
   padding: 8px 10px;
 }
 .ns-dismiss:hover { color: var(--ink); }
+
+/* ============================================================
+   PREVIEW CONTROLS (not part of shipped product)
+   Floating segmented control to toggle component variants in the
+   standalone preview. Auto-hidden inside iframes via JS.
+   ============================================================ */
+.preview-controls {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(12, 21, 48, .82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: rgba(255, 255, 255, .92);
+  font-size: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+}
+.preview-controls[hidden] { display: none; }
+.preview-control-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.preview-controls-label {
+  font-weight: 600;
+  letter-spacing: .2px;
+  white-space: nowrap;
+}
+.preview-controls-segments {
+  display: inline-flex;
+  background: rgba(255, 255, 255, .06);
+  border-radius: 999px;
+  padding: 2px;
+}
+.preview-segment {
+  font: inherit;
+  color: rgba(255, 255, 255, .72);
+  background: transparent;
+  border: 0;
+  padding: 4px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.preview-segment:hover { color: #fff; }
+.preview-segment.is-active {
+  background: var(--brand-gold);
+  color: var(--brand-blue-night);
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .preview-controls {
+    top: 8px;
+    right: 8px;
+    padding: 6px 8px 6px 12px;
+    font-size: 11px;
+  }
+  .preview-segment { padding: 3px 10px; }
+}

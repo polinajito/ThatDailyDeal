@@ -1,0 +1,202 @@
+/* ============================================================
+   ThatDailyDeal — Design Library chrome
+   This stylesheet styles ONLY the library page (sidebar, main
+   panel, variant grid). It does not touch the prototype itself.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --lib-bg: #0e1424;
+  --lib-panel: #141b2f;
+  --lib-border: rgba(255, 255, 255, .08);
+  --lib-text: #e8ecf6;
+  --lib-text-muted: rgba(232, 236, 246, .62);
+  --lib-text-dim: rgba(232, 236, 246, .42);
+  --lib-accent: #ffc83d;
+  --lib-code-bg: rgba(255, 255, 255, .06);
+  --lib-sidebar-w: 260px;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--lib-bg);
+  color: var(--lib-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+body {
+  display: grid;
+  grid-template-columns: var(--lib-sidebar-w) 1fr;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+code {
+  background: var(--lib-code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  color: var(--lib-text);
+}
+
+/* ============== SIDEBAR ============== */
+.lib-sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  background: var(--lib-panel);
+  border-right: 1px solid var(--lib-border);
+  padding: 24px 20px;
+  overflow-y: auto;
+}
+
+.lib-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 20px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--lib-border);
+}
+.lib-brand-name {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: .2px;
+}
+.lib-brand-sub {
+  font-size: 12px;
+  color: var(--lib-text-muted);
+  letter-spacing: .4px;
+  text-transform: uppercase;
+}
+
+.lib-nav-group { margin-bottom: 20px; }
+.lib-nav-heading {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: var(--lib-text-dim);
+  margin: 0 0 8px;
+  padding: 0 8px;
+}
+.lib-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.lib-nav-link {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: var(--lib-text);
+  font-size: 13px;
+  transition: background .12s ease;
+}
+.lib-nav-link:hover { background: rgba(255, 255, 255, .04); }
+.lib-nav-link:focus-visible {
+  outline: 2px solid var(--lib-accent);
+  outline-offset: 1px;
+}
+
+/* ============== MAIN PANEL ============== */
+.lib-main {
+  padding: 40px 48px 80px;
+  max-width: 1400px;
+}
+
+.lib-header {
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--lib-border);
+}
+.lib-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  letter-spacing: -.2px;
+}
+.lib-lede {
+  margin: 0;
+  color: var(--lib-text-muted);
+  font-size: 14px;
+  max-width: 680px;
+}
+
+/* ============== COMPONENT SECTION ============== */
+.lib-component {
+  padding: 32px 0;
+  border-bottom: 1px solid var(--lib-border);
+}
+.lib-component:last-of-type { border-bottom: 0; }
+.lib-component-header { margin-bottom: 24px; }
+.lib-component-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+.lib-component-desc {
+  margin: 0 0 12px;
+  color: var(--lib-text-muted);
+  max-width: 720px;
+}
+.lib-source {
+  margin: 0;
+  font-size: 12px;
+  color: var(--lib-text-dim);
+}
+
+/* ============== VARIANT GRID ============== */
+.lib-variants {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 24px;
+}
+.lib-variant {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.lib-variant-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--lib-text);
+}
+.lib-variant-state {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--lib-text-dim);
+  background: var(--lib-code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.lib-frame {
+  background: var(--lib-panel);
+  border: 1px solid var(--lib-border);
+  border-radius: 12px;
+  overflow: hidden;
+  height: 720px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+.lib-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: transparent;
+}

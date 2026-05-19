@@ -7,8 +7,34 @@
   <link rel="stylesheet" href="v6.css" />
 </head>
 <body>
+
+<!-- Preview-only chrome: not part of the shipped product.
+     JS hides this automatically when the page is embedded in an iframe
+     (so the design library variants stay clean). -->
+<div class="preview-controls" id="previewControls" hidden>
+  <div class="preview-control-group">
+    <span class="preview-controls-label">Today's deals banner</span>
+    <div class="preview-controls-segments" role="group" aria-label="Banner visibility">
+      <button type="button" class="preview-segment" data-toggle="banner" data-value="on" aria-pressed="true">Show</button>
+      <button type="button" class="preview-segment" data-toggle="banner" data-value="off" aria-pressed="false">Hide</button>
+    </div>
+  </div>
+  <div class="preview-control-group">
+    <span class="preview-controls-label">Top gradient</span>
+    <div class="preview-controls-segments" role="group" aria-label="Top gradient visibility">
+      <button type="button" class="preview-segment" data-toggle="scrim" data-value="on" aria-pressed="true">Show</button>
+      <button type="button" class="preview-segment" data-toggle="scrim" data-value="off" aria-pressed="false">Hide</button>
+    </div>
+  </div>
+</div>
+
 <div class="phone-frame">
 <div class="phone-screen">
+
+  <!-- Dark-to-transparent gradient overlay improves readability of the
+       status bar + top header against the full-bleed card video.
+       Sits above the cards but below the status-bar image and header text. -->
+  <div class="top-scrim" aria-hidden="true"></div>
 
   <!-- iOS status bar + home indicator (system overlay; top.png includes both) -->
   <img class="status-bar" src="assets/Frame 47.png" alt="" aria-hidden="true" />
