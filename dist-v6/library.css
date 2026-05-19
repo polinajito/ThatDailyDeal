@@ -475,3 +475,86 @@ code {
   font-size: 11px;
   color: var(--lib-text-muted);
 }
+
+/* ============== COMPONENT VARIANTS — generic grid ============== */
+.lib-component-variants {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.lib-component-variant {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ============== PRICE-PILL DEMO ============== */
+/* Each stage is a contrasting tile so the dark glass pill is visible
+   against the light library page. Uses the brand palette for variety. */
+.lib-pp-stage {
+  padding: 28px 24px;
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 20% 30%, var(--color-gold) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, var(--color-blue-dark) 0%, transparent 55%),
+    linear-gradient(135deg, var(--color-blue) 0%, var(--color-blue-deep) 100%);
+}
+
+.demo-price-pill {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: 18px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-white);
+  font-family: var(--font-family-primary);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+}
+.demo-pp-info { flex: 1 1 auto; min-width: 0; }
+.demo-pp-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-white);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  margin-bottom: 2px;
+}
+.demo-pp-prices {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.demo-pp-now {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-white);
+}
+.demo-pp-old {
+  font-size: 13px;
+  color: rgba(255, 255, 255, .7);
+  text-decoration: line-through;
+}
+.demo-pp-discount {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--color-white);
+  background: var(--color-red);
+  border-radius: 6px;
+  letter-spacing: -.2px;
+  transform: translateY(-1px);
+}
+
+/* Sold-out variant — strikethrough now-price, lighter weight. */
+.demo-pp-soldout .demo-pp-now {
+  text-decoration: line-through;
+  color: rgba(255, 255, 255, .7);
+  font-weight: 700;
+}

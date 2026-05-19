@@ -33,6 +33,7 @@
     <div class="lib-nav-group">
       <h2 class="lib-nav-heading">Components</h2>
       <ul>
+        <li><a href="#price-pill" class="lib-nav-link">Price pill</a></li>
         <li><a href="#per-card-banner" class="lib-nav-link">Deal card — countdown banner</a></li>
       </ul>
     </div>
@@ -204,6 +205,60 @@
           <dt><code>--glass-blur-subtle</code></dt><dd><code data-token-value="--glass-blur-subtle"></code></dd>
         </dl>
       </div>
+    </div>
+  </section>
+
+  <section class="lib-component" id="price-pill">
+    <header class="lib-component-header">
+      <h2>Price pill</h2>
+      <p class="lib-component-desc">Liquid-glass pill at the top of each deal card showing product name, current price, and (when applicable) the strikethrough old price + discount badge. Three states: <strong>regular</strong> (just the now-price), <strong>with sale</strong> (now + old + discount), and <strong>out of stock</strong> (strikethrough now-price, muted weight).</p>
+      <p class="lib-source">Source: <code>v6.css:622-658</code> (<code>.price-pill</code>, <code>.pp-name</code>, <code>.pp-now</code>, <code>.pp-old</code>, <code>.pp-discount</code>); <code>v6.css:1124-1128</code> (sold-out variant). Uses tokens: <code>--glass-bg</code>, <code>--glass-border</code>, <code>--glass-blur</code>, <code>--glass-shadow</code>, <code>--color-white</code>, <code>--color-red</code>, <code>--font-family-primary</code>.</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Regular <span class="lib-variant-state">default</span></figcaption>
+        <div class="lib-pp-stage">
+          <div class="demo-price-pill">
+            <div class="demo-pp-info">
+              <div class="demo-pp-name">Travel Backpack — Daily Carry</div>
+              <div class="demo-pp-prices">
+                <span class="demo-pp-now">$14.99</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">With sale <span class="lib-variant-state">.on-sale</span></figcaption>
+        <div class="lib-pp-stage">
+          <div class="demo-price-pill">
+            <div class="demo-pp-info">
+              <div class="demo-pp-name">Travel Backpack — Daily Carry</div>
+              <div class="demo-pp-prices">
+                <span class="demo-pp-now">$14.99</span>
+                <span class="demo-pp-old">$49.99</span>
+                <span class="demo-pp-discount">-70%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Out of stock <span class="lib-variant-state">.sold-out</span></figcaption>
+        <div class="lib-pp-stage">
+          <div class="demo-price-pill demo-pp-soldout">
+            <div class="demo-pp-info">
+              <div class="demo-pp-name">Travel Backpack — Daily Carry</div>
+              <div class="demo-pp-prices">
+                <span class="demo-pp-now">$14.99</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </figure>
     </div>
   </section>
 
