@@ -404,3 +404,74 @@ code {
   word-break: break-all;
   line-height: 1.4;
 }
+
+/* ============== LIQUID GLASS ============== */
+.lib-glass-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+.lib-glass-demo {
+  background: var(--lib-panel);
+  border: 1px solid var(--lib-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.lib-glass-stage {
+  position: relative;
+  height: 220px;
+  /* Colorful gradient using the brand palette so the blur is visible
+     against the light library page. */
+  background:
+    radial-gradient(circle at 25% 30%, var(--color-gold) 0%, transparent 45%),
+    radial-gradient(circle at 80% 70%, var(--color-blue-dark) 0%, transparent 50%),
+    linear-gradient(135deg, var(--color-blue) 0%, var(--color-blue-deep) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lib-glass-tile {
+  padding: 14px 26px;
+  color: rgba(255, 255, 255, .92);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: .2px;
+  border-radius: var(--radius-pill);
+}
+.lib-glass-primary {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+}
+.lib-glass-subtle {
+  background: var(--glass-bg-subtle);
+  backdrop-filter: var(--glass-blur-subtle);
+  -webkit-backdrop-filter: var(--glass-blur-subtle);
+}
+.lib-glass-meta {
+  margin: 0;
+  padding: 16px 18px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 14px;
+  font-size: 11px;
+  border-top: 1px solid var(--lib-border);
+}
+.lib-glass-meta dt code {
+  font-weight: 600;
+  color: var(--lib-text);
+  background: transparent;
+  padding: 0;
+}
+.lib-glass-meta dd {
+  margin: 0;
+  word-break: break-word;
+}
+.lib-glass-meta dd code {
+  background: transparent;
+  padding: 0;
+  font-size: 11px;
+  color: var(--lib-text-muted);
+}

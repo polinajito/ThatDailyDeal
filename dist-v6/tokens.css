@@ -54,4 +54,18 @@
   --shadow-lg:        0 12px 32px rgba(0, 0, 0, .45);
   --shadow-sheet:     0 -10px 40px rgba(0, 0, 0, .4);   /* upward — bottom sheets */
   --shadow-gold-glow: 0 6px 16px rgba(240, 161, 42, .4); /* CTA accent */
+
+  /* ============== LIQUID GLASS ============== */
+  /* Primary glass — deals banner, price pill, action buttons, bottom nav. */
+  --glass-bg:     rgba(20, 20, 20, .55);
+  --glass-border: 1px solid rgba(255, 255, 255, .18);
+  --glass-blur:   blur(28px) saturate(180%);
+  --glass-shadow:
+    0 12px 32px rgba(0, 0, 0, .45),
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    inset 0 -1px 0 rgba(0, 0, 0, .25);
+
+  /* Subtle glass — toast, restock CTA. Less blur, no inner highlight. */
+  --glass-bg-subtle:   rgba(0, 0, 0, .5);
+  --glass-blur-subtle: blur(6px) saturate(140%);
 }

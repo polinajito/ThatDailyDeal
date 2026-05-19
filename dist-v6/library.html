@@ -27,6 +27,7 @@
         <li><a href="#spacing" class="lib-nav-link">Spacing</a></li>
         <li><a href="#radius" class="lib-nav-link">Border radius</a></li>
         <li><a href="#shadows" class="lib-nav-link">Shadows</a></li>
+        <li><a href="#liquid-glass" class="lib-nav-link">Liquid glass</a></li>
       </ul>
     </div>
     <div class="lib-nav-group">
@@ -175,6 +176,37 @@
     </div>
   </section>
 
+  <section class="lib-section" id="liquid-glass">
+    <header class="lib-section-header">
+      <h2>Liquid glass</h2>
+      <p class="lib-section-desc">Translucent surfaces composited over the page behind them. <strong>Primary</strong> glass is reused across the deals banner, price pill, action buttons and bottom nav. The <strong>subtle</strong> variant is for toasts and inline overlays.</p>
+    </header>
+
+    <div class="lib-glass-row">
+      <div class="lib-glass-demo">
+        <div class="lib-glass-stage">
+          <div class="lib-glass-tile lib-glass-primary">Primary</div>
+        </div>
+        <dl class="lib-glass-meta">
+          <dt><code>--glass-bg</code></dt><dd><code data-token-value="--glass-bg"></code></dd>
+          <dt><code>--glass-border</code></dt><dd><code data-token-value="--glass-border"></code></dd>
+          <dt><code>--glass-blur</code></dt><dd><code data-token-value="--glass-blur"></code></dd>
+          <dt><code>--glass-shadow</code></dt><dd><code data-token-value="--glass-shadow"></code></dd>
+        </dl>
+      </div>
+
+      <div class="lib-glass-demo">
+        <div class="lib-glass-stage">
+          <div class="lib-glass-tile lib-glass-subtle">Subtle</div>
+        </div>
+        <dl class="lib-glass-meta">
+          <dt><code>--glass-bg-subtle</code></dt><dd><code data-token-value="--glass-bg-subtle"></code></dd>
+          <dt><code>--glass-blur-subtle</code></dt><dd><code data-token-value="--glass-blur-subtle"></code></dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
   <section class="lib-component" id="per-card-banner">
     <header class="lib-component-header">
       <h2>Deal card — countdown banner</h2>
@@ -256,6 +288,12 @@
         <code class="lib-shadow-name">${name}</code>
         <code class="lib-shadow-value">${value}</code>
       `;
+    });
+
+    // Glass-meta token value labels (the demos themselves use the tokens
+    // via CSS in library.css; these <code> tags display the raw text).
+    document.querySelectorAll('[data-token-value]').forEach((el) => {
+      el.textContent = root.getPropertyValue(el.dataset.tokenValue).trim();
     });
   })();
 </script>
