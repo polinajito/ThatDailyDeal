@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ThatDailyDeal — Design Library</title>
+  <link rel="stylesheet" href="library.css" />
+</head>
+<body>
+
+<aside class="lib-sidebar">
+  <div class="lib-brand">
+    <span class="lib-brand-name">ThatDailyDeal</span>
+    <span class="lib-brand-sub">Design Library</span>
+  </div>
+
+  <nav class="lib-nav" aria-label="Components">
+    <div class="lib-nav-group">
+      <h2 class="lib-nav-heading">Components</h2>
+      <ul>
+        <li><a href="#per-card-banner" class="lib-nav-link">Deal card — countdown banner</a></li>
+      </ul>
+    </div>
+  </nav>
+</aside>
+
+<main class="lib-main">
+
+  <header class="lib-header">
+    <h1>Design Library</h1>
+    <p class="lib-lede">Live previews of the prototype in each documented state. Editing <code>v6.css</code> updates every variant on the next refresh — no duplication, no drift.</p>
+  </header>
+
+  <section class="lib-component" id="per-card-banner">
+    <header class="lib-component-header">
+      <h2>Deal card — countdown banner</h2>
+      <p class="lib-component-desc">The pill-shaped "Today's deals end in HH:MM:SS" banner that sits at the bottom of each deal card. Currently always-on; this view documents the visual diff if it's hidden.</p>
+      <p class="lib-source">
+        Source:
+        <code>v6.js:234-243</code> (banner markup in <code>renderCard</code>),
+        <code>v6.css:115-150</code> (banner styles).
+        Toggle: <code>body.no-banner</code> hides the banner via <code>?banner=off</code> URL param.
+      </p>
+    </header>
+
+    <div class="lib-variants">
+      <figure class="lib-variant">
+        <figcaption class="lib-variant-label">With banner <span class="lib-variant-state">default</span></figcaption>
+        <div class="lib-frame">
+          <iframe src="index.html" title="Deal card with countdown banner" loading="lazy"></iframe>
+        </div>
+      </figure>
+
+      <figure class="lib-variant">
+        <figcaption class="lib-variant-label">Without banner <span class="lib-variant-state">?banner=off</span></figcaption>
+        <div class="lib-frame">
+          <iframe src="index.html?banner=off" title="Deal card without countdown banner" loading="lazy"></iframe>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

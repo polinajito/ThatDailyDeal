@@ -5,6 +5,55 @@
    sitting just below the brand bar.
    ============================================================ */
 
+// Preview controls — variant toggles.
+// Each entry maps a URL param to a body class (applied when value="off").
+// URL param drives initial state (so library iframes and shared links
+// work); the on-page segmented control mirrors and updates it. Controls
+// are auto-hidden when the page is embedded in an iframe so design
+// library previews stay clean.
+(() => {
+  const TOGGLES = [
+    { param: 'banner', bodyClass: 'no-banner' },
+    { param: 'scrim',  bodyClass: 'no-scrim'  },
+  ];
+
+  const params = new URLSearchParams(location.search);
+  TOGGLES.forEach(({ param, bodyClass }) => {
+    if (params.get(param) === 'off') document.body.classList.add(bodyClass);
+  });
+
+  const inIframe = window.self !== window.top;
+  const controls = document.getElementById('previewControls');
+  if (!controls || inIframe) return;
+  controls.hidden = false;
+
+  const setState = (param, bodyClass, value) => {
+    document.body.classList.toggle(bodyClass, value === 'off');
+    controls.querySelectorAll(`[data-toggle="${param}"]`).forEach((btn) => {
+      const active = btn.dataset.value === value;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-pressed', String(active));
+    });
+    const next = new URLSearchParams(location.search);
+    if (value === 'off') next.set(param, 'off');
+    else next.delete(param);
+    const qs = next.toString();
+    history.replaceState(null, '', qs ? `?${qs}${location.hash}` : `${location.pathname}${location.hash}`);
+  };
+
+  TOGGLES.forEach(({ param, bodyClass }) => {
+    const initial = params.get(param) === 'off' ? 'off' : 'on';
+    setState(param, bodyClass, initial);
+  });
+
+  controls.querySelectorAll('.preview-segment').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cfg = TOGGLES.find((t) => t.param === btn.dataset.toggle);
+      if (cfg) setState(cfg.param, cfg.bodyClass, btn.dataset.value);
+    });
+  });
+})();
+
 const DEALS = [
   {
     video: 'assets/pack.mp4',
