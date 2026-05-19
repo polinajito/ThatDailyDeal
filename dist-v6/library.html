@@ -25,6 +25,7 @@
         <li><a href="#colors" class="lib-nav-link">Colors</a></li>
         <li><a href="#typography" class="lib-nav-link">Typography</a></li>
         <li><a href="#spacing" class="lib-nav-link">Spacing</a></li>
+        <li><a href="#radius" class="lib-nav-link">Border radius</a></li>
       </ul>
     </div>
     <div class="lib-nav-group">
@@ -141,6 +142,23 @@
     </div>
   </section>
 
+  <section class="lib-section" id="radius">
+    <header class="lib-section-header">
+      <h2>Border radius</h2>
+      <p class="lib-section-desc">Discrete radius scale. Reach for <code>--radius-pill</code> on capsule buttons and banners, <code>--radius-circle</code> for avatars and icon buttons, the rest by visual weight.</p>
+    </header>
+
+    <div class="lib-radius-row">
+      <div class="lib-radius-tile" data-radius="--radius-xs"></div>
+      <div class="lib-radius-tile" data-radius="--radius-sm"></div>
+      <div class="lib-radius-tile" data-radius="--radius-md"></div>
+      <div class="lib-radius-tile" data-radius="--radius-lg"></div>
+      <div class="lib-radius-tile" data-radius="--radius-xl"></div>
+      <div class="lib-radius-tile" data-radius="--radius-pill"></div>
+      <div class="lib-radius-tile" data-radius="--radius-circle"></div>
+    </div>
+  </section>
+
   <section class="lib-component" id="per-card-banner">
     <header class="lib-component-header">
       <h2>Deal card — countdown banner</h2>
@@ -199,6 +217,17 @@
         <div class="lib-spacing-bar" style="width: ${value};"></div>
         <code class="lib-spacing-name">${name}</code>
         <code class="lib-spacing-value">${value}</code>
+      `;
+    });
+
+    // Border radius tiles — each square uses the token's radius value.
+    document.querySelectorAll('[data-radius]').forEach((el) => {
+      const name = el.dataset.radius;
+      const value = root.getPropertyValue(name).trim();
+      el.innerHTML = `
+        <div class="lib-radius-shape" style="border-radius: ${value};"></div>
+        <code class="lib-radius-name">${name}</code>
+        <code class="lib-radius-value">${value}</code>
       `;
     });
   })();
