@@ -7,15 +7,16 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 :root {
-  --lib-bg: #0e1424;
-  --lib-panel: #141b2f;
-  --lib-border: rgba(255, 255, 255, .08);
-  --lib-text: #e8ecf6;
-  --lib-text-muted: rgba(232, 236, 246, .62);
-  --lib-text-dim: rgba(232, 236, 246, .42);
-  --lib-accent: #ffc83d;
-  --lib-code-bg: rgba(255, 255, 255, .06);
-  --lib-sidebar-w: 260px;
+  /* Light theme — easier to read swatches, shadow demos, and color tiles on. */
+  --lib-bg:         #f7f8fa;
+  --lib-panel:      #ffffff;
+  --lib-border:     rgba(0, 0, 0, .08);
+  --lib-text:       #1A1A1A;
+  --lib-text-muted: rgba(26, 26, 26, .62);
+  --lib-text-dim:   rgba(26, 26, 26, .42);
+  --lib-accent:     #F0A12A;
+  --lib-code-bg:    rgba(0, 0, 0, .05);
+  --lib-sidebar-w:  260px;
 }
 
 html, body {
