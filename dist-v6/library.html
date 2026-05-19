@@ -26,6 +26,7 @@
         <li><a href="#typography" class="lib-nav-link">Typography</a></li>
         <li><a href="#spacing" class="lib-nav-link">Spacing</a></li>
         <li><a href="#radius" class="lib-nav-link">Border radius</a></li>
+        <li><a href="#shadows" class="lib-nav-link">Shadows</a></li>
       </ul>
     </div>
     <div class="lib-nav-group">
@@ -159,6 +160,21 @@
     </div>
   </section>
 
+  <section class="lib-section" id="shadows">
+    <header class="lib-section-header">
+      <h2>Shadows</h2>
+      <p class="lib-section-desc">Drop shadows for elevation. <code>--shadow-sheet</code> casts upward (used by bottom sheets). <code>--shadow-gold-glow</code> is the accent glow under the primary CTA.</p>
+    </header>
+
+    <div class="lib-shadow-row">
+      <div class="lib-shadow-tile" data-shadow="--shadow-sm"></div>
+      <div class="lib-shadow-tile" data-shadow="--shadow-md"></div>
+      <div class="lib-shadow-tile" data-shadow="--shadow-lg"></div>
+      <div class="lib-shadow-tile" data-shadow="--shadow-sheet"></div>
+      <div class="lib-shadow-tile" data-shadow="--shadow-gold-glow"></div>
+    </div>
+  </section>
+
   <section class="lib-component" id="per-card-banner">
     <header class="lib-component-header">
       <h2>Deal card — countdown banner</h2>
@@ -228,6 +244,17 @@
         <div class="lib-radius-shape" style="border-radius: ${value};"></div>
         <code class="lib-radius-name">${name}</code>
         <code class="lib-radius-value">${value}</code>
+      `;
+    });
+
+    // Shadow tiles — each card has its box-shadow set to the token's value.
+    document.querySelectorAll('[data-shadow]').forEach((el) => {
+      const name = el.dataset.shadow;
+      const value = root.getPropertyValue(name).trim();
+      el.innerHTML = `
+        <div class="lib-shadow-card" style="box-shadow: ${value};"></div>
+        <code class="lib-shadow-name">${name}</code>
+        <code class="lib-shadow-value">${value}</code>
       `;
     });
   })();
