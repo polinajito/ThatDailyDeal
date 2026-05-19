@@ -558,3 +558,35 @@ code {
   color: rgba(255, 255, 255, .7);
   font-weight: 700;
 }
+
+/* ============== DEALS-BANNER DEMO ============== */
+.demo-deals-banner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: var(--radius-pill);
+  color: rgba(255, 255, 255, .92);
+  font-family: var(--font-family-primary);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .2px;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+}
+.demo-deals-banner-icon {
+  color: var(--color-red);
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+}
+.demo-deals-banner-time {
+  font-weight: 800;
+  color: var(--color-red);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .4px;
+}
