@@ -1,0 +1,292 @@
+/* ============================================================
+   ThatDailyDeal — Components
+   Canonical component rules shared by the prototype (index.html)
+   and the design library showcase (library.html). All rules
+   reference design tokens from tokens.css — no hardcoded values.
+
+   When adding a new shared component:
+     1. Define it here, referencing tokens.css.
+     2. Add a showcase section to library.html.
+     3. Use it in the prototype via class names from this file.
+   ============================================================ */
+
+/* ============================================================
+   PRICE PILL
+   Liquid-glass pill with product name + current/old price +
+   optional discount badge. Add .pp-soldout to strikethrough the
+   current price (sold-out state).
+   ============================================================ */
+.price-pill {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: 18px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-white);
+  font-family: var(--font-family-primary);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+}
+.pp-info { flex: 1 1 auto; min-width: 0; }
+.pp-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-white);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  margin-bottom: 2px;
+}
+.pp-prices {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pp-now {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-white);
+}
+.pp-old {
+  font-size: 13px;
+  color: rgba(255, 255, 255, .7);
+  text-decoration: line-through;
+}
+.pp-discount {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--color-white);
+  background: var(--color-red);
+  border-radius: 6px;
+  letter-spacing: -.2px;
+  transform: translateY(-1px);
+}
+
+/* Sold-out variant — strikethrough now-price, lighter weight. */
+.pp-soldout .pp-now {
+  text-decoration: line-through;
+  color: rgba(255, 255, 255, .7);
+  font-weight: 700;
+}
+
+/* ============================================================
+   BUTTON
+   Composable: .btn (base) + .btn-primary/secondary (color) +
+   .btn-sm/md/lg (size) + optional .btn-ghost / .btn-icon-only /
+   .btn-glass. Icon position is DOM order (icon first = left).
+   ============================================================ */
+.btn {
+  font-family: var(--font-family-primary);
+  font-weight: 700;
+  border: 0;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color .18s ease, color .18s ease, transform .12s ease, filter .18s ease, box-shadow .18s ease;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.btn:active { transform: scale(.97); }
+
+/* Sizes */
+.btn-sm { height: 36px; font-size: 13px; padding: 0 14px; }
+.btn-md { height: 44px; font-size: 14px; padding: 0 20px; }
+.btn-lg { height: 54px; font-size: 16px; padding: 0 28px; }
+
+/* Color — filled */
+.btn-primary {
+  background: var(--color-gold);
+  color: var(--color-white);
+  box-shadow: var(--shadow-gold-glow);
+}
+.btn-primary:hover { background: var(--color-gold-dark); }
+
+.btn-secondary {
+  background: var(--color-blue);
+  color: var(--color-white);
+  box-shadow: 0 4px 14px rgba(60, 101, 189, .35);
+}
+.btn-secondary:hover { background: var(--color-blue-dark); }
+
+/* Ghost — transparent fill, colored border + text. Composes on top of
+   a color variant: .btn-primary.btn-ghost or .btn-secondary.btn-ghost. */
+.btn-ghost {
+  background: transparent;
+  box-shadow: none;
+  border: 1.5px solid currentColor;
+}
+.btn-primary.btn-ghost   { color: var(--color-gold); }
+.btn-secondary.btn-ghost { color: var(--color-blue); }
+.btn-primary.btn-ghost:hover   { background: rgba(240, 161, 42, .08); }
+.btn-secondary.btn-ghost:hover { background: rgba(60, 101, 189, .08); }
+
+/* Icon-only — square aspect, equal padding, perfect circle. */
+.btn-icon-only { padding: 0; aspect-ratio: 1 / 1; }
+.btn-sm.btn-icon-only { width: 36px; }
+.btn-md.btn-icon-only { width: 44px; }
+.btn-lg.btn-icon-only { width: 54px; }
+
+/* Glass — replaces solid bg with the primary liquid-glass tokens.
+   Primarily for icon-only (action-stack pattern), works on filled too. */
+.btn-glass {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  color: var(--color-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+}
+.btn-glass:hover { background: rgba(40, 40, 40, .65); }
+
+/* Icon sizing by parent size — scales with .btn-sm / md / lg. */
+.btn-icon { flex-shrink: 0; }
+.btn-sm .btn-icon { width: 16px; height: 16px; }
+.btn-md .btn-icon { width: 18px; height: 18px; }
+.btn-lg .btn-icon { width: 20px; height: 20px; }
+
+/* Toggle states for icon-only buttons. Embed BOTH icons in the button
+   (with .btn-icon-default and .btn-icon-active). Toggling .is-active on
+   the button swaps which one is visible. Use for mute, pause, favorite,
+   any binary state. */
+.btn .btn-icon-active   { display: none;  }
+.btn.is-active .btn-icon-default { display: none;  }
+.btn.is-active .btn-icon-active  { display: block; }
+
+/* Favorite — adds a red color shift on active, so the heart reads as
+   "liked". Compose: .btn-glass.btn-icon-only.btn-favorite + .is-active. */
+.btn-favorite.is-active { color: var(--color-red); }
+
+/* ============================================================
+   MENU
+   Container (.menu) is a primary-glass pill. Items (.menu-item)
+   stack vertically: icon over label. .is-selected adds a gold pill
+   background. Optional .menu-item-badge for counts.
+   ============================================================ */
+.menu {
+  position: relative;
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+  font-family: var(--font-family-primary);
+}
+.menu::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .18) 0%, rgba(255, 255, 255, 0) 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.menu-item {
+  position: relative;
+  z-index: 1;
+  width: 64px;
+  min-height: 50px;
+  padding-top: 7px;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: rgba(255, 255, 255, .65);
+  cursor: pointer;
+  transition: color .2s ease, background-color .2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.menu-item:hover { color: var(--color-white); }
+
+.menu-item.is-selected {
+  color: var(--color-white);
+  background: rgba(240, 161, 42, .85);
+  border: 1px solid rgba(255, 255, 255, .22);
+  box-shadow:
+    0 4px 14px rgba(240, 161, 42, .45),
+    inset 0 1px 0 rgba(255, 255, 255, .45),
+    inset 0 -1px 0 rgba(0, 0, 0, .15);
+}
+
+.menu-item-icon { width: 22px; height: 22px; flex-shrink: 0; }
+.menu-item-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .1px;
+  line-height: 1;
+  color: inherit;
+}
+
+.menu-item-badge {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  background: var(--color-red);
+  color: var(--color-white);
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-ink);
+  line-height: 1;
+}
+
+/* ============================================================
+   DEALS BANNER
+   Compact liquid-glass pill with a red icon + countdown time.
+   Used in card overlays + section headers.
+   ============================================================ */
+.deals-banner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: var(--radius-pill);
+  color: rgba(255, 255, 255, .92);
+  font-family: var(--font-family-primary);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .2px;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+}
+.deals-banner-icon {
+  color: var(--color-red);
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+}
+.deals-banner-time {
+  font-weight: 800;
+  color: var(--color-red);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .4px;
+}
