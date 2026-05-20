@@ -103,6 +103,25 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 body.no-scrim .top-scrim { display: none; }
 
+/* ============== HEADER STYLE: solid ============== */
+/* Reveals the blue gradient already baked into .phone-screen (line 42)
+   as a solid-looking header band by hiding the dark scrim and pushing
+   the deck down. The card's rounded top edge sells the inset. */
+body.header-solid .top-scrim { display: none; }
+body.header-solid .deck {
+  top: 110px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  overflow: hidden;
+}
+body.header-solid .deal-card {
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+/* The pill + banner stack lives inside the deal-card; with the deck
+   inset by 110px, push the stack down so the rounded card-top reads. */
+body.header-solid .card-top-stack {
+  top: var(--space-3);
+}
+
 /* ============== iOS SYSTEM OVERLAYS ============== */
 .status-bar {
   position: absolute;
