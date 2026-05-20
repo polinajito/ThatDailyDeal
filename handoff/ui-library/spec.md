@@ -46,11 +46,41 @@ All tokens are defined as CSS custom properties on `:root` in `tokens.css:8-71`.
 
 ### 1.2 Typography
 
+#### Font family
+
 | Token                    | Value                                                                                          |
 | ------------------------ | ---------------------------------------------------------------------------------------------- |
 | `--font-family-primary`  | `"Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif` |
 
-There is no type-scale token set yet — per-component sizes/weights/letter-spacing are listed inline in each component's Visual table below. Poppins must be loaded by the host app; the system fallback stack covers a missing-font case.
+Poppins must be loaded by the host app; the system fallback stack covers a missing-font case.
+
+#### Type scale
+
+Mirrors Flutter's Material 3 `TextTheme` — see [docs.flutter.dev](https://docs.flutter.dev/ui/design/text/typography). Each row maps 1:1 to a `TextStyle` in your Flutter theme. Component sections below reference these styles **by name** (e.g. _"Title Small"_); per-component weight/tracking deviations are noted as overrides (same model as `textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800)`).
+
+Default weights run heavier than M3's spec defaults (Body 500, Label 600 vs M3's 400 / 500) to match the visual identity of this design system — most components run heavier still. Pick the row that matches the named style and only override what's flagged.
+
+| Style            | Size | Weight | Line height | Letter spacing |
+| ---------------- | ---- | ------ | ----------- | -------------- |
+| Display Large    | 56px | 900    | 1.0         | 2px            |
+| Display Medium   | 44px | 900    | 1.0         | 2px            |
+| Display Small    | 36px | 800    | 1.1         | 1px            |
+| Headline Large   | 28px | 700    | 1.2         | 0              |
+| Headline Medium  | 24px | 700    | 1.2         | 0              |
+| Headline Small   | 20px | 700    | 1.2         | 0              |
+| Title Large      | 20px | 800    | 1.2         | 0              |
+| Title Medium     | 16px | 700    | 1.2         | 0              |
+| Title Small      | 15px | 700    | 1.2         | 0              |
+| Body Large       | 16px | 500    | 1.4         | 0              |
+| Body Medium      | 14px | 500    | 1.4         | 0              |
+| Body Small       | 13px | 500    | 1.35        | 0              |
+| Label Large      | 14px | 600    | 1.0         | 0              |
+| Label Medium     | 12px | 600    | 1.0         | 0.2px          |
+| Label Small      | 10px | 600    | 1.0         | 0.1px          |
+
+**Source:** `tokens.css` — exposed as CSS variables in the pattern `--type-<style>-<property>` (e.g. `--type-headline-small-size`, `--type-headline-small-weight`). Four properties per style → 60 vars total.
+
+Five styles are defined but currently have no component consumer (Display Small, Headline Medium, Body Large, Label Large, plus Body Small at default weight 500 — every current consumer overrides). They're included so the Flutter `TextTheme` is complete.
 
 ### 1.3 Spacing
 
@@ -137,17 +167,17 @@ Liquid-glass pill showing product name + current price + (optional) old price + 
 | Child             | Properties                                                                              |
 | ----------------- | --------------------------------------------------------------------------------------- |
 | `.pp-info`        | Flex-grow container that holds name + prices. `flex: 1 1 auto; min-width: 0` to allow ellipsis. |
-| `.pp-name`        | 15px / weight 700 / `--color-white` / single-line ellipsis. Margin-bottom `--space-1`.  |
+| `.pp-name`        | **Title Small** / `--color-white` / single-line ellipsis. Margin-bottom `--space-1`.    |
 | `.pp-prices`      | Flex row, baseline-aligned, `gap: --space-2`, wraps if needed.                          |
-| `.pp-now`         | 20px / weight 800 / `--color-white` — current price.                                    |
-| `.pp-old`         | 13px / `rgba(255,255,255,.7)` / line-through — original price.                          |
-| `.pp-discount`    | Pill badge: padding `--space-1` `--space-2`, 12px / weight 800, `--color-white` on `--color-red`, `--radius-xs`, letter-spacing `-0.2px`, nudged up `translateY(-1px)`. |
+| `.pp-now`         | **Title Large** / `--color-white` — current price.                                      |
+| `.pp-old`         | **Body Small @ weight 400** / `rgba(255,255,255,.7)` / line-through — original price.   |
+| `.pp-discount`    | Pill badge: padding `--space-1` `--space-2`, **Label Medium @ weight 800, tracking -0.2px**, `--color-white` on `--color-red`, `--radius-xs`, nudged up `translateY(-1px)`. |
 
 #### Variants
 
 | Modifier       | Effect                                                                            |
 | -------------- | --------------------------------------------------------------------------------- |
-| `.pp-soldout`  | `.pp-now` becomes line-through, `rgba(255,255,255,.7)`, weight drops to 700. Old price unchanged. |
+| `.pp-soldout`  | `.pp-now` becomes line-through, `rgba(255,255,255,.7)`, weight drops to 700 (overriding Title Large's default 800). Old price unchanged. |
 
 **Source:** `components.css:19-75`.
 
@@ -173,11 +203,13 @@ Composable system: base + size + color + optional modifiers. Modifiers stack —
 
 #### Sizes
 
-| Class      | Height | Font size | Horizontal padding |
-| ---------- | ------ | --------- | ------------------ |
-| `.btn-sm`  | 36px   | 13px      | `--space-4` (16px) |
-| `.btn-md`  | 44px   | 14px      | `--space-5` (24px) |
-| `.btn-lg`  | 54px   | 16px      | `--space-6` (32px) |
+The `.btn` base sets `font-weight: 700` for all sizes. Each size class binds `font-size` to a type-scale step but keeps the heavier weight (matches the design across the button family).
+
+| Class      | Height | Type style                  | Horizontal padding |
+| ---------- | ------ | --------------------------- | ------------------ |
+| `.btn-sm`  | 36px   | Body Small @ weight 700     | `--space-4` (16px) |
+| `.btn-md`  | 44px   | Body Medium @ weight 700    | `--space-5` (24px) |
+| `.btn-lg`  | 54px   | Title Medium                | `--space-6` (32px) |
 
 Icon-only variants force square aspect — width matches height: 36 / 44 / 54px.
 
@@ -257,8 +289,8 @@ Vertical icon-over-label cell used inside a `.menu` container (or on its own). O
 | Child               | Properties                                                                  |
 | ------------------- | --------------------------------------------------------------------------- |
 | `.menu-item-icon`   | 22×22px, no shrink.                                                         |
-| `.menu-item-label`  | 10px / weight 600 / letter-spacing 0.1px / line-height 1. Inherits color.   |
-| `.menu-item-badge`  | Absolute top:1px right:1px. `--color-red` on `--color-ink`, 10px / weight 700, min-width 17px, height 17px, `--radius-pill`, 2px solid `--color-ink` border (cuts into the parent). |
+| `.menu-item-label`  | **Label Small**. Inherits color from parent.                                |
+| `.menu-item-badge`  | Absolute top:1px right:1px. `--color-red` on `--color-ink`, **Label Small @ weight 700, no tracking** (badge digits stay flush), min-width 17px, height 17px, `--radius-pill`, 2px solid `--color-ink` border (cuts into the parent). |
 
 #### States
 
@@ -315,16 +347,14 @@ Compact glass pill: red icon + countdown text. Used in card overlays and section
 | Border radius   | `--radius-pill`                                                                    |
 | Text color      | `rgba(255, 255, 255, .92)` (default label text)                                    |
 | Font family     | `--font-family-primary`                                                            |
-| Font size       | 12px                                                                               |
-| Font weight     | 600                                                                                |
-| Letter spacing  | 0.2px                                                                              |
+| Type style      | **Label Medium**                                                                   |
 
 #### Children
 
 | Child                  | Properties                                                                          |
 | ---------------------- | ----------------------------------------------------------------------------------- |
 | `.deals-banner-icon`   | 14×14px SVG. Color `--color-red`. No shrink.                                        |
-| `.deals-banner-time`   | Weight 800, color `--color-red`, `font-variant-numeric: tabular-nums`, letter-spacing 0.4px (countdown digits stay aligned). |
+| `.deals-banner-time`   | **Label Medium @ weight 800, tracking 0.4px**, color `--color-red`, `font-variant-numeric: tabular-nums` (countdown digits stay aligned). |
 
 **Source:** `components.css:265-294`.
 
@@ -341,9 +371,7 @@ Large rotated overlays shown on a card during a swipe gesture, or persistently o
 | Position        | `absolute` (needs a positioned ancestor)       |
 | Top             | 36%                                            |
 | Font family     | `--font-family-primary`                        |
-| Font size       | 56px                                           |
-| Font weight     | 900                                            |
-| Letter spacing  | 2px                                            |
+| Type style      | **Display Large**                              |
 | Border          | `4px solid currentColor`                       |
 | Padding         | `--space-2` `--space-4` (8px / 16px)           |
 | Border radius   | `--radius-md` (12px)                           |
@@ -360,7 +388,7 @@ Large rotated overlays shown on a card during a swipe gesture, or persistently o
 | `.stamp-add`      | `--color-green`      | `left: --space-5` (24px)                          | `-12deg`                            | Right-swipe on in-stock cards. |
 | `.stamp-skip`     | `--color-red`        | `right: --space-5`                                | `+12deg`                            | Left-swipe on any card. |
 | `.stamp-soldout`  | `--color-red`        | `left: 50%`                                       | `translateX(-50%) rotate(-8deg)`    | Persistent on sold-out cards. Text "SOLD OUT" stays on one line (`white-space: nowrap`). |
-| `.stamp-notify`   | `--color-gold`       | `left: --space-5`                                 | `-12deg`                            | Right-swipe on sold-out cards (replaces `.stamp-add`). Font size 44px (smaller than the 56px default to balance with the bell icon). `inline-flex` with `gap: --space-2`; embeds a 44×44 SVG bell. |
+| `.stamp-notify`   | `--color-gold`       | `left: --space-5`                                 | `-12deg`                            | Right-swipe on sold-out cards (replaces `.stamp-add`). **Display Medium** (smaller than the base Display Large to balance with the bell icon — weight/lh/tracking match Display Large since their values are identical). `inline-flex` with `gap: --space-2`; embeds a 44×44 SVG bell. |
 
 #### Modifier
 
@@ -391,8 +419,7 @@ Small black pill, white text. Low-stakes feedback — "Liked", "Skip", "Link cop
 | Background      | `rgba(20, 20, 20, .92)`                          |
 | Text color      | `--color-white`                                  |
 | Font family     | `--font-family-primary`                          |
-| Font size       | 13px                                             |
-| Font weight     | 600                                              |
+| Type style      | **Body Small @ weight 600**                      |
 | Padding         | `--space-2` `--space-3` (8px / 12px)             |
 | Border radius   | `--radius-pill`                                  |
 | Opacity         | 0                                                |
@@ -434,8 +461,8 @@ White card: circular gold-tinted icon, bold title, gray supporting text. High-st
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | `.rich-toast-icon`     | 40×40px, `--radius-circle`, background `color-mix(in srgb, var(--color-gold) 16%, transparent)` (gold @ 16% alpha), icon color `--color-gold`, centered with flex. No shrink. |
 | `.rich-toast-text`     | Flex-grow column, `min-width: 0` for ellipsis, row gap 2px.                                                      |
-| `.rich-toast-title`    | 15px / weight 800 / `--color-ink` / line-height 1.2 / letter-spacing `-0.1px`.                                   |
-| `.rich-toast-sub`      | 13px / weight 500 / `--color-gray-700` / line-height 1.35.                                                       |
+| `.rich-toast-title`    | **Title Small @ weight 800, tracking -0.1px** / `--color-ink`.                                                   |
+| `.rich-toast-sub`      | **Body Small** / `--color-gray-700`.                                                                             |
 
 #### Reveal
 
