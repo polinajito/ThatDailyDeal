@@ -211,7 +211,7 @@ function buildCard(deal, dealIdx, isUnder) {
     <div class="card-overlay"></div>
     <div class="deal-counter">Deal ${dealIdx + 1} of ${DEALS.length} for today</div>
     <div class="swipe-stamp stamp-add">Add</div>
-    <div class="swipe-stamp stamp-skip">Skip</div>
+    <div class="swipe-stamp stamp-skip ${soldOut ? 'is-muted' : ''}">Skip</div>
     <div class="swipe-stamp stamp-soldout">Sold Out</div>
     <div class="swipe-stamp stamp-notify">
       <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

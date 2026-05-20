@@ -320,6 +320,10 @@
 }
 .stamp-add  { left: var(--space-5);  color: var(--color-green); transform: rotate(-12deg); }
 .stamp-skip { right: var(--space-5); color: var(--color-red);   transform: rotate( 12deg); }
+/* Muted skip — used when the underlying product is unavailable, so the
+   skip cue stays semantically meaningful without the "you're losing a
+   good deal" red urgency. */
+.stamp-skip.is-muted { color: var(--color-gray-300); }
 .stamp-soldout {
   left: 50%;
   color: var(--color-red);

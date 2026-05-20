@@ -925,9 +925,6 @@ body.sheet-open .cart-sheet { transform: translate(-50%, 0); }
 .deal-card.sold-out .stamp-add { display: none; }
 .deal-card:not(.sold-out) .stamp-notify { display: none; }
 
-/* Hide the swipe-skip stamp's color cue on sold-out cards (still works, just neutral) */
-.deal-card.sold-out .stamp-skip { color: var(--color-gray-300); }
-
 /* On sold-out cards: hide the deal counter (action stack already reserves the CTA space on all cards) */
 .deal-card.sold-out .deal-counter { display: none; }
 
