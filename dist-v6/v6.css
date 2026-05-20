@@ -546,23 +546,10 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   flex-direction: column;
   gap: 12px;
 }
-.act-btn {
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  background: rgba(20, 20, 20, .55);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, .18);
-  box-shadow:
-    0 12px 32px rgba(0, 0, 0, .45),
-    inset 0 1px 0 rgba(255, 255, 255, .22),
-    inset 0 -1px 0 rgba(0, 0, 0, .25);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--white);
-  position: relative;
-  transition: background-color .18s var(--ease-out), transform .12s var(--ease-out), color .18s var(--ease-out);
-}
-.act-btn:hover { background: rgba(40, 40, 40, .65); }
+/* .act-btn now consumes its visual from components.css (.btn.btn-glass
+   .btn-icon-only.btn-md). The rules below are prototype-only behavior:
+   a stronger :active scale, the like-state color shift, and the icon
+   swaps driven by data-act + body state classes. */
 .act-btn:active { transform: scale(.92); }
 
 /* Like icon swap */
