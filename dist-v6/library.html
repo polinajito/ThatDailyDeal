@@ -94,41 +94,69 @@
   <section class="lib-section" id="typography">
     <header class="lib-section-header">
       <h2>Typography</h2>
-      <p class="lib-section-desc">Poppins, four weights. The samples below are the size/weight combinations actually used in the prototype today. Font family lives in <code>--font-family-primary</code>.</p>
+      <p class="lib-section-desc">15 named styles mirroring Flutter's <a href="https://docs.flutter.dev/ui/design/text/typography">Material 3 <code>TextTheme</code></a>. Each sample renders directly from <code>--type-&lt;style&gt;-&lt;property&gt;</code> tokens in <code>tokens.css</code>. Default weights (Body 500, Label 600) run heavier than M3 spec to match the brand — most components run heavier still and override per-rule.</p>
     </header>
 
     <div class="lib-type-stack">
       <div class="lib-type-row">
-        <div class="lib-type-sample" style="font-size: 28px; font-weight: 800;">All Deals Viewed</div>
-        <span class="lib-type-meta">28 / 800 — display headings (deals-done, sheet titles)</span>
+        <div class="lib-type-sample" data-type="display-large">Display Large</div>
+        <span class="lib-type-meta"><code>--type-display-large-*</code> · 56px / 900 / lh 1.0 / tracking 2px · <code>.swipe-stamp</code></span>
       </div>
       <div class="lib-type-row">
-        <div class="lib-type-sample" style="font-size: 24px; font-weight: 800;">$14.99</div>
-        <span class="lib-type-meta">24 / 800 — hero numbers (timer cells, price-now)</span>
+        <div class="lib-type-sample" data-type="display-medium">Display Medium</div>
+        <span class="lib-type-meta"><code>--type-display-medium-*</code> · 44px / 900 / lh 1.0 / tracking 2px · <code>.stamp-notify</code></span>
       </div>
       <div class="lib-type-row">
-        <div class="lib-type-sample" style="font-size: 20px; font-weight: 700;">Travel Backpack</div>
-        <span class="lib-type-meta">20 / 700 — section h2s, price-pill price-now</span>
+        <div class="lib-type-sample" data-type="display-small">Display Small</div>
+        <span class="lib-type-meta"><code>--type-display-small-*</code> · 36px / 800 / lh 1.1 / tracking 1px · <em>unused</em></span>
       </div>
       <div class="lib-type-row">
-        <div class="lib-type-sample" style="font-size: 15px; font-weight: 700;">Travel Backpack — Daily Carry</div>
-        <span class="lib-type-meta">15 / 700 — product names (pp-name)</span>
+        <div class="lib-type-sample" data-type="headline-large">Headline Large</div>
+        <span class="lib-type-meta"><code>--type-headline-large-*</code> · 28px / 700 / lh 1.2 / tracking 0 · library page title</span>
       </div>
       <div class="lib-type-row">
-        <div class="lib-type-sample" style="font-size: 14px; font-weight: 400;">Lightweight, water-resistant carry-on built for daily commutes.</div>
-        <span class="lib-type-meta">14 / 400 — body copy, descriptions</span>
+        <div class="lib-type-sample" data-type="headline-medium">Headline Medium</div>
+        <span class="lib-type-meta"><code>--type-headline-medium-*</code> · 24px / 700 / lh 1.2 / tracking 0 · <em>unused</em></span>
       </div>
       <div class="lib-type-row">
-        <div class="lib-type-sample" style="font-size: 13px; font-weight: 600;">Proceed to Checkout</div>
-        <span class="lib-type-meta">13 / 600 — buttons, labels</span>
+        <div class="lib-type-sample" data-type="headline-small">Headline Small</div>
+        <span class="lib-type-meta"><code>--type-headline-small-*</code> · 20px / 700 / lh 1.2 / tracking 0 · library section h2</span>
       </div>
       <div class="lib-type-row">
-        <div class="lib-type-sample" style="font-size: 12px; font-weight: 600;">Today's deals end in 07:32:18</div>
-        <span class="lib-type-meta">12 / 600 — banners, deal counter</span>
+        <div class="lib-type-sample" data-type="title-large">Title Large</div>
+        <span class="lib-type-meta"><code>--type-title-large-*</code> · 20px / 800 / lh 1.2 / tracking 0 · <code>.pp-now</code></span>
       </div>
       <div class="lib-type-row">
-        <div class="lib-type-sample" style="font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">HRS · MIN · SEC</div>
-        <span class="lib-type-meta">11 / 700 — uppercase micro labels (timer units, nav labels)</span>
+        <div class="lib-type-sample" data-type="title-medium">Title Medium</div>
+        <span class="lib-type-meta"><code>--type-title-medium-*</code> · 16px / 700 / lh 1.2 / tracking 0 · <code>.btn-lg</code></span>
+      </div>
+      <div class="lib-type-row">
+        <div class="lib-type-sample" data-type="title-small">Title Small</div>
+        <span class="lib-type-meta"><code>--type-title-small-*</code> · 15px / 700 / lh 1.2 / tracking 0 · <code>.pp-name</code>, <code>.rich-toast-title</code> (+overrides)</span>
+      </div>
+      <div class="lib-type-row">
+        <div class="lib-type-sample" data-type="body-large">Body Large</div>
+        <span class="lib-type-meta"><code>--type-body-large-*</code> · 16px / 500 / lh 1.4 / tracking 0 · <em>unused</em></span>
+      </div>
+      <div class="lib-type-row">
+        <div class="lib-type-sample" data-type="body-medium">Body Medium</div>
+        <span class="lib-type-meta"><code>--type-body-medium-*</code> · 14px / 500 / lh 1.4 / tracking 0 · library body copy, <code>.btn-md</code> (+weight 700)</span>
+      </div>
+      <div class="lib-type-row">
+        <div class="lib-type-sample" data-type="body-small">Body Small</div>
+        <span class="lib-type-meta"><code>--type-body-small-*</code> · 13px / 500 / lh 1.35 / tracking 0 · <code>.rich-toast-sub</code>, <code>.btn-sm</code>, <code>.toast</code>, <code>.pp-old</code> (+overrides)</span>
+      </div>
+      <div class="lib-type-row">
+        <div class="lib-type-sample" data-type="label-large">Label Large</div>
+        <span class="lib-type-meta"><code>--type-label-large-*</code> · 14px / 600 / lh 1.0 / tracking 0 · <em>unused</em></span>
+      </div>
+      <div class="lib-type-row">
+        <div class="lib-type-sample" data-type="label-medium">Label Medium</div>
+        <span class="lib-type-meta"><code>--type-label-medium-*</code> · 12px / 600 / lh 1.0 / tracking 0.2px · <code>.deals-banner</code>, <code>.deals-banner-time</code>, <code>.pp-discount</code> (+overrides)</span>
+      </div>
+      <div class="lib-type-row">
+        <div class="lib-type-sample" data-type="label-small">Label Small</div>
+        <span class="lib-type-meta"><code>--type-label-small-*</code> · 10px / 600 / lh 1.0 / tracking 0.1px · <code>.menu-item-label</code>, <code>.menu-item-badge</code> (+overrides)</span>
       </div>
     </div>
   </section>

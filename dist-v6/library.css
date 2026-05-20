@@ -292,19 +292,113 @@ code {
 .lib-type-row {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   padding: 14px 18px;
   background: var(--lib-panel);
   border: 1px solid var(--lib-border);
   border-radius: 10px;
 }
-.lib-type-sample {
-  color: var(--lib-text);
-  line-height: 1.2;
-}
+.lib-type-sample { color: var(--lib-text); }
 .lib-type-meta {
   font-size: 12px;
   color: var(--lib-text-muted);
+}
+.lib-type-meta code {
+  font-size: 11px;
+}
+
+/* Each sample renders the 15 M3 styles straight from tokens.css. Matched on
+   [data-type="<style>"] so the HTML stays declarative — adding a new style
+   = one token block + one rule here + one row in library.html. */
+.lib-type-sample[data-type="display-large"] {
+  font-size:      var(--type-display-large-size);
+  font-weight:    var(--type-display-large-weight);
+  line-height:    var(--type-display-large-lh);
+  letter-spacing: var(--type-display-large-tracking);
+}
+.lib-type-sample[data-type="display-medium"] {
+  font-size:      var(--type-display-medium-size);
+  font-weight:    var(--type-display-medium-weight);
+  line-height:    var(--type-display-medium-lh);
+  letter-spacing: var(--type-display-medium-tracking);
+}
+.lib-type-sample[data-type="display-small"] {
+  font-size:      var(--type-display-small-size);
+  font-weight:    var(--type-display-small-weight);
+  line-height:    var(--type-display-small-lh);
+  letter-spacing: var(--type-display-small-tracking);
+}
+.lib-type-sample[data-type="headline-large"] {
+  font-size:      var(--type-headline-large-size);
+  font-weight:    var(--type-headline-large-weight);
+  line-height:    var(--type-headline-large-lh);
+  letter-spacing: var(--type-headline-large-tracking);
+}
+.lib-type-sample[data-type="headline-medium"] {
+  font-size:      var(--type-headline-medium-size);
+  font-weight:    var(--type-headline-medium-weight);
+  line-height:    var(--type-headline-medium-lh);
+  letter-spacing: var(--type-headline-medium-tracking);
+}
+.lib-type-sample[data-type="headline-small"] {
+  font-size:      var(--type-headline-small-size);
+  font-weight:    var(--type-headline-small-weight);
+  line-height:    var(--type-headline-small-lh);
+  letter-spacing: var(--type-headline-small-tracking);
+}
+.lib-type-sample[data-type="title-large"] {
+  font-size:      var(--type-title-large-size);
+  font-weight:    var(--type-title-large-weight);
+  line-height:    var(--type-title-large-lh);
+  letter-spacing: var(--type-title-large-tracking);
+}
+.lib-type-sample[data-type="title-medium"] {
+  font-size:      var(--type-title-medium-size);
+  font-weight:    var(--type-title-medium-weight);
+  line-height:    var(--type-title-medium-lh);
+  letter-spacing: var(--type-title-medium-tracking);
+}
+.lib-type-sample[data-type="title-small"] {
+  font-size:      var(--type-title-small-size);
+  font-weight:    var(--type-title-small-weight);
+  line-height:    var(--type-title-small-lh);
+  letter-spacing: var(--type-title-small-tracking);
+}
+.lib-type-sample[data-type="body-large"] {
+  font-size:      var(--type-body-large-size);
+  font-weight:    var(--type-body-large-weight);
+  line-height:    var(--type-body-large-lh);
+  letter-spacing: var(--type-body-large-tracking);
+}
+.lib-type-sample[data-type="body-medium"] {
+  font-size:      var(--type-body-medium-size);
+  font-weight:    var(--type-body-medium-weight);
+  line-height:    var(--type-body-medium-lh);
+  letter-spacing: var(--type-body-medium-tracking);
+}
+.lib-type-sample[data-type="body-small"] {
+  font-size:      var(--type-body-small-size);
+  font-weight:    var(--type-body-small-weight);
+  line-height:    var(--type-body-small-lh);
+  letter-spacing: var(--type-body-small-tracking);
+}
+.lib-type-sample[data-type="label-large"] {
+  font-size:      var(--type-label-large-size);
+  font-weight:    var(--type-label-large-weight);
+  line-height:    var(--type-label-large-lh);
+  letter-spacing: var(--type-label-large-tracking);
+}
+.lib-type-sample[data-type="label-medium"] {
+  font-size:      var(--type-label-medium-size);
+  font-weight:    var(--type-label-medium-weight);
+  line-height:    var(--type-label-medium-lh);
+  letter-spacing: var(--type-label-medium-tracking);
+}
+.lib-type-sample[data-type="label-small"] {
+  font-size:      var(--type-label-small-size);
+  font-weight:    var(--type-label-small-weight);
+  line-height:    var(--type-label-small-lh);
+  letter-spacing: var(--type-label-small-tracking);
 }
 
 /* ============== SPACING ============== */
