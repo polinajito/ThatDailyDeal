@@ -176,10 +176,10 @@
   background: var(--glass-bg);
   border: var(--glass-border);
   border-radius: var(--radius-pill);
-  padding: 4px;
+  padding: var(--space-1);
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--glass-shadow);
@@ -200,7 +200,9 @@
   z-index: 1;
   width: 64px;
   min-height: 50px;
-  padding-top: 7px;
+  /* Explicit symmetric padding — overrides the browser's default button
+     padding (1px 6px) so the icon + label stay centered. */
+  padding: var(--space-1) var(--space-2);
   background: transparent;
   border: 0;
   border-radius: var(--radius-pill);
@@ -209,7 +211,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: var(--space-1);
   color: rgba(255, 255, 255, .65);
   cursor: pointer;
   transition: color .2s ease, background-color .2s ease;
