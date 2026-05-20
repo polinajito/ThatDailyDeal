@@ -39,6 +39,7 @@
         <li><a href="#menu-item" class="lib-nav-link">Menu item</a></li>
         <li><a href="#menu" class="lib-nav-link">Menu</a></li>
         <li><a href="#deals-banner" class="lib-nav-link">Deals banner</a></li>
+        <li><a href="#stamps" class="lib-nav-link">Swipe stamps</a></li>
       </ul>
     </div>
   </nav>
@@ -589,6 +590,50 @@
             </svg>
             <span>Today's deals end in</span>
             <span class="deals-banner-time">06:04:39</span>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="lib-component" id="stamps">
+    <header class="lib-component-header">
+      <h2>Swipe stamps</h2>
+      <p class="lib-component-desc">Large rotated overlays that appear on a deal-card during a swipe gesture, or persist on sold-out cards. Four colored variants signal intent: green <strong>Add</strong> (drag right), red <strong>Skip</strong> (drag left), red <strong>Sold Out</strong> (persistent, centered), gold <strong>Notify</strong> (replaces Add on sold-out cards).</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.swipe-stamp</code>, <code>.stamp-add</code>, <code>.stamp-skip</code>, <code>.stamp-soldout</code>, <code>.stamp-notify</code>). Visibility (<code>.deal-card.show-add</code>, <code>.show-skip</code>, <code>.show-notify</code>, <code>.sold-out</code>) is owned by <code>v6.css</code>. Tokens: <code>--color-green</code>, <code>--color-red</code>, <code>--color-gold</code>, <code>--space-2</code>, <code>--space-4</code>, <code>--space-5</code>, <code>--radius-md</code>.</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Add <span class="lib-variant-state">.stamp-add</span></figcaption>
+        <div class="lib-stamp-stage">
+          <div class="swipe-stamp stamp-add">Add</div>
+        </div>
+      </figure>
+
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Skip <span class="lib-variant-state">.stamp-skip</span></figcaption>
+        <div class="lib-stamp-stage">
+          <div class="swipe-stamp stamp-skip">Skip</div>
+        </div>
+      </figure>
+
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Sold out <span class="lib-variant-state">.stamp-soldout</span></figcaption>
+        <div class="lib-stamp-stage">
+          <div class="swipe-stamp stamp-soldout">Sold Out</div>
+        </div>
+      </figure>
+
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Notify <span class="lib-variant-state">.stamp-notify</span></figcaption>
+        <div class="lib-stamp-stage">
+          <div class="swipe-stamp stamp-notify">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            Notify
           </div>
         </div>
       </figure>

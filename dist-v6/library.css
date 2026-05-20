@@ -531,6 +531,20 @@ code {
   background: var(--color-blue);
 }
 
+/* ============== SWIPE-STAMP STAGE ============== */
+/* Dark card-like tile big enough to contain a rotated swipe-stamp at
+   its native 56px font-size. The opacity override lets the stamp render
+   visible in the static demo (its default is opacity: 0, since the
+   prototype only reveals it during a swipe gesture). */
+.lib-stamp-stage {
+  position: relative;
+  height: 220px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--color-blue-deep) 0%, var(--color-blue-night) 100%);
+  overflow: hidden;
+}
+.lib-stamp-stage .swipe-stamp { opacity: 1; }
+
 /* Toggle-state pairs: small label + default + arrow + active button. */
 .lib-btn-state-pair {
   display: flex;

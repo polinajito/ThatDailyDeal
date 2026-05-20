@@ -292,3 +292,47 @@
   font-variant-numeric: tabular-nums;
   letter-spacing: .4px;
 }
+
+/* ============================================================
+   SWIPE STAMPS
+   Large rotated overlays shown briefly on a card during a swipe
+   gesture, or persistently on sold-out cards. The base class
+   hides the stamp by default (opacity: 0) — visibility is owned
+   by the consumer (e.g. .deal-card in the prototype toggles
+   .show-add / .show-skip / .show-notify / .sold-out to reveal
+   the matching stamp). Stamps need a positioned ancestor.
+   ============================================================ */
+.swipe-stamp {
+  position: absolute;
+  top: 36%;
+  font-family: var(--font-family-primary);
+  font-size: 56px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  border: 4px solid currentColor;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4;
+  transition: opacity .12s ease;
+}
+.stamp-add  { left: var(--space-5);  color: var(--color-green); transform: rotate(-12deg); }
+.stamp-skip { right: var(--space-5); color: var(--color-red);   transform: rotate( 12deg); }
+.stamp-soldout {
+  left: 50%;
+  color: var(--color-red);
+  transform: translateX(-50%) rotate(-8deg);
+  white-space: nowrap;
+}
+.stamp-notify {
+  left: var(--space-5);
+  color: var(--color-gold);
+  transform: rotate(-12deg);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 44px;
+}
+.stamp-notify svg { width: 44px; height: 44px; }

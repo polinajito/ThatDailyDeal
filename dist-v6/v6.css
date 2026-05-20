@@ -336,30 +336,9 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   pointer-events: none;
 }
 
-/* Swipe-direction stamps live inside the card */
-.swipe-stamp {
-  position: absolute;
-  top: 36%;
-  font-size: 56px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  border: 4px solid currentColor;
-  padding: 8px 18px;
-  border-radius: 12px;
-  text-transform: uppercase;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 4;
-  transition: opacity .12s var(--ease-out);
-}
-.stamp-add  { left: 22px;  color: var(--color-green); transform: rotate(-12deg); }
-.stamp-skip { right: 22px; color: var(--color-red);   transform: rotate( 12deg); }
-.stamp-soldout {
-  left: 50%;
-  color: var(--color-red);
-  transform: translateX(-50%) rotate(-8deg);
-  white-space: nowrap;
-}
+/* Swipe-stamp visibility — visual rules for .swipe-stamp + variants
+   live in components.css; this block only wires the deal-card state
+   classes (set by the swipe gesture) to the matching stamp's opacity. */
 .deal-card.show-add  .stamp-add  { opacity: 1; }
 .deal-card.show-skip .stamp-skip { opacity: 1; }
 .deal-card.sold-out .stamp-soldout { opacity: 1; }
@@ -940,17 +919,8 @@ body.sheet-open .cart-sheet { transform: translate(-50%, 0); }
   font-weight: 700;
 }
 
-/* Notify swipe stamp (mirror of stamp-add but on the right with bell icon) */
-.stamp-notify {
-  left: 22px;
-  color: var(--color-gold);
-  transform: rotate(-12deg);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 44px;
-}
-.stamp-notify svg { width: 44px; height: 44px; }
+/* Notify swipe-stamp visibility (visual in components.css). On sold-out
+   cards the Notify stamp takes Add's slot during a right-drag. */
 .deal-card.show-notify .stamp-notify { opacity: 1; }
 .deal-card.sold-out .stamp-add { display: none; }
 .deal-card:not(.sold-out) .stamp-notify { display: none; }
