@@ -19,11 +19,11 @@
 .price-pill {
   background: var(--glass-bg);
   border: var(--glass-border);
-  border-radius: 18px;
-  padding: 10px 16px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-3);
   color: var(--color-white);
   font-family: var(--font-family-primary);
   backdrop-filter: var(--glass-blur);
@@ -36,12 +36,12 @@
   font-weight: 700;
   color: var(--color-white);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  margin-bottom: 2px;
+  margin-bottom: var(--space-1);
 }
 .pp-prices {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: var(--space-2);
   flex-wrap: wrap;
 }
 .pp-now {
@@ -57,12 +57,12 @@
 .pp-discount {
   display: inline-flex;
   align-items: center;
-  padding: 2px 8px;
+  padding: var(--space-1) var(--space-2);
   font-size: 12px;
   font-weight: 800;
   color: var(--color-white);
   background: var(--color-red);
-  border-radius: 6px;
+  border-radius: var(--radius-xs);
   letter-spacing: -.2px;
   transform: translateY(-1px);
 }
@@ -88,7 +88,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--space-2);
   cursor: pointer;
   white-space: nowrap;
   transition: background-color .18s ease, color .18s ease, transform .12s ease, filter .18s ease, box-shadow .18s ease;
@@ -98,9 +98,9 @@
 .btn:active { transform: scale(.97); }
 
 /* Sizes */
-.btn-sm { height: 36px; font-size: 13px; padding: 0 14px; }
-.btn-md { height: 44px; font-size: 14px; padding: 0 20px; }
-.btn-lg { height: 54px; font-size: 16px; padding: 0 28px; }
+.btn-sm { height: 36px; font-size: 13px; padding: 0 var(--space-4); }
+.btn-md { height: 44px; font-size: 14px; padding: 0 var(--space-5); }
+.btn-lg { height: 54px; font-size: 16px; padding: 0 var(--space-6); }
 
 /* Color — filled */
 .btn-primary {
@@ -126,8 +126,8 @@
 }
 .btn-primary.btn-ghost   { color: var(--color-gold); }
 .btn-secondary.btn-ghost { color: var(--color-blue); }
-.btn-primary.btn-ghost:hover   { background: rgba(240, 161, 42, .08); }
-.btn-secondary.btn-ghost:hover { background: rgba(60, 101, 189, .08); }
+.btn-primary.btn-ghost:hover   { background: color-mix(in srgb, var(--color-gold) 8%, transparent); }
+.btn-secondary.btn-ghost:hover { background: color-mix(in srgb, var(--color-blue) 8%, transparent); }
 
 /* Icon-only — square aspect, equal padding, perfect circle. */
 .btn-icon-only { padding: 0; aspect-ratio: 1 / 1; }
@@ -221,7 +221,7 @@
 
 .menu-item.is-selected {
   color: var(--color-white);
-  background: rgba(240, 161, 42, .85);
+  background: color-mix(in srgb, var(--color-gold) 85%, transparent);
   border: 1px solid rgba(255, 255, 255, .22);
   box-shadow:
     0 4px 14px rgba(240, 161, 42, .45),
@@ -248,7 +248,7 @@
   font-weight: 700;
   min-width: 17px;
   height: 17px;
-  padding: 0 4px;
+  padding: 0 var(--space-1);
   border-radius: var(--radius-pill);
   display: flex;
   align-items: center;
@@ -266,8 +266,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 7px 14px;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
   background: var(--glass-bg);
   border: var(--glass-border);
   border-radius: var(--radius-pill);
