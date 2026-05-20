@@ -32,8 +32,11 @@
 }
 .pp-info { flex: 1 1 auto; min-width: 0; }
 .pp-name {
-  font-size: 15px;
-  font-weight: 700;
+  /* Title Small */
+  font-size:      var(--type-title-small-size);
+  font-weight:    var(--type-title-small-weight);
+  line-height:    var(--type-title-small-lh);
+  letter-spacing: var(--type-title-small-tracking);
   color: var(--color-white);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   margin-bottom: var(--space-1);
@@ -45,12 +48,19 @@
   flex-wrap: wrap;
 }
 .pp-now {
-  font-size: 20px;
-  font-weight: 800;
+  /* Title Large */
+  font-size:      var(--type-title-large-size);
+  font-weight:    var(--type-title-large-weight);
+  line-height:    var(--type-title-large-lh);
+  letter-spacing: var(--type-title-large-tracking);
   color: var(--color-white);
 }
 .pp-old {
-  font-size: 13px;
+  /* Body Small @ weight 400 — strikethrough should not be bold */
+  font-size:      var(--type-body-small-size);
+  font-weight:    400;
+  line-height:    var(--type-body-small-lh);
+  letter-spacing: var(--type-body-small-tracking);
   color: rgba(255, 255, 255, .7);
   text-decoration: line-through;
 }
@@ -58,12 +68,14 @@
   display: inline-flex;
   align-items: center;
   padding: var(--space-1) var(--space-2);
-  font-size: 12px;
-  font-weight: 800;
+  /* Label Medium @ weight 800, tracking -0.2px */
+  font-size:      var(--type-label-medium-size);
+  font-weight:    800;
+  line-height:    var(--type-label-medium-lh);
+  letter-spacing: -.2px;
   color: var(--color-white);
   background: var(--color-red);
   border-radius: var(--radius-xs);
-  letter-spacing: -.2px;
   transform: translateY(-1px);
 }
 
@@ -97,10 +109,10 @@
 }
 .btn:active { transform: scale(.97); }
 
-/* Sizes */
-.btn-sm { height: 36px; font-size: 13px; padding: 0 var(--space-4); }
-.btn-md { height: 44px; font-size: 14px; padding: 0 var(--space-5); }
-.btn-lg { height: 54px; font-size: 16px; padding: 0 var(--space-6); }
+/* Sizes — size bound to type scale; weight 700 stays on .btn base for all sizes. */
+.btn-sm { height: 36px; font-size: var(--type-body-small-size);   padding: 0 var(--space-4); } /* Body Small @ weight 700 */
+.btn-md { height: 44px; font-size: var(--type-body-medium-size);  padding: 0 var(--space-5); } /* Body Medium @ weight 700 */
+.btn-lg { height: 54px; font-size: var(--type-title-medium-size); padding: 0 var(--space-6); } /* Title Medium */
 
 /* Color — filled */
 .btn-primary {
@@ -231,10 +243,11 @@
 
 .menu-item-icon { width: 22px; height: 22px; flex-shrink: 0; }
 .menu-item-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .1px;
-  line-height: 1;
+  /* Label Small */
+  font-size:      var(--type-label-small-size);
+  font-weight:    var(--type-label-small-weight);
+  line-height:    var(--type-label-small-lh);
+  letter-spacing: var(--type-label-small-tracking);
   color: inherit;
 }
 
@@ -244,8 +257,11 @@
   right: 1px;
   background: var(--color-red);
   color: var(--color-white);
-  font-size: 10px;
-  font-weight: 700;
+  /* Label Small @ weight 700, no tracking (badge digits stay flush) */
+  font-size:      var(--type-label-small-size);
+  font-weight:    700;
+  line-height:    var(--type-label-small-lh);
+  letter-spacing: 0;
   min-width: 17px;
   height: 17px;
   padding: 0 var(--space-1);
@@ -254,7 +270,6 @@
   align-items: center;
   justify-content: center;
   border: 2px solid var(--color-ink);
-  line-height: 1;
 }
 
 /* ============================================================
@@ -273,9 +288,11 @@
   border-radius: var(--radius-pill);
   color: rgba(255, 255, 255, .92);
   font-family: var(--font-family-primary);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: .2px;
+  /* Label Medium */
+  font-size:      var(--type-label-medium-size);
+  font-weight:    var(--type-label-medium-weight);
+  line-height:    var(--type-label-medium-lh);
+  letter-spacing: var(--type-label-medium-tracking);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--glass-shadow);
@@ -287,10 +304,11 @@
   height: 14px;
 }
 .deals-banner-time {
-  font-weight: 800;
+  /* Label Medium @ weight 800, tracking 0.4px (countdown digits stay aligned) */
+  font-weight:    800;
+  letter-spacing: .4px;
   color: var(--color-red);
   font-variant-numeric: tabular-nums;
-  letter-spacing: .4px;
 }
 
 /* ============================================================
@@ -306,9 +324,11 @@
   position: absolute;
   top: 36%;
   font-family: var(--font-family-primary);
-  font-size: 56px;
-  font-weight: 900;
-  letter-spacing: 2px;
+  /* Display Large */
+  font-size:      var(--type-display-large-size);
+  font-weight:    var(--type-display-large-weight);
+  line-height:    var(--type-display-large-lh);
+  letter-spacing: var(--type-display-large-tracking);
   border: 4px solid currentColor;
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-md);
@@ -337,7 +357,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: 44px;
+  /* Display Medium (weight/lh/tracking inherited from .swipe-stamp / Display Large — values match) */
+  font-size: var(--type-display-medium-size);
 }
 .stamp-notify svg { width: 44px; height: 44px; }
 
@@ -351,8 +372,11 @@
   background: rgba(20, 20, 20, .92);
   color: var(--color-white);
   font-family: var(--font-family-primary);
-  font-size: 13px;
-  font-weight: 600;
+  /* Body Small @ weight 600 */
+  font-size:      var(--type-body-small-size);
+  font-weight:    600;
+  line-height:    var(--type-body-small-lh);
+  letter-spacing: var(--type-body-small-tracking);
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-pill);
   opacity: 0;
@@ -404,15 +428,18 @@
   gap: 2px;
 }
 .rich-toast-title {
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--color-ink);
-  line-height: 1.2;
+  /* Title Small @ weight 800, tracking -0.1px */
+  font-size:      var(--type-title-small-size);
+  font-weight:    800;
+  line-height:    var(--type-title-small-lh);
   letter-spacing: -.1px;
+  color: var(--color-ink);
 }
 .rich-toast-sub {
-  font-size: 13px;
-  font-weight: 500;
+  /* Body Small */
+  font-size:      var(--type-body-small-size);
+  font-weight:    var(--type-body-small-weight);
+  line-height:    var(--type-body-small-lh);
+  letter-spacing: var(--type-body-small-tracking);
   color: var(--color-gray-700);
-  line-height: 1.35;
 }
