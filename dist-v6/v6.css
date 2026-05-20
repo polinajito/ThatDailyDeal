@@ -106,12 +106,12 @@ body.no-scrim .top-scrim { display: none; }
 /* ============== HEADER STYLE: solid ============== */
 /* Reveals the blue gradient already baked into .phone-screen (line 42)
    as a solid-looking header band by hiding the dark scrim and pushing
-   the deck down. The card's rounded top edge sells the inset. */
+   the deck down. The deal-card carries the rounded top + its own
+   overflow:hidden — the deck stays open so a swiped card can slide
+   past its bounds without getting clipped to the deck's rectangle. */
 body.header-solid .top-scrim { display: none; }
 body.header-solid .deck {
   top: 110px;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  overflow: hidden;
 }
 body.header-solid .deal-card {
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
