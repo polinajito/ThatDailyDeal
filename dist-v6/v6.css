@@ -113,7 +113,13 @@ body.header-solid .top-scrim { display: none; }
 body.header-solid .deck {
   top: 110px;
 }
-body.header-solid .deal-card {
+/* Apply the rounded top to .card-video and .card-overlay as well as the
+   card itself. Relying only on the parent's overflow:hidden + radius is
+   unreliable in Safari/Chromium once the card has a transform (under-state
+   or fly-out), which strips the rounded clip from the <video> layer. */
+body.header-solid .deal-card,
+body.header-solid .card-video,
+body.header-solid .card-overlay {
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 /* The pill + banner stack lives inside the deal-card; with the deck
