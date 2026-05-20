@@ -29,6 +29,95 @@
   /* ============== TYPOGRAPHY ============== */
   --font-family-primary: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
+  /* Type scale — mirrors Flutter's Material 3 TextTheme.
+     15 named styles × 4 properties (size / weight / line-height / tracking).
+     Each style maps 1:1 to a TextStyle on the Flutter side. Components reference
+     these vars; per-component weight/tracking overrides are inline on the rule
+     (same model as textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800)).
+     Default weights are tuned heavier than M3 spec (Body 500, Label 600) to
+     match the current visual design — most consumers run heavier than M3's
+     400/500 defaults anyway. */
+
+  /* Display — biggest, most emphatic. Used for swipe-stamp overlays. */
+  --type-display-large-size:      56px;
+  --type-display-large-weight:    900;
+  --type-display-large-lh:        1;
+  --type-display-large-tracking:  2px;
+
+  --type-display-medium-size:     44px;
+  --type-display-medium-weight:   900;
+  --type-display-medium-lh:       1;
+  --type-display-medium-tracking: 2px;
+
+  --type-display-small-size:      36px;
+  --type-display-small-weight:    800;
+  --type-display-small-lh:        1.1;
+  --type-display-small-tracking:  1px;
+
+  /* Headline — page-level titles. */
+  --type-headline-large-size:      28px;
+  --type-headline-large-weight:    700;
+  --type-headline-large-lh:        1.2;
+  --type-headline-large-tracking:  0;
+
+  --type-headline-medium-size:     24px;
+  --type-headline-medium-weight:   700;
+  --type-headline-medium-lh:       1.2;
+  --type-headline-medium-tracking: 0;
+
+  --type-headline-small-size:      20px;
+  --type-headline-small-weight:    700;
+  --type-headline-small-lh:        1.2;
+  --type-headline-small-tracking:  0;
+
+  /* Title — component-level emphasis (price, modal titles). */
+  --type-title-large-size:      20px;
+  --type-title-large-weight:    800;
+  --type-title-large-lh:        1.2;
+  --type-title-large-tracking:  0;
+
+  --type-title-medium-size:     16px;
+  --type-title-medium-weight:   700;
+  --type-title-medium-lh:       1.2;
+  --type-title-medium-tracking: 0;
+
+  --type-title-small-size:      15px;
+  --type-title-small-weight:    700;
+  --type-title-small-lh:        1.3;
+  --type-title-small-tracking:  0;
+
+  /* Body — readable prose, default UI text. */
+  --type-body-large-size:      16px;
+  --type-body-large-weight:    500;
+  --type-body-large-lh:        1.4;
+  --type-body-large-tracking:  0;
+
+  --type-body-medium-size:     14px;
+  --type-body-medium-weight:   500;
+  --type-body-medium-lh:       1.4;
+  --type-body-medium-tracking: 0;
+
+  --type-body-small-size:      13px;
+  --type-body-small-weight:    500;
+  --type-body-small-lh:        1.35;
+  --type-body-small-tracking:  0;
+
+  /* Label — utility text on chips, badges, micro-controls. */
+  --type-label-large-size:      14px;
+  --type-label-large-weight:    600;
+  --type-label-large-lh:        1;
+  --type-label-large-tracking:  0;
+
+  --type-label-medium-size:     12px;
+  --type-label-medium-weight:   600;
+  --type-label-medium-lh:       1;
+  --type-label-medium-tracking: 0.2px;
+
+  --type-label-small-size:      10px;
+  --type-label-small-weight:    600;
+  --type-label-small-lh:        1;
+  --type-label-small-tracking:  0.1px;
+
   /* ============== SPACING (4px base scale) ============== */
   --space-1:  4px;
   --space-2:  8px;
