@@ -21,9 +21,7 @@ A diagonal "SOLD OUT" stamp overlaid on the product video card when an item is o
 | --------------- | ------------------------------------------------------------------ |
 | Text            | `SOLD OUT` (uppercase)                                             |
 | Font family     | System default (San Francisco on iOS, Roboto on Android)           |
-| Font weight     | 900 (Black / Heavy)                                                |
-| Font size       | 56 px                                                              |
-| Letter spacing  | 2 px                                                               |
+| Type style      | **Display Large** (see `handoff/ui-library/spec.md` §1.2)          |
 | Text color      | `#D43A36` (`--brand-red`)                                          |
 | Border          | 4 px solid, color `#D43A36`                                        |
 | Corner radius   | 12 px                                                              |
@@ -52,9 +50,7 @@ Appears while the user drags a card to the left. Opacity ramps with horizontal d
 | Property        | Value                                                              |
 | --------------- | ------------------------------------------------------------------ |
 | Text            | `SKIP` (uppercase)                                                 |
-| Font weight     | 900                                                                |
-| Font size       | 56 px                                                              |
-| Letter spacing  | 2 px                                                               |
+| Type style      | **Display Large** (see `handoff/ui-library/spec.md` §1.2)          |
 | Text color      | `#D43A36` (`--brand-red`) — or `#C8CCD3` on sold-out cards         |
 | Border          | 4 px solid, matches text color                                     |
 | Corner radius   | 12 px                                                              |
@@ -99,9 +95,7 @@ Right-swipe stamp shown **only on sold-out cards** (in place of the "Add" stamp)
 | ------------------- | ---------------------------------------------------------------------- |
 | Icon                | Bell, 44 × 44 px, stroke (no fill), 3 px stroke weight                 |
 | Text                | `NOTIFY` (uppercase)                                                   |
-| Font weight         | 900                                                                    |
-| Font size           | 44 px (smaller than the 56 px stamps to balance with the icon)         |
-| Letter spacing      | 2 px                                                                   |
+| Type style          | **Display Medium** (smaller than Display Large to balance with the icon — see `handoff/ui-library/spec.md` §1.2) |
 | Color (icon + text) | `#E6A745` (`--brand-gold`)                                             |
 | Border              | 4 px solid, color `#E6A745`                                            |
 | Corner radius       | 12 px                                                                  |
@@ -142,9 +136,9 @@ White card shown after the user successfully submits the notify-me sheet (subscr
 | Icon container bg     | `rgba(230, 167, 69, 0.16)` (gold @ 16% alpha)    |
 | Icon                  | Same bell SVG as the Notify stamp, 22 × 22 px, color `#E6A745`, 2 px stroke |
 | Title text            | `Great choice!`                                  |
-| Title font            | 15 px / weight 800 / letter-spacing −0.1 px / line-height 1.2 |
+| Title type            | **Title Small @ weight 800, tracking -0.1 px** (see `handoff/ui-library/spec.md` §1.2) |
 | Subtitle text         | `We'll notify you when this item is back in stock.` |
-| Subtitle font         | 13 px / weight 500 / line-height 1.35            |
+| Subtitle type         | **Body Small** (see `handoff/ui-library/spec.md` §1.2) |
 | Icon-to-text gap      | 12 px                                            |
 | Text-block row gap    | 2 px (between title and subtitle)                |
 
