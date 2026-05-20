@@ -40,6 +40,7 @@
         <li><a href="#menu" class="lib-nav-link">Menu</a></li>
         <li><a href="#deals-banner" class="lib-nav-link">Deals banner</a></li>
         <li><a href="#stamps" class="lib-nav-link">Swipe stamps</a></li>
+        <li><a href="#toast" class="lib-nav-link">Toast</a></li>
       </ul>
     </div>
   </nav>
@@ -641,6 +642,41 @@
               <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
             </svg>
             Notify
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="lib-component" id="toast">
+    <header class="lib-component-header">
+      <h2>Toast</h2>
+      <p class="lib-component-desc">Two transient overlays. The small <strong>tap toast</strong> is an unobtrusive black pill for one-off feedback (skip, liked, link copied, added to cart) — fires for ~1.3s. The <strong>rich toast</strong> is a higher-stakes confirmation card with icon + title + supportive text (currently: "We'll notify you when this item is back in stock") — fires for ~2.8s.</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.toast</code>, <code>.rich-toast</code>, <code>.rich-toast-icon</code>, <code>.rich-toast-title</code>, <code>.rich-toast-sub</code>). Positioning + slide-in stays in <code>v6.css</code>; fired by <code>showToast()</code> / <code>showRichToast()</code> in <code>v6.js</code>.</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Tap toast <span class="lib-variant-state">.toast.show</span></figcaption>
+        <div class="lib-toast-stage">
+          <div class="toast show">Added 1×</div>
+        </div>
+      </figure>
+
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Rich toast <span class="lib-variant-state">.rich-toast.show</span></figcaption>
+        <div class="lib-toast-stage">
+          <div class="rich-toast show">
+            <span class="rich-toast-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+            </span>
+            <div class="rich-toast-text">
+              <div class="rich-toast-title">You're on the list</div>
+              <div class="rich-toast-sub">We'll notify you when this item is back in stock.</div>
+            </div>
           </div>
         </div>
       </figure>

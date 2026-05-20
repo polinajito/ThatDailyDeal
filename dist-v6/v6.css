@@ -348,81 +348,33 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
 .deal-card.sold-out.show-skip   .stamp-soldout { opacity: 0; }
 
 /* ============== TOAST ============== */
+/* Visual: components.css (.toast / .rich-toast families). v6.css owns
+   the prototype's positioning + slide-in transform. The transitions
+   here extend the components.css opacity transition to include
+   transform — both stay in sync. */
 .toast {
   position: absolute;
   top: 110px;
   left: 50%;
   transform: translateX(-50%) translateY(-8px);
-  background: rgba(20,20,20,.92);
-  color: var(--color-white);
-  font-size: 13px;
-  font-weight: 600;
-  padding: 8px 14px;
-  border-radius: 999px;
   z-index: 8;
-  opacity: 0;
-  pointer-events: none;
   transition: opacity .25s var(--ease-out), transform .25s var(--ease-out);
 }
 .toast.show {
-  opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
 
-/* Rich toast — high-stakes confirmation (notify subscribe) */
 .rich-toast {
   position: absolute;
   top: 88px;
-  left: 14px;
-  right: 14px;
+  left: var(--space-4);
+  right: var(--space-4);
   z-index: 9;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--color-white);
-  color: var(--color-ink);
-  border-radius: 16px;
-  padding: 12px 14px;
-  box-shadow: 0 12px 32px rgba(0,0,0,.28);
-  opacity: 0;
   transform: translateY(-12px);
-  pointer-events: none;
   transition: opacity .28s var(--ease-out), transform .28s var(--ease-out);
 }
 .rich-toast.show {
-  opacity: 1;
   transform: translateY(0);
-}
-.rich-toast-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(230,167,69,.16);
-  color: var(--color-gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.rich-toast-text {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.rich-toast-title {
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--color-ink);
-  line-height: 1.2;
-  letter-spacing: -.1px;
-}
-.rich-toast-sub {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--color-gray-700);
-  line-height: 1.35;
 }
 
 /* ============== TOP HEADER ============== */

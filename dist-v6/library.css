@@ -545,6 +545,28 @@ code {
 }
 .lib-stamp-stage .swipe-stamp { opacity: 1; }
 
+/* ============== TOAST STAGE ============== */
+/* Phone-screen-ish backdrop so the dark tap toast and the white rich
+   toast both read clearly. Neutralizes the prototype's absolute
+   positioning so the toast sits in the stage's normal flow. */
+.lib-toast-stage {
+  position: relative;
+  min-height: 120px;
+  padding: 20px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-blue-deep) 100%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+}
+.lib-toast-stage .toast,
+.lib-toast-stage .rich-toast {
+  position: static;
+  transform: none;
+}
+.lib-toast-stage .rich-toast { width: 100%; }
+
 /* Toggle-state pairs: small label + default + arrow + active button. */
 .lib-btn-state-pair {
   display: flex;

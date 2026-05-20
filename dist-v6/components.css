@@ -340,3 +340,79 @@
   font-size: 44px;
 }
 .stamp-notify svg { width: 44px; height: 44px; }
+
+/* ============================================================
+   TOAST (small tap)
+   Black pill, white text, 13px. Used for low-stakes feedback —
+   "Liked", "Skip", "Link copied", "Added × N". Hidden by default;
+   add .show to reveal (consumer owns the slide-in transform).
+   ============================================================ */
+.toast {
+  background: rgba(20, 20, 20, .92);
+  color: var(--color-white);
+  font-family: var(--font-family-primary);
+  font-size: 13px;
+  font-weight: 600;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+.toast.show { opacity: 1; }
+
+/* ============================================================
+   RICH TOAST
+   White card with circular gold-tinted icon, bold title, gray
+   supporting text. Used for high-stakes confirmations — e.g.
+   "You're on the list / We'll notify you when this is back in
+   stock". Hidden by default; add .show to reveal (consumer owns
+   the slide-in transform).
+   ============================================================ */
+.rich-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--color-white);
+  color: var(--color-ink);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+  box-shadow: var(--shadow-lg);
+  font-family: var(--font-family-primary);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .28s ease;
+}
+.rich-toast.show { opacity: 1; }
+
+.rich-toast-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-circle);
+  background: color-mix(in srgb, var(--color-gold) 16%, transparent);
+  color: var(--color-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.rich-toast-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.rich-toast-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-ink);
+  line-height: 1.2;
+  letter-spacing: -.1px;
+}
+.rich-toast-sub {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-gray-700);
+  line-height: 1.35;
+}
