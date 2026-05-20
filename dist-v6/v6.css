@@ -562,93 +562,15 @@ body.is-paused .act-btn[data-act="pause"] .ic-pause { display: none; }
 }
 
 /* ============== BOTTOM NAV ============== */
+/* Visual: components.css (.menu + .menu-item family + .is-selected for
+   the active tab). This block only positions the nav at the bottom of
+   the phone screen. */
 .bottom-nav {
   position: absolute;
   left: 50%;
   bottom: 16px;
   transform: translateX(-50%);
   z-index: 10;
-  background: rgba(20, 20, 20, .55);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, .18);
-  border-radius: 999px;
-  padding: 4px 8px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  box-shadow:
-    0 12px 32px rgba(0, 0, 0, .45),
-    inset 0 1px 0 rgba(255, 255, 255, .22),
-    inset 0 -1px 0 rgba(0, 0, 0, .25);
-}
-.bottom-nav::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(180deg, rgba(255, 255, 255, .18) 0%, rgba(255, 255, 255, 0) 55%);
-  pointer-events: none;
-  z-index: 0;
-}
-.nav-indicator,
-.nav-btn { position: relative; z-index: 2; }
-.nav-indicator {
-  position: absolute;
-  top: 4px;
-  left: 8px;
-  width: 64px;
-  height: 50px;
-  border-radius: 999px;
-  background: rgba(230, 167, 69, .85);
-  backdrop-filter: blur(6px) saturate(160%);
-  -webkit-backdrop-filter: blur(6px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, .22);
-  box-shadow:
-    0 4px 14px rgba(230, 167, 69, .45),
-    inset 0 1px 0 rgba(255, 255, 255, .45),
-    inset 0 -1px 0 rgba(0, 0, 0, .15);
-  transform: translateX(0);
-  transition: transform .35s var(--ease-out);
-  pointer-events: none;
-}
-.nav-btn {
-  width: 64px;
-  min-height: 50px;
-  padding-top: 7px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  color: rgba(255,255,255,.65);
-  position: relative;
-  z-index: 2;
-  transition: color .2s var(--ease-out);
-}
-.nav-btn:hover { color: var(--white); }
-.nav-btn.active {
-  color: var(--white);
-}
-.nav-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .1px;
-  line-height: 1;
-  color: inherit;
-}
-.cart-btn .cart-badge {
-  position: absolute;
-  top: 1px; right: 1px;
-  background: var(--brand-red);
-  color: var(--white);
-  font-size: 10px;
-  font-weight: 700;
-  min-width: 17px; height: 17px;
-  padding: 0 4px;
-  border-radius: 999px;
-  display: flex; align-items: center; justify-content: center;
-  border: 2px solid #141414;
-  line-height: 1;
 }
 
 /* ============== PRODUCT DETAILS SHEET ============== */

@@ -183,16 +183,15 @@
   </div>
 
   <!-- ============== BOTTOM NAV ============== -->
-  <nav class="bottom-nav" aria-label="Primary">
-    <span class="nav-indicator" aria-hidden="true"></span>
-    <button class="nav-btn active" data-tab="deals" aria-label="Deals">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+  <nav class="menu bottom-nav" aria-label="Primary">
+    <button class="menu-item is-selected" data-tab="deals" aria-label="Deals">
+      <svg class="menu-item-icon" viewBox="0 0 24 24" fill="currentColor">
         <path d="M13.5 0c-.5 4-3.5 5-3.5 9 0 3 2 4.5 2 4.5s-2-1-2-3.5c-3 1.5-5 4.5-5 7.5 0 4 3 7 7 7s7-3 7-7c0-5-5-9-5.5-17.5z"/>
       </svg>
-      <span class="nav-label">Deals</span>
+      <span class="menu-item-label">Deals</span>
     </button>
-    <button class="nav-btn" data-tab="contests" aria-label="Contests">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <button class="menu-item" data-tab="contests" aria-label="Contests">
+      <svg class="menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
         <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
         <path d="M4 22h16"/>
@@ -200,35 +199,35 @@
         <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
         <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
       </svg>
-      <span class="nav-label">Contests</span>
+      <span class="menu-item-label">Contests</span>
     </button>
-    <button class="nav-btn" data-tab="rewards" aria-label="Rewards">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <button class="menu-item" data-tab="rewards" aria-label="Rewards">
+      <svg class="menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20 12 20 22 4 22 4 12"/>
         <rect x="2" y="7" width="20" height="5"/>
         <line x1="12" y1="22" x2="12" y2="7"/>
         <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
         <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
       </svg>
-      <span class="nav-label">Rewards</span>
+      <span class="menu-item-label">Rewards</span>
     </button>
-    <button class="nav-btn" data-tab="events" aria-label="Events">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <button class="menu-item" data-tab="events" aria-label="Events">
+      <svg class="menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
         <line x1="16" y1="2" x2="16" y2="6"/>
         <line x1="8" y1="2" x2="8" y2="6"/>
         <line x1="3" y1="10" x2="21" y2="10"/>
       </svg>
-      <span class="nav-label">Events</span>
+      <span class="menu-item-label">Events</span>
     </button>
-    <button class="nav-btn cart-btn" data-tab="cart" aria-label="Cart">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <button class="menu-item" data-tab="cart" aria-label="Cart">
+      <svg class="menu-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
         <line x1="3" y1="6" x2="21" y2="6"/>
         <path d="M16 10a4 4 0 0 1-8 0"/>
       </svg>
-      <span class="nav-label">Cart</span>
-      <span class="cart-badge" id="cartBadge">0</span>
+      <span class="menu-item-label">Cart</span>
+      <span class="menu-item-badge" id="cartBadge">0</span>
     </button>
   </nav>
 

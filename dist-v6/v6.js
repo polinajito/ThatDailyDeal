@@ -798,18 +798,9 @@ function notifyBackInStock() {
 }
 
 /* ============================================================
-   Bottom nav — sliding gold indicator + "Coming soon" for non-Deals
+   Bottom nav — selected tab + "Coming soon" for non-Deals
    ============================================================ */
-const navIndicator = document.querySelector('.nav-indicator');
-const navBtns     = document.querySelectorAll('.bottom-nav .nav-btn');
-
-function moveNavIndicatorTo(btn) {
-  if (!navIndicator || !btn) return;
-  navIndicator.style.transform = `translateX(${btn.offsetLeft - 8}px)`;
-}
-
-const initialActiveNavBtn = document.querySelector('.bottom-nav .nav-btn.active');
-if (initialActiveNavBtn) moveNavIndicatorTo(initialActiveNavBtn);
+const navBtns = document.querySelectorAll('.bottom-nav .menu-item');
 
 const TAB_ORDER = ['deals', 'contests', 'rewards', 'events', 'cart'];
 
@@ -850,9 +841,8 @@ function switchTab(newTab) {
 navBtns.forEach((btn) => {
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
-    navBtns.forEach((b) => b.classList.remove('active'));
-    btn.classList.add('active');
-    moveNavIndicatorTo(btn);
+    navBtns.forEach((b) => b.classList.remove('is-selected'));
+    btn.classList.add('is-selected');
     switchTab(btn.dataset.tab);
     applyVideoState();
   });
