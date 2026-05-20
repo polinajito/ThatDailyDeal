@@ -115,18 +115,23 @@ body.no-scrim .top-scrim { display: none; }
   clip-path: inset(0 0 90% 0);
 }
 
-/* ============== TODAY'S DEALS COUNTDOWN BANNER ============== */
-/* Visual: components.css (.deals-banner). This block only positions
-   the banner inside each deal-card, just below the price-pill.
-   Price-pill is at top:100 with height ~64 → banner sits at top:172
-   with an 8px gap. */
-.deals-banner {
+/* ============== TOP-OF-CARD STACK ============== */
+/* Wraps the price-pill + deals-banner so the spacing between them
+   is intrinsic (flex column gap) rather than a magic-number top
+   offset tied to the pill's rendered height. Visual rules for both
+   components stay in components.css. */
+.card-top-stack {
   position: absolute;
-  top: 172px;
+  top: 100px;
   left: 14px;
   right: 14px;
   z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
+
+/* Banner visibility — both rules still target .deals-banner directly. */
 .deals-banner[hidden] { display: none; }
 body.no-banner .deals-banner { display: none; }
 
@@ -536,17 +541,10 @@ body.is-muted .act-btn[data-act="mute"] .ic-unmute { display: none; }
 body.is-paused .act-btn[data-act="pause"] .ic-play  { display: block; }
 body.is-paused .act-btn[data-act="pause"] .ic-pause { display: none; }
 
-/* ============== PRICE PILL (lives at the top of each card) ============== */
-/* Visual: components.css (.price-pill family). This block only positions
-   the pill on the card. Sold-out variant lives below in the sold-out
-   section. */
-.price-pill {
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  top: 100px;
-  z-index: 3;
-}
+/* ============== PRICE PILL ============== */
+/* Visual: components.css (.price-pill family). Layout: positioned by
+   .card-top-stack above. Sold-out strikethrough variant lives below
+   in the sold-out section. */
 
 /* ============== BOTTOM NAV ============== */
 /* Visual: components.css (.menu + .menu-item family + .is-selected for
