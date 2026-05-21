@@ -22,6 +22,22 @@ This handoff is **library-wide**. Per-feature flows (when they exist) live in `.
 
 The full running prototype lives at `../../dist-v6/index.html` — open it for app-level UX context (gesture feel, surrounding screens, animation timing).
 
+## Adding new components and flows
+
+We use a **foundation + per-flow** structure. Pick the right home for what you're adding:
+
+| You're adding…                                              | Where it goes                                |
+| ----------------------------------------------------------- | -------------------------------------------- |
+| A new shared component (reusable across screens)            | New `§2.x` section in `spec.md`              |
+| A new design token (color, type style, radius, etc.)        | New row in the relevant `§1.x` table         |
+| A new flow — multi-component, with interaction/state/timing | New file at `../flows/<flow-name>.md`        |
+| A change to an existing component or token                  | Edit the existing section in place           |
+| A flow that has shipped and been replaced                   | Delete the file from `../flows/`             |
+
+Per-flow files reference the library by name (e.g. _"uses Title Small from §1.2, `.price-pill` from §2.1"_) and add only what the library doesn't cover (interaction choreography, state machine, sequencing). Don't restate the component spec — link to it.
+
+Format: `.md` only. No Dart, no SVG, no per-flow CSS. The single source of truth is the prototype in `dist-v6/`; the handoff describes it.
+
 ## Ignore the iPhone frame in the prototype
 
 The desktop view of `dist-v6/index.html` wraps the screen in an iPhone 15 Pro chrome (device PNG + status-bar PNG). That's pure preview scaffolding — it only renders at viewports ≥ 768 px and disappears on phone-sized viewports. Flutter handles real device chrome itself via `SafeArea` and the OS-drawn status bar / notch / home indicator. Nothing to implement from those visuals.
