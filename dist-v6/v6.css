@@ -207,8 +207,23 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   gap: 14px;
 }
 .cs-placeholder-icon { color: rgba(255,255,255,.55); }
-.screen-coming-soon h2 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -.2px; }
-.screen-coming-soon p  { margin: 0; font-size: 15px; opacity: .65; }
+.screen-coming-soon h2 {
+  /* Headline Large (snap 26 → 28), tracking -0.2px */
+  margin: 0;
+  font-size:      var(--type-headline-large-size);
+  font-weight:    var(--type-headline-large-weight);
+  line-height:    var(--type-headline-large-lh);
+  letter-spacing: -.2px;
+}
+.screen-coming-soon p {
+  /* Title Small @ weight 500 */
+  margin: 0;
+  font-size:      var(--type-title-small-size);
+  font-weight:    500;
+  line-height:    var(--type-title-small-lh);
+  letter-spacing: var(--type-title-small-tracking);
+  opacity: .65;
+}
 
 /* ============== DEALS-DONE OVERLAY ============== */
 .deals-done {
@@ -238,18 +253,23 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   box-shadow: 0 8px 22px rgba(54,201,128,.35);
 }
 .deals-done h2 {
+  /* Headline Large (snap 26 → 28) @ weight 800, tracking -0.4px */
   margin: 0;
-  font-size: 26px;
-  font-weight: 800;
-  text-align: center;
+  font-size:      var(--type-headline-large-size);
+  font-weight:    800;
+  line-height:    var(--type-headline-large-lh);
   letter-spacing: -.4px;
+  text-align: center;
 }
 .deals-done p {
+  /* Body Medium */
   margin: 0 0 8px;
-  font-size: 14px;
+  font-size:      var(--type-body-medium-size);
+  font-weight:    var(--type-body-medium-weight);
+  line-height:    var(--type-body-medium-lh);
+  letter-spacing: var(--type-body-medium-tracking);
   opacity: .8;
   text-align: center;
-  line-height: 1.4;
   max-width: 280px;
 }
 
@@ -263,9 +283,12 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   margin-bottom: 4px;
 }
 .dd-timer-card h3 {
+  /* Body Small @ weight 700 */
   margin: 0 0 12px;
-  font-size: 13px;
-  font-weight: 700;
+  font-size:      var(--type-body-small-size);
+  font-weight:    700;
+  line-height:    var(--type-body-small-lh);
+  letter-spacing: var(--type-body-small-tracking);
   color: var(--color-white);
   opacity: .85;
 }
@@ -286,22 +309,29 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   box-shadow: 0 4px 12px rgba(0,0,0,.25);
 }
 .dd-num {
-  font-size: 24px;
-  font-weight: 800;
+  /* Headline Medium @ weight 800, lh 1 */
+  font-size:      var(--type-headline-medium-size);
+  font-weight:    800;
+  line-height:    1;
+  letter-spacing: var(--type-headline-medium-tracking);
   color: var(--color-white);
-  line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 .dd-label {
-  font-size: 9px;
-  font-weight: 700;
-  color: rgba(255,255,255,.7);
+  /* Label Small (snap 9 → 10) @ weight 700, tracking 1px */
+  font-size:      var(--type-label-small-size);
+  font-weight:    700;
+  line-height:    var(--type-label-small-lh);
   letter-spacing: 1px;
+  color: rgba(255,255,255,.7);
   margin-top: 3px;
 }
 .dd-sep {
-  font-size: 22px;
-  font-weight: 800;
+  /* Title Large (snap 22 → 20) @ weight 800 */
+  font-size:      var(--type-title-large-size);
+  font-weight:    var(--type-title-large-weight);
+  line-height:    var(--type-title-large-lh);
+  letter-spacing: var(--type-title-large-tracking);
   color: var(--color-white);
   opacity: .5;
 }
