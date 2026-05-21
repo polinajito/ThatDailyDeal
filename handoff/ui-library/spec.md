@@ -4,7 +4,6 @@ Canonical spec for the ThatDailyDeal design system. Foundations (tokens) come fi
 
 - **Live preview:** `../../dist-v6/library.html` — open in any browser. Section headings below mirror the showcase one-for-one.
 - **Source of truth (CSS):** `../../dist-v6/tokens.css` (tokens) and `../../dist-v6/components.css` (components). Every "Source:" line points back into these files.
-- **Worked example of a per-feature handoff that consumes this library:** `../sold-out-flow/` — four out-of-stock components documented in this same style.
 
 Bind to tokens, not raw hex / px values. If a component needs a shade or spacing not in the foundations, that's a token gap — flag it instead of inlining a literal.
 
@@ -485,7 +484,7 @@ Every component above binds to tokens. Implementations on the Flutter side shoul
 `.swipe-stamp`, `.toast`, and `.rich-toast` all start at `opacity: 0` with `pointer-events: none`. The library does not animate them in or out. The consumer:
 - Adds the reveal class (`.show` on toasts; `.show-add` / `.show-skip` / `.show-notify` / `.sold-out` on the parent card for stamps).
 - Owns any transform (slide-down, slide-up) layered on top of the opacity transition.
-- Owns the dismiss timer (e.g. ~2800 ms for the notify confirmation rich-toast — see `sold-out-flow/spec.md` §4 for one worked example).
+- Owns the dismiss timer (e.g. ~2800 ms for the notify confirmation rich-toast). Per-flow timing belongs in the relevant flow doc under `../flows/`.
 
 ### Liquid-glass surfaces
 

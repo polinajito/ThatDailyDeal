@@ -2,7 +2,7 @@
 
 Canonical reference for the ThatDailyDeal design system: design tokens (colors, typography, spacing, radius, shadows, liquid glass) plus every shared component currently in the library (price pill, button, menu item, menu, deals banner, swipe stamps, toast, rich toast).
 
-This handoff is **library-wide**. For per-feature handoffs that compose these components into a flow, see `../sold-out-flow/` as a worked example.
+This handoff is **library-wide**. Per-feature flows (when they exist) live in `../flows/` as single `.md` files — see _"Adding new components and flows"_ below.
 
 ## What's in this folder
 
@@ -18,7 +18,7 @@ This handoff is **library-wide**. For per-feature handoffs that compose these co
 1. Open `../../dist-v6/library.html` to see what each foundation and component looks like.
 2. Skim `spec.md` for tokens, property values, states, and composition rules. Section order matches the showcase one-for-one.
 3. Define a token / theme layer on your side first, then build components against it — same shape as the CSS source.
-4. When you're ready to implement a specific flow (e.g. out-of-stock), see `../sold-out-flow/` for how a per-feature handoff composes these primitives. New per-feature handoffs should follow that same pattern.
+4. For feature-specific flows, look in `../flows/`. If the flow you need isn't there yet, ask and we'll add it.
 
 The full running prototype lives at `../../dist-v6/index.html` — open it for app-level UX context (gesture feel, surrounding screens, animation timing).
 
@@ -32,7 +32,7 @@ The desktop view of `dist-v6/index.html` wraps the screen in an iPhone 15 Pro ch
 - **Gesture physics.** Drag thresholds, rotation, opacity ramps for swipe stamps belong to the consumer (deal card). See the reveal-contract notes in `spec.md` §2.6 and §3.
 - **Screen-level compositions.** How components combine into pages / sheets / modals isn't covered here — that's per-feature handoff territory.
 - **Animations beyond per-component transitions.** Each component's `transition` values are listed; anything richer (slide-ins, sheet motion, hero transitions) is owned by the consumer.
-- **Per-feature flows.** Out-of-stock has its own handoff (`../sold-out-flow/`). Future flows (deal-card, checkout, etc.) get the same treatment — composed on top of this library.
+- **Per-feature flows.** Per-feature flows live in `../flows/`. Each is a single `.md` file that references this library by component name and adds the flow-specific bits (interaction, state, timing).
 
 ## Open questions for the developer
 
