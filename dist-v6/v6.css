@@ -450,9 +450,11 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
 }
 .flag img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .brand-name {
+  /* Title Small, tracking 0.2px */
   text-align: center;
-  font-weight: 700;
-  font-size: 15px;
+  font-size:      var(--type-title-small-size);
+  font-weight:    var(--type-title-small-weight);
+  line-height:    var(--type-title-small-lh);
   letter-spacing: .2px;
   text-shadow: 0 1px 2px rgba(0,0,0,.4);
 }
@@ -463,19 +465,22 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   display: block;
 }
 .avatar {
+  /* Label Small (snap 11 → 10) @ weight 700, tracking 0.5px */
   justify-self: end;
   width: 30px; height: 30px;
   border-radius: 50%;
   background: var(--color-red);
   color: var(--color-white);
-  font-size: 11px;
-  font-weight: 700;
+  font-size:      var(--type-label-small-size);
+  font-weight:    700;
+  line-height:    var(--type-label-small-lh);
   letter-spacing: .5px;
   display: flex; align-items: center; justify-content: center;
 }
 
 /* ============== DEAL COUNTER (lives inside each card) ============== */
 .deal-counter {
+  /* Label Medium, tracking 0 (override the 0.2px default — counter digits sit flush) */
   position: absolute;
   bottom: 18px;
   left: 50%;
@@ -483,8 +488,10 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   z-index: 3;
   background: rgba(0,0,0,.55);
   color: var(--color-white);
-  font-weight: 600;
-  font-size: 12px;
+  font-size:      var(--type-label-medium-size);
+  font-weight:    var(--type-label-medium-weight);
+  line-height:    var(--type-label-medium-lh);
+  letter-spacing: 0;
   padding: 6px 12px;
   border-radius: 999px;
   box-shadow: 0 4px 14px rgba(0,0,0,.25);
@@ -1264,6 +1271,8 @@ body.notify-open .notify-sheet { transform: translate(-50%, 0); }
    standalone preview. Auto-hidden inside iframes via JS.
    ============================================================ */
 .preview-controls {
+  /* Label Medium (size + weight); font-family stays system because this is the
+     dev preview chrome, not shipped UI. */
   position: fixed;
   top: 16px;
   right: 16px;
@@ -1279,7 +1288,10 @@ body.notify-open .notify-sheet { transform: translate(-50%, 0); }
   border-radius: 14px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: rgba(255, 255, 255, .92);
-  font-size: 12px;
+  font-size:      var(--type-label-medium-size);
+  font-weight:    var(--type-label-medium-weight);
+  line-height:    var(--type-label-medium-lh);
+  letter-spacing: var(--type-label-medium-tracking);
   box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
 }
 .preview-controls[hidden] { display: none; }
@@ -1290,8 +1302,7 @@ body.notify-open .notify-sheet { transform: translate(-50%, 0); }
   gap: 10px;
 }
 .preview-controls-label {
-  font-weight: 600;
-  letter-spacing: .2px;
+  /* Inherits Label Medium from .preview-controls; no override needed. */
   white-space: nowrap;
 }
 .preview-controls-segments {
@@ -1319,10 +1330,11 @@ body.notify-open .notify-sheet { transform: translate(-50%, 0); }
 
 @media (max-width: 767px) {
   .preview-controls {
+    /* Label Small (snap 11 → 10) on phone widths */
     top: 8px;
     right: 8px;
     padding: 6px 8px 6px 12px;
-    font-size: 11px;
+    font-size: var(--type-label-small-size);
   }
   .preview-segment { padding: 3px 10px; }
 }
