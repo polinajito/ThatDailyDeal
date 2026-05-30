@@ -203,12 +203,12 @@ const state = {
 /* ============================================================
    Card builder — includes side buttons so they fly with the card
    ============================================================ */
-function buildCard(deal, dealIdx, isUnder) {
+function buildCard(deal, dealIdx) {
   const card = document.createElement('article');
   const soldOut = !isAvailable(deal);
   const onSale = isOnSale(deal);
   const subscribed = !!getSubscription(dealIdx);
-  card.className = 'deal-card ' + (isUnder ? 'under' : 'top') + (soldOut ? ' sold-out' : '') + (subscribed ? ' is-subscribed' : '');
+  card.className = 'deal-card' + (soldOut ? ' sold-out' : '') + (subscribed ? ' is-subscribed' : '');
   card.dataset.dealIdx = String(dealIdx);
   const isLiked = state.liked.has(dealIdx);
   card.innerHTML = `
@@ -357,70 +357,101 @@ function buildCard(deal, dealIdx, isUnder) {
     openDetails();
   });
 
-  const notifyBtn = card.querySelector('[data-act="notify"]');
-  if (notifyBtn) {
-    notifyBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      notifyBackInStock();
-    });
-  }
-
   return card;
 }
 
 function mountDeck() {
   deck.innerHTML = '';
 
-  if (state.index >= DEALS.length) {
-    showDealsDone();
-    return;
-  }
+  // Build the filmstrip: one card per deal, all peers inside a single
+  // horizontal track. Navigation slides the track rather than destroying
+  // cards, so the user can move backwards as well as forwards.
+  const track = document.createElement('div');
+  track.className = 'deck-track';
+  DEALS.forEach((deal, idx) => track.appendChild(buildCard(deal, idx)));
+  deck.appendChild(track);
+
+  if (state.index < 0) state.index = 0;
+  if (state.index >= DEALS.length) state.index = DEALS.length - 1;
+
   hideDealsDone();
-
-  const top      = DEALS[state.index];
-  const underIdx = state.index + 1;
-  const under    = underIdx < DEALS.length ? DEALS[underIdx] : null;
-
-  if (under) deck.appendChild(buildCard(under, underIdx, true));
-  if (top) {
-    const topCard = buildCard(top, state.index, false);
-    deck.appendChild(topCard);
-    bindSwipe(topCard);
-  }
+  positionTrack();
+  bindSwipe(track);
 
   tickBanner();
   applyVideoState();
 }
 
+// The card currently centered in the viewport.
+function currentCard() {
+  const track = deck.querySelector('.deck-track');
+  return track ? track.children[state.index] || null : null;
+}
+
+// Depth: the centered deal sits at full size (closest to the user); cards
+// scale down the further they are from centre. `pos` is the current
+// fractional position — an integer at rest, fractional mid-drag — so the
+// outgoing card shrinks and the incoming one grows continuously as you swipe.
+const DEPTH_MIN_SCALE = 0.9;
+function applyDepth(pos) {
+  const track = deck.querySelector('.deck-track');
+  if (!track) return;
+  Array.from(track.children).forEach((cardEl, i) => {
+    const dist = Math.min(1, Math.abs(i - pos));
+    const scale = 1 - dist * (1 - DEPTH_MIN_SCALE);
+    cardEl.style.transform = `scale(${scale})`;
+  });
+}
+
+// Slide the track so the current deal fills the viewport.
+function positionTrack() {
+  const track = deck.querySelector('.deck-track');
+  if (!track) return;
+  track.style.transform = `translateX(${-state.index * 100}%)`;
+  applyDepth(state.index);
+}
+
 function applyVideoState() {
-  const topVideo = deck.querySelector('.deal-card.top .card-video');
-  if (topVideo) {
-    topVideo.muted = state.muted;
-    if (state.paused) topVideo.pause();
-    else topVideo.play().catch(() => {});
-  }
-  const underVideo = deck.querySelector('.deal-card.under .card-video');
-  if (underVideo) underVideo.muted = true;
+  const track = deck.querySelector('.deck-track');
+  if (!track) return;
+  Array.from(track.children).forEach((card, idx) => {
+    const video = card.querySelector('.card-video');
+    if (!video) return;
+    if (idx === state.index) {
+      video.muted = state.muted;
+      if (state.paused) video.pause();
+      else video.play().catch(() => {});
+    } else {
+      video.muted = true;
+      video.pause();
+    }
+  });
 }
 
 /* ============================================================
-   Swipe gestures
-   left  → skip (fly off)
-   right → open add-to-cart sheet (snap card back)
+   Swipe gestures (stories-style)
+   drag left  → next deal      drag right → previous deal (bounce at start)
+   drag up    → add-to-cart (available) / notify (sold-out)
+   tap        → product details
    ============================================================ */
-const SWIPE_COMMIT  = 80;
-const SHOW_THRESH   = 30;
+const SWIPE_COMMIT  = 80;   // horizontal px to change deal
+const LIFT_COMMIT   = 80;   // upward px to trigger add / notify
+const SHOW_THRESH   = 30;   // px before the up-swipe stamp appears
 
-function bindSwipe(card) {
+function bindSwipe(track) {
   let drag = null;
-  const cardSoldOut = card.classList.contains('sold-out');
-  const rightStamp = cardSoldOut ? 'show-notify' : 'show-add';
+  let axis = null;   // 'x' | 'y' once the gesture direction is locked
+  let card = null;   // the current card at gesture start
+
+  const viewportW = () => deck.clientWidth || track.clientWidth || 1;
 
   const onDown = (e) => {
     if (e.button !== undefined && e.button !== 0) return;
     drag = { x0: e.clientX, y0: e.clientY, dx: 0, dy: 0 };
-    card.classList.add('dragging');
-    card.setPointerCapture?.(e.pointerId);
+    axis = null;
+    card = currentCard();
+    track.classList.add('dragging');
+    track.setPointerCapture?.(e.pointerId);
   };
 
   const onMove = (e) => {
@@ -428,111 +459,99 @@ function bindSwipe(card) {
     drag.dx = e.clientX - drag.x0;
     drag.dy = e.clientY - drag.y0;
 
-    if (Math.abs(drag.dx) > Math.abs(drag.dy)) {
-      const rot = drag.dx * 0.05;
-      card.style.transform = `translate(${drag.dx}px, ${drag.dy * 0.4}px) rotate(${rot}deg)`;
+    if (!axis && (Math.abs(drag.dx) > 8 || Math.abs(drag.dy) > 8)) {
+      axis = Math.abs(drag.dx) > Math.abs(drag.dy) ? 'x' : 'y';
+    }
 
-      if (drag.dx >  SHOW_THRESH) {
-        card.classList.add(rightStamp);
-        card.classList.remove('show-skip');
-      } else if (drag.dx < -SHOW_THRESH) {
-        card.classList.add('show-skip');
-        card.classList.remove(rightStamp);
-      } else {
-        card.classList.remove('show-add', 'show-notify', 'show-skip');
-      }
+    if (axis === 'x') {
+      // Rubber-band when dragging toward a deal that doesn't exist.
+      let dx = drag.dx;
+      const atFirst = state.index === 0;
+      const atLast  = state.index === DEALS.length - 1;
+      if ((dx > 0 && atFirst) || (dx < 0 && atLast)) dx *= 0.25;
+      const w = viewportW();
+      track.style.transform = `translateX(${-state.index * w + dx}px)`;
+      // Drag left (dx<0) advances → current shrinks, next grows, and vice-versa.
+      applyDepth(state.index - dx / w);
+    } else if (axis === 'y' && card) {
+      // Only an upward lift is meaningful; ignore downward drag.
+      const lift = Math.min(0, drag.dy);
+      card.classList.add('dragging');
+      card.style.transform = `translateY(${lift}px)`;
+      const soldOut = card.classList.contains('sold-out');
+      card.classList.toggle(soldOut ? 'show-notify' : 'show-add', drag.dy < -SHOW_THRESH);
+    }
+  };
+
+  const clearDrag = () => {
+    track.classList.remove('dragging');
+    if (card) {
+      card.classList.remove('dragging', 'show-add', 'show-notify');
+      card.style.transform = '';
     }
   };
 
   const onUp = () => {
     if (!drag) return;
-    card.classList.remove('dragging', 'show-add', 'show-notify', 'show-skip');
+    const { dx, dy } = drag;
+    const committedX = axis === 'x' && Math.abs(dx) > SWIPE_COMMIT;
+    const committedY = axis === 'y' && -dy > LIFT_COMMIT;
+    const tap = !axis && Math.abs(dx) < 6 && Math.abs(dy) < 6;
+    const soldOut = card && card.classList.contains('sold-out');
 
-    if (Math.abs(drag.dx) > SWIPE_COMMIT && Math.abs(drag.dx) > Math.abs(drag.dy)) {
-      if (drag.dx > 0) {
-        if (cardSoldOut) {
-          notifyBackInStock();
-          flyOff('right', card);
-        } else {
-          card.style.transform = '';   // snap back
-          openCartSheet();
-        }
-      } else {
-        skipDeal(card);
-      }
+    clearDrag();
+
+    if (committedX) {
+      // Stories direction: drag left advances, drag right goes back.
+      goToDeal(dx < 0 ? state.index + 1 : state.index - 1);
+    } else if (committedY) {
+      positionTrack();
+      if (soldOut) openNotifySheet();
+      else openCartSheet();
     } else {
-      card.style.transform = '';
-      // No meaningful drag → treat as a tap and open the details sheet.
-      // Buttons inside the card stop propagation on pointerdown, so taps
-      // on like/share/mute/pause never reach this handler.
-      if (Math.abs(drag.dx) < 6 && Math.abs(drag.dy) < 6) {
-        openDetails();
-      }
+      // Snap back. A near-zero drag is a tap → open the details sheet.
+      // (Buttons inside the card stop propagation, so their taps never
+      // reach here.)
+      positionTrack();
+      if (tap) openDetails();
     }
-    drag = null;
+    drag = null; axis = null; card = null;
   };
 
-  card.addEventListener('pointerdown', onDown);
-  card.addEventListener('pointermove', onMove);
-  card.addEventListener('pointerup', onUp);
-  card.addEventListener('pointercancel', () => {
-    card.classList.remove('dragging', 'show-add', 'show-notify', 'show-skip');
-    if (drag) card.style.transform = '';
-    drag = null;
+  track.addEventListener('pointerdown', onDown);
+  track.addEventListener('pointermove', onMove);
+  track.addEventListener('pointerup', onUp);
+  track.addEventListener('pointercancel', () => {
+    clearDrag();
+    positionTrack();
+    drag = null; axis = null; card = null;
   });
 }
 
 /* ============================================================
-   Fly-off / advance helpers
-   Smoothly animate: top flies off, under glides forward, new under
-   slips in behind. No hard rebuild of the deck — the under-card is
-   reused, so the CSS transition carries it from under-state to
-   top-state in one continuous motion.
+   Deal navigation
+   Slides the filmstrip to a neighbouring deal. Cards are kept, never
+   removed — going back is just sliding the track the other way. Trying
+   to go before the first deal bounces; going past the last shows the
+   "All Deals Viewed!" overlay.
    ============================================================ */
-const TRANSITION_MS = 420;
-
-function flyOff(direction, cardEl) {
-  const oldTop = cardEl || deck.querySelector('.deal-card.top');
-  if (!oldTop) return;
-
-  // Old top: animate off-screen
-  oldTop.style.transform = '';
-  oldTop.classList.add(direction === 'right' ? 'fly-right' : 'fly-left');
-
-  const oldUnder = deck.querySelector('.deal-card.under');
-
-  if (oldUnder) {
-    // Promote under → top (transition animates from under-state to identity)
-    oldUnder.classList.remove('under');
-    oldUnder.classList.add('top');
-    bindSwipe(oldUnder);
-
-    state.index += 1;
-    state.paused = false;
-    document.body.classList.remove('is-paused');
-
-    // Build new under (deal after the new top), if there is one
-    const newUnderIdx = state.index + 1;
-    if (newUnderIdx < DEALS.length) {
-      const newUnder = buildCard(DEALS[newUnderIdx], newUnderIdx, true);
-      deck.insertBefore(newUnder, deck.firstChild);
-    }
-
-    tickBanner();
-    applyVideoState();
-  } else {
-    // No more deals — show the "All Deals Viewed!" screen after the fly-off
-    state.index = DEALS.length;
-    setTimeout(showDealsDone, TRANSITION_MS - 80);
+function goToDeal(targetIndex) {
+  if (targetIndex < 0) {            // no previous deal — bounce back
+    positionTrack();
+    return;
+  }
+  if (targetIndex >= DEALS.length) { // swiped next off the last deal
+    positionTrack();
+    showDealsDone();
+    return;
   }
 
-  // Clean up the flown-off card after its animation completes
-  setTimeout(() => oldTop.remove(), TRANSITION_MS);
-}
-
-function skipDeal(cardEl) {
-  showToast('Skipped');
-  flyOff('left', cardEl);
+  state.index = targetIndex;
+  state.paused = false;
+  document.body.classList.remove('is-paused');
+  positionTrack();
+  tickBanner();
+  applyVideoState();
 }
 
 /* ============================================================
@@ -629,7 +648,7 @@ function openDetails() {
 
   document.body.classList.add('details-open');
 
-  const topVideo = deck.querySelector('.deal-card.top .card-video');
+  const topVideo = currentCard()?.querySelector('.card-video');
   if (topVideo) topVideo.pause();
 }
 
@@ -645,7 +664,7 @@ dtBackdrop.addEventListener('click', closeDetails);
 dtAddToCart.addEventListener('click', () => {
   const soldOut = !isAvailable(DEALS[state.index]);
   closeDetails();
-  if (soldOut) notifyBackInStock();
+  if (soldOut) openNotifySheet();
   else openCartSheet();
 });
 
@@ -705,7 +724,7 @@ csConfirm.addEventListener('click', () => {
   );
   showToast(`Added ×${qty}`);
   closeCartSheet();
-  flyOff('right');
+  // Stay on the current deal — the user can keep scrubbing the deck.
 });
 
 /* ============================================================
@@ -748,9 +767,9 @@ setInterval(tickBanner, 1000);
 
 function showDealsDone() {
   dealsDoneEl.hidden = false;
-  // Pause any video on the (now-removed) top card
-  const v = deck.querySelector('.card-video');
-  if (v) v.pause();
+  document.body.classList.add('deals-complete');
+  // Pause every deck video while the overlay covers the deck.
+  deck.querySelectorAll('.card-video').forEach((v) => v.pause());
   tickCountdown();
   if (countdownTimer) clearInterval(countdownTimer);
   countdownTimer = setInterval(tickCountdown, 1000);
@@ -758,6 +777,7 @@ function showDealsDone() {
 
 function hideDealsDone() {
   dealsDoneEl.hidden = true;
+  document.body.classList.remove('deals-complete');
   if (countdownTimer) {
     clearInterval(countdownTimer);
     countdownTimer = null;
@@ -795,13 +815,6 @@ function showRichToast({ title, subtitle, duration = 2800 }) {
   richToast.classList.add('show');
   clearTimeout(richToastTimer);
   richToastTimer = setTimeout(() => richToast.classList.remove('show'), duration);
-}
-
-function notifyBackInStock() {
-  showRichToast({
-    title: 'Great choice!',
-    subtitle: "We'll notify you when this item is back in stock.",
-  });
 }
 
 /* ============================================================
@@ -910,7 +923,7 @@ function openNotifySheet() {
 
   document.body.classList.add('notify-open');
 
-  const topVideo = deck.querySelector('.deal-card.top .card-video');
+  const topVideo = currentCard()?.querySelector('.card-video');
   if (topVideo) topVideo.pause();
 }
 
@@ -994,9 +1007,8 @@ nsSubmit.addEventListener('click', () => {
 });
 
 nsSkip.addEventListener('click', () => {
-  const cardEl = deck.querySelector('.deal-card.top');
   closeNotifySheet();
-  if (cardEl) skipDeal(cardEl);
+  goToDeal(state.index + 1);
 });
 
 nsClose.addEventListener('click', closeNotifySheet);

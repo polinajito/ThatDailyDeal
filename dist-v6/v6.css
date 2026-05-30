@@ -240,6 +240,11 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
 }
 .deals-done[hidden] { display: none; }
 
+/* The filmstrip keeps every card mounted, so hide the deck while the
+   overlay is up — otherwise the last card shows through behind it. The
+   phone-screen's blue gradient then reads as a clean empty screen. */
+body.deals-complete .deck { display: none; }
+
 .dd-check {
   width: 72px;
   height: 72px;
@@ -342,37 +347,45 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
 .dd-btn { width: 100%; }
 
 /* ============== DECK + CARD ============== */
+/* The deck is a clipping viewport; .deck-track is a horizontal filmstrip
+   holding one .deal-card per deal. Navigation slides the track by whole
+   card-widths (translateX), so cards are kept — the user can scrub back
+   and forth (stories-style) rather than the deck consuming cards. */
 .deck {
   position: absolute;
   inset: 0;
   z-index: 1;
+  overflow: hidden;
 }
+.deck-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+  transition: transform .42s cubic-bezier(.32, .72, 0, 1);
+}
+/* No transition while a finger is dragging — the track (and every card's
+   depth scale) tracks the pointer live. */
+.deck-track.dragging { transition: none; }
+.deck-track.dragging .deal-card { transition: none; }
 
 .deal-card {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   background: #111;
   border-radius: 0;
-  will-change: transform, opacity;
-  transition: transform .42s cubic-bezier(.32, .72, 0, 1), opacity .42s cubic-bezier(.32, .72, 0, 1);
-  touch-action: pan-y;
+  will-change: transform;
+  /* Carries the vertical "lift" toward the swipe-up action; snaps back when
+     the gesture is released. */
+  transition: transform .42s cubic-bezier(.32, .72, 0, 1);
+  /* The deck owns both axes (horizontal = navigate, up = add/notify), so
+     opt out of native panning — nothing inside the deck scrolls. */
+  touch-action: none;
 }
-.deal-card.under {
-  z-index: 0;
-  transform: translateY(-12px) scale(.96);
-  transform-origin: 50% 0%;
-}
-.deal-card.top   { z-index: 1; }
 .deal-card.dragging { transition: none; }
-.deal-card.fly-right {
-  transform: translateX(140vw) rotate(22deg) !important;
-  opacity: 0;
-}
-.deal-card.fly-left {
-  transform: translateX(-140vw) rotate(-22deg) !important;
-  opacity: 0;
-}
 
 .card-video {
   position: absolute;
@@ -393,14 +406,15 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
 
 /* Swipe-stamp visibility — visual rules for .swipe-stamp + variants
    live in components.css; this block only wires the deal-card state
-   classes (set by the swipe gesture) to the matching stamp's opacity. */
+   classes (set by the swipe-up gesture) to the matching stamp's opacity.
+   Add (available) / Notify (sold-out) now flash during a swipe UP toward
+   the add-to-cart / notify action — horizontal swipes navigate and show
+   no stamp. */
 .deal-card.show-add  .stamp-add  { opacity: 1; }
-.deal-card.show-skip .stamp-skip { opacity: 1; }
 .deal-card.sold-out .stamp-soldout { opacity: 1; }
 .deal-card:not(.sold-out) .stamp-soldout { display: none; }
-/* Hide the persistent "Sold Out" stamp while a swipe stamp is showing */
-.deal-card.sold-out.show-notify .stamp-soldout,
-.deal-card.sold-out.show-skip   .stamp-soldout { opacity: 0; }
+/* Hide the persistent "Sold Out" stamp while the Notify stamp is showing */
+.deal-card.sold-out.show-notify .stamp-soldout { opacity: 0; }
 
 /* ============== TOAST ============== */
 /* Visual: components.css (.toast / .rich-toast families). v6.css owns
@@ -482,7 +496,10 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
 .deal-counter {
   /* Label Medium, tracking 0 (override the 0.2px default — counter digits sit flush) */
   position: absolute;
-  bottom: 18px;
+  /* Sit just above the bottom nav (~74px tall incl. its 16px offset) so the
+     counter is never occluded by it — aligned with the .actions-right
+     baseline below. */
+  bottom: 84px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 3;
@@ -976,13 +993,10 @@ body.sheet-open .cart-sheet { transform: translate(-50%, 0); }
 }
 
 /* Notify swipe-stamp visibility (visual in components.css). On sold-out
-   cards the Notify stamp takes Add's slot during a right-drag. */
+   cards the Notify stamp takes Add's slot during a swipe-up. */
 .deal-card.show-notify .stamp-notify { opacity: 1; }
 .deal-card.sold-out .stamp-add { display: none; }
 .deal-card:not(.sold-out) .stamp-notify { display: none; }
-
-/* On sold-out cards: hide the deal counter (action stack already reserves the CTA space on all cards) */
-.deal-card.sold-out .deal-counter { display: none; }
 
 /* Details-sheet restock row */
 .dt-restock {

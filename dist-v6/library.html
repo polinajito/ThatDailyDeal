@@ -628,8 +628,8 @@
   <section class="lib-component" id="stamps">
     <header class="lib-component-header">
       <h2>Swipe stamps</h2>
-      <p class="lib-component-desc">Large rotated overlays that appear on a deal-card during a swipe gesture, or persist on sold-out cards. Four colored variants signal intent: green <strong>Add</strong> (drag right), red <strong>Skip</strong> (drag left), red <strong>Sold Out</strong> (persistent, centered), gold <strong>Notify</strong> (replaces Add on sold-out cards).</p>
-      <p class="lib-source">Visual: <code>components.css</code> (<code>.swipe-stamp</code>, <code>.stamp-add</code>, <code>.stamp-skip</code>, <code>.stamp-soldout</code>, <code>.stamp-notify</code>). Visibility (<code>.deal-card.show-add</code>, <code>.show-skip</code>, <code>.show-notify</code>, <code>.sold-out</code>) is owned by <code>v6.css</code>. Tokens: <code>--color-green</code>, <code>--color-red</code>, <code>--color-gold</code>, <code>--space-2</code>, <code>--space-4</code>, <code>--space-5</code>, <code>--radius-md</code>.</p>
+      <p class="lib-component-desc">Large rotated overlays that flash on a deal-card during a <strong>swipe-up</strong> gesture, or persist on sold-out cards. (Horizontal swipes now navigate between deals and show no stamp.) Variants signal intent: green <strong>Add</strong> (swipe up on an available deal), gold <strong>Notify</strong> (swipe up on a sold-out deal), red <strong>Sold Out</strong> (persistent, centered). The red <strong>Skip</strong> variant is retained but currently unused by the gesture model.</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.swipe-stamp</code>, <code>.stamp-add</code>, <code>.stamp-skip</code>, <code>.stamp-soldout</code>, <code>.stamp-notify</code>). Visibility (<code>.deal-card.show-add</code>, <code>.show-notify</code>, <code>.sold-out</code>) is owned by <code>v6.css</code>. Tokens: <code>--color-green</code>, <code>--color-red</code>, <code>--color-gold</code>, <code>--space-2</code>, <code>--space-4</code>, <code>--space-5</code>, <code>--radius-md</code>.</p>
     </header>
 
     <div class="lib-component-variants">
@@ -679,7 +679,7 @@
   <section class="lib-component" id="toast">
     <header class="lib-component-header">
       <h2>Toast</h2>
-      <p class="lib-component-desc">Two transient overlays. The small <strong>tap toast</strong> is an unobtrusive black pill for one-off feedback (skip, liked, link copied, added to cart) — fires for ~1.3s. The <strong>rich toast</strong> is a higher-stakes confirmation card with icon + title + supportive text (currently: "We'll notify you when this item is back in stock") — fires for ~2.8s.</p>
+      <p class="lib-component-desc">Two transient overlays. The small <strong>tap toast</strong> is an unobtrusive black pill for one-off feedback (liked, link copied, added to cart) — fires for ~1.3s. The <strong>rich toast</strong> is a higher-stakes confirmation card with icon + title + supportive text (currently: "We'll notify you when this item is back in stock") — fires for ~2.8s.</p>
       <p class="lib-source">Visual: <code>components.css</code> (<code>.toast</code>, <code>.rich-toast</code>, <code>.rich-toast-icon</code>, <code>.rich-toast-title</code>, <code>.rich-toast-sub</code>). Positioning + slide-in stays in <code>v6.css</code>; fired by <code>showToast()</code> / <code>showRichToast()</code> in <code>v6.js</code>.</p>
     </header>
 
