@@ -29,6 +29,7 @@
         { amount: '$2.00', label: 'for existing' },
       ],
       cta: 'Create Challenge',
+      learnMore: true,
     },
   ];
 
@@ -56,6 +57,7 @@
       ${c.cta ? `
       <div class="challenge-mini-cta">
         <button class="btn btn-primary btn-md" data-action="create">${c.cta}</button>
+        ${c.learnMore ? `<button class="challenge-mini-learn" data-action="learn">Learn more</button>` : ''}
       </div>` : ''}
     </article>`;
 
@@ -105,6 +107,34 @@
     pageRoot.querySelector('#challengesBack').addEventListener('click', close);
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && document.body.classList.contains('challenges-open')) close();
+    });
+  }
+
+  /* ---- How-it-works sheet (placeholder) ----
+     Bottom sheet opened by "Learn more" on a challenge card. Inner layout
+     reuses the contests-page/-head/-title/-placeholder classes. The real
+     START/ACCEPT explainer content is designed later. */
+  const howto = document.getElementById('howtoSheet');
+  const howtoRoot = document.getElementById('howtoRoot');
+  const howtoBackdrop = document.getElementById('howtoBackdrop');
+  if (howto && howtoRoot) {
+    const closeIcon = '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>';
+    howtoRoot.innerHTML = `
+      <div class="contests-page">
+        <div class="contests-head">
+          <h2 class="contests-title">How it works</h2>
+          <button class="btn btn-glass btn-icon-only btn-md" id="howtoClose" aria-label="Close">${closeIcon}</button>
+        </div>
+        <p class="contests-placeholder">Challenge rules &amp; rewards explained here soon.</p>
+      </div>`;
+
+    const openHowto = () => { document.body.classList.add('howto-open'); howto.setAttribute('aria-hidden', 'false'); };
+    const closeHowto = () => { document.body.classList.remove('howto-open'); howto.setAttribute('aria-hidden', 'true'); };
+    root.querySelectorAll('[data-action="learn"]').forEach((btn) => btn.addEventListener('click', openHowto));
+    howtoRoot.querySelector('#howtoClose').addEventListener('click', closeHowto);
+    if (howtoBackdrop) howtoBackdrop.addEventListener('click', closeHowto);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.body.classList.contains('howto-open')) closeHowto();
     });
   }
 })();

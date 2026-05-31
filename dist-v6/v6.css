@@ -601,6 +601,34 @@ body.settings-detail-open .subpage[data-subpage="settings-detail"] { transform: 
 /* Full Challenges page — slides in over the Challenges sheet (z-index 7). */
 body.challenges-open .subpage[data-subpage="challenges"] { transform: translateX(0); }
 
+/* How-it-works sheet — a dimmed bottom sheet opened from "Learn more" on a
+   challenge card. Slides up over everything (above the contests sheet at 7 and
+   the Challenges subpage at 40/41). Mirrors the flag-popup backdrop pattern. */
+.howto-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 42;
+  background: rgba(0, 0, 0, .5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s var(--ease-out);
+}
+body.howto-open .howto-backdrop { opacity: 1; pointer-events: auto; }
+.howto-sheet {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 43;
+  max-height: 82%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: linear-gradient(180deg, var(--color-blue-dark) 0%, var(--color-blue-deep) 100%);
+  border-radius: 22px 22px 0 0;
+  box-shadow: var(--shadow-sheet);
+  transform: translateY(100%);
+  transition: transform .35s var(--ease-out);
+}
+body.howto-open .howto-sheet { transform: translateY(0); }
+
 /* The feature mounts (#settingsRoot, #settingsDetailRoot) are the flex
    columns that hold the header + scrollable body; each fills the sub-page's
    height so the body's flex-basis:0 resolves against a definite height and

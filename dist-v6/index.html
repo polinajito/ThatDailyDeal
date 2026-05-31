@@ -440,6 +440,13 @@
     <div id="challengesRoot"></div>
   </section>
 
+  <!-- How-it-works sheet (placeholder), opened from "Learn more" on a challenge card.
+       Markup rendered by contests.js into #howtoRoot. -->
+  <div class="howto-backdrop" id="howtoBackdrop" aria-hidden="true"></div>
+  <section class="howto-sheet" id="howtoSheet" role="dialog" aria-modal="true" aria-label="How challenges work" aria-hidden="true">
+    <div id="howtoRoot"></div>
+  </section>
+
   <!-- Lottie player — drives the challenge card's "loopmoney" animation.
        The data is inlined as a global and handed to the player via .load()
        in v6.js, so it works under file:// (a fetched src="…json" is blocked

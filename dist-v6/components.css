@@ -749,13 +749,34 @@
   line-height: 1;
 }
 /* Optional action band — a full-width CTA continuing the dark-green lower
-   section (e.g. "Create Challenge"). Carries its own background now that the
-   parent is transparent. Omitted on cards that aren't actionable. */
+   section (e.g. "Create Challenge"), with an optional subtle "Learn more"
+   link stacked beneath it. Carries its own background now that the parent is
+   transparent. Omitted on cards that aren't actionable. */
 .challenge-mini-cta {
   padding: var(--space-3) var(--space-4) var(--space-4);
   background: color-mix(in srgb, var(--color-green) 70%, #000);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
 }
 .challenge-mini-cta .btn { width: 100%; }
+/* Low-emphasis text link (not a .btn, so the width:100% rule above leaves it
+   auto-width and centred). */
+.challenge-mini-learn {
+  border: 0;
+  background: transparent;
+  padding: var(--space-2);
+  font-family: var(--font-family-primary);
+  font-size:   var(--type-body-small-size);
+  font-weight: 600;
+  color: rgba(255, 255, 255, .85);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.challenge-mini-learn:hover { color: var(--color-white); }
 
 /* ============================================================
    LIST CARD
