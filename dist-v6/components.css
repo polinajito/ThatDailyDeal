@@ -498,3 +498,110 @@
   letter-spacing: var(--type-body-small-tracking);
   color: var(--color-gray-700);
 }
+
+/* ============================================================
+   CHALLENGE CARD
+   Full-bleed promo card that rides the deal filmstrip: brand-green
+   gradient, a "Play & Win" badge, money-bag hero, headline + copy,
+   two reward chips, and a gold CTA. Deck sizing/positioning (full
+   width/height, touch-action) is added by v6.css; this owns the
+   surface and inner layout, so it also renders standalone (library).
+   ============================================================ */
+.challenge-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  min-height: 460px;
+  padding: var(--space-7) var(--space-5);
+  background: linear-gradient(180deg,
+    var(--color-green),
+    color-mix(in srgb, var(--color-green) 62%, #000));
+  color: var(--color-white);
+  text-align: center;
+}
+.challenge-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: 1.5px solid rgba(255, 255, 255, .55);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-family-primary);
+  font-size:   var(--type-label-large-size);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.challenge-hero {
+  display: inline-flex;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, .22));
+}
+.challenge-anim {
+  width: 104px;
+  height: 104px;
+  display: block;
+}
+.challenge-title {
+  margin: 0;
+  max-width: 100%;   /* wrap within the card rather than overflow on one line */
+  font-family: var(--font-family-primary);
+  font-size:      var(--type-display-small-size);
+  font-weight:    var(--type-display-large-weight);   /* 900 */
+  line-height:    var(--type-display-small-lh);
+  letter-spacing: var(--type-display-small-tracking);
+  text-transform: uppercase;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, .25);
+}
+.challenge-sub {
+  margin: 0;
+  max-width: 17em;
+  font-family: var(--font-family-primary);
+  font-size:   var(--type-title-medium-size);
+  font-weight: 600;
+  line-height: 1.35;
+}
+.challenge-rewards {
+  display: flex;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 320px;
+}
+.challenge-reward {
+  flex: 1;
+  min-width: 0;   /* let the two chips share the row width instead of overflowing */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-3);
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+.challenge-reward-amount {
+  font-family: var(--font-family-primary);
+  font-size:   var(--type-headline-large-size);
+  font-weight: 800;
+  line-height: 1;
+  color: color-mix(in srgb, var(--color-green) 76%, #000);
+}
+.challenge-reward-label {
+  font-family: var(--font-family-primary);
+  font-size:   var(--type-label-large-size);
+  font-weight: 600;
+  color: var(--color-ink);
+  opacity: .65;
+}
+.challenge-cta {
+  width: 100%;
+  max-width: 320px;
+}
+.challenge-foot {
+  margin: 0;
+  font-family: var(--font-family-primary);
+  font-size:   var(--type-label-large-size);
+  font-weight: 600;
+  color: rgba(255, 255, 255, .8);
+}

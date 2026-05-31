@@ -673,6 +673,24 @@ code {
 }
 .lib-toast-stage .rich-toast { width: 100%; }
 
+/* Phone-width frame for the full-bleed challenge card. The global
+   border-box reset lives in v6.css (not linked here), so normalise it
+   for the demo so widths/padding match the prototype. */
+.lib-challenge-stage,
+.lib-challenge-stage * { box-sizing: border-box; }
+.lib-challenge-stage {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 14px;
+  background: #2b2f36;
+}
+.lib-challenge-stage .challenge-card {
+  width: 320px;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
 /* Toggle-state pairs: small label + default + arrow + active button. */
 .lib-btn-state-pair {
   display: flex;

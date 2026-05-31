@@ -111,6 +111,23 @@ const DEALS = [
 const isAvailable = (deal) => deal && deal.available !== false;
 const isOnSale    = (deal) => !!(deal && deal.off && deal.old && deal.old > deal.now);
 
+/* ============================================================
+   Deck sequence — the order cards appear in the filmstrip: real deals
+   with a "challenge" interstitial spliced in as the 3rd card.
+   state.index addresses THIS sequence (the track position); each deal
+   keeps its own DEALS index for identity (likes, subscriptions, the
+   "Deal X of N" counter), so inserting the challenge never renumbers
+   the deals.
+   ============================================================ */
+const CHALLENGE_AFTER = 2;  // challenge appears after the 2nd deal (3rd card)
+const SEQUENCE = DEALS.map((deal, dealIdx) => ({ kind: 'deal', deal, dealIdx }));
+SEQUENCE.splice(CHALLENGE_AFTER, 0, { kind: 'challenge' });
+
+const seqAt          = (i) => SEQUENCE[i] || null;
+const currentDeal    = () => { const s = seqAt(state.index); return s && s.kind === 'deal' ? s.deal : null; };
+const currentDealIdx = () => { const s = seqAt(state.index); return s && s.kind === 'deal' ? s.dealIdx : -1; };
+const isChallengeCard = (el) => !!el && el.classList.contains('challenge-card');
+
 function formatRestockDate(iso) {
   if (!iso) return '';
   const d = new Date(iso + 'T00:00:00');
@@ -360,6 +377,63 @@ function buildCard(deal, dealIdx) {
   return card;
 }
 
+/* ============================================================
+   Challenge card — a non-deal interstitial that rides the same
+   filmstrip. Pure promo/CTA card: no video, price, banner, or
+   swipe-up actions (those are guarded off in bindSwipe). Visual lives
+   in components.css (.challenge-*).
+   ============================================================ */
+function buildChallengeCard() {
+  const card = document.createElement('article');
+  card.className = 'challenge-card';
+  card.innerHTML = `
+    <span class="challenge-badge">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M8 21H16M12 17V21M12 17C13.33 17 14.6 16.47 15.54 15.54C16.47 14.6 17 13.33 17 12V4H7V12C7 13.33 7.53 14.6 8.46 15.54C9.4 16.47 10.67 17 12 17ZM3 9C3 9.53 3.21 10.04 3.59 10.41C3.96 10.79 4.47 11 5 11C5.53 11 6.04 10.79 6.41 10.41C6.79 10.04 7 9.53 7 9C7 8.47 6.79 7.96 6.41 7.59C6.04 7.21 5.53 7 5 7C4.47 7 3.96 7.21 3.59 7.59C3.21 7.96 3 8.47 3 9ZM17 9C17 9.53 17.21 10.04 17.59 10.41C17.96 10.79 18.47 11 19 11C19.53 11 20.04 10.79 20.41 10.41C20.79 10.04 21 9.53 21 9C21 8.47 20.79 7.96 20.41 7.59C20.04 7.21 19.53 7 19 7C18.47 7 17.96 7.21 17.59 7.59C17.21 7.96 17 8.47 17 9Z"/>
+      </svg>
+      Play &amp; Win
+    </span>
+
+    <span class="challenge-hero" aria-hidden="true">
+      <lottie-player class="challenge-anim" src="assets/loopmoney.json" autoplay loop background="transparent"></lottie-player>
+    </span>
+
+    <h2 class="challenge-title">Win Real Money</h2>
+    <p class="challenge-sub">Challenge friends to weekly trivia — winner gets cash toward orders.</p>
+
+    <div class="challenge-rewards">
+      <div class="challenge-reward">
+        <span class="challenge-reward-amount">$5.00</span>
+        <span class="challenge-reward-label">New users</span>
+      </div>
+      <div class="challenge-reward">
+        <span class="challenge-reward-amount">$2.00</span>
+        <span class="challenge-reward-label">Existing users</span>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-lg challenge-cta" data-act="challenge">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+      Start a Challenge
+    </button>
+
+    <p class="challenge-foot">Swipe to keep browsing deals →</p>
+  `;
+
+  // Buttons stop the swipe from starting; the CTA shows a placeholder toast
+  // (no challenge flow yet).
+  card.querySelectorAll('[data-act]').forEach((el) =>
+    el.addEventListener('pointerdown', (e) => e.stopPropagation()));
+  card.querySelector('[data-act="challenge"]').addEventListener('click', (e) => {
+    e.stopPropagation();
+    showToast('Challenge coming soon');
+  });
+
+  return card;
+}
+
 function mountDeck() {
   deck.innerHTML = '';
 
@@ -368,11 +442,13 @@ function mountDeck() {
   // cards, so the user can move backwards as well as forwards.
   const track = document.createElement('div');
   track.className = 'deck-track';
-  DEALS.forEach((deal, idx) => track.appendChild(buildCard(deal, idx)));
+  SEQUENCE.forEach((item) => track.appendChild(
+    item.kind === 'challenge' ? buildChallengeCard() : buildCard(item.deal, item.dealIdx)
+  ));
   deck.appendChild(track);
 
   if (state.index < 0) state.index = 0;
-  if (state.index >= DEALS.length) state.index = DEALS.length - 1;
+  if (state.index >= SEQUENCE.length) state.index = SEQUENCE.length - 1;
 
   hideDealsDone();
   positionTrack();
@@ -467,14 +543,15 @@ function bindSwipe(track) {
       // Rubber-band when dragging toward a deal that doesn't exist.
       let dx = drag.dx;
       const atFirst = state.index === 0;
-      const atLast  = state.index === DEALS.length - 1;
+      const atLast  = state.index === SEQUENCE.length - 1;
       if ((dx > 0 && atFirst) || (dx < 0 && atLast)) dx *= 0.25;
       const w = viewportW();
       track.style.transform = `translateX(${-state.index * w + dx}px)`;
       // Drag left (dx<0) advances → current shrinks, next grows, and vice-versa.
       applyDepth(state.index - dx / w);
-    } else if (axis === 'y' && card) {
-      // Only an upward lift is meaningful; ignore downward drag.
+    } else if (axis === 'y' && card && !isChallengeCard(card)) {
+      // Only an upward lift is meaningful; ignore downward drag. The
+      // challenge card has no add/notify action, so it ignores vertical drag.
       const lift = Math.min(0, drag.dy);
       card.classList.add('dragging');
       card.style.transform = `translateY(${lift}px)`;
@@ -494,9 +571,11 @@ function bindSwipe(track) {
   const onUp = () => {
     if (!drag) return;
     const { dx, dy } = drag;
+    const challenge = isChallengeCard(card);
     const committedX = axis === 'x' && Math.abs(dx) > SWIPE_COMMIT;
-    const committedY = axis === 'y' && -dy > LIFT_COMMIT;
-    const tap = !axis && Math.abs(dx) < 6 && Math.abs(dy) < 6;
+    // The challenge card has no add/notify (swipe-up) or details (tap) action.
+    const committedY = axis === 'y' && -dy > LIFT_COMMIT && !challenge;
+    const tap = !axis && Math.abs(dx) < 6 && Math.abs(dy) < 6 && !challenge;
     const soldOut = card && card.classList.contains('sold-out');
 
     clearDrag();
@@ -540,7 +619,7 @@ function goToDeal(targetIndex) {
     positionTrack();
     return;
   }
-  if (targetIndex >= DEALS.length) { // swiped next off the last deal
+  if (targetIndex >= SEQUENCE.length) { // swiped next off the last card
     positionTrack();
     showDealsDone();
     return;
@@ -590,7 +669,7 @@ function updateDots() {
 }
 
 function openDetails() {
-  const d = DEALS[state.index];
+  const d = currentDeal();
   if (!d) return;
 
   dtTitle.textContent    = d.name;
@@ -662,7 +741,7 @@ dtCarousel.addEventListener('scroll', updateDots);
 dtClose.addEventListener('click', closeDetails);
 dtBackdrop.addEventListener('click', closeDetails);
 dtAddToCart.addEventListener('click', () => {
-  const soldOut = !isAvailable(DEALS[state.index]);
+  const soldOut = !isAvailable(currentDeal());
   closeDetails();
   if (soldOut) openNotifySheet();
   else openCartSheet();
@@ -680,7 +759,7 @@ function calcPrices(deal, qty) {
 }
 
 function refreshSheet() {
-  const d = DEALS[state.index];
+  const d = currentDeal();
   const { subtotal, shipping, total, bulkPrice } = calcPrices(d, state.qty);
   csQtyLabel.textContent = `${state.qty} ${state.qty === 1 ? 'piece' : 'pieces'}`;
   csSubtotal.textContent = fmt(subtotal);
@@ -691,7 +770,8 @@ function refreshSheet() {
 }
 
 function openCartSheet() {
-  const d = DEALS[state.index];
+  const d = currentDeal();
+  if (!d) return;
   state.qty = 1;
   csName.textContent = d.name;
   csThumb.src = d.video;
@@ -905,7 +985,7 @@ function applyPushSupportUI() {
 }
 
 function openNotifySheet() {
-  const idx = state.index;
+  const idx = currentDealIdx();
   const d = DEALS[idx];
   if (!d) return;
 

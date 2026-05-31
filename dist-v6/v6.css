@@ -118,6 +118,7 @@ body.header-solid .deck {
    unreliable in Safari/Chromium once the card has a transform (under-state
    or fly-out), which strips the rounded clip from the <video> layer. */
 body.header-solid .deal-card,
+body.header-solid .challenge-card,
 body.header-solid .card-video,
 body.header-solid .card-overlay {
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
@@ -369,14 +370,17 @@ body.deals-complete .deck { display: none; }
 .deck-track.dragging { transition: none; }
 .deck-track.dragging .deal-card { transition: none; }
 
-.deal-card {
+/* Deck cards (deal + challenge interstitial) share the filmstrip
+   structure: each fills the viewport and opts out of native panning so
+   the deck owns both axes. The challenge card's surface lives in
+   components.css; .deal-card keeps the video-card background. */
+.deal-card,
+.challenge-card {
   position: relative;
   flex: 0 0 100%;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #111;
-  border-radius: 0;
   will-change: transform;
   /* Carries the vertical "lift" toward the swipe-up action; snaps back when
      the gesture is released. */
@@ -384,6 +388,10 @@ body.deals-complete .deck { display: none; }
   /* The deck owns both axes (horizontal = navigate, up = add/notify), so
      opt out of native panning — nothing inside the deck scrolls. */
   touch-action: none;
+}
+.deal-card {
+  background: #111;
+  border-radius: 0;
 }
 .deal-card.dragging { transition: none; }
 
