@@ -175,6 +175,8 @@ const csPlus      = document.getElementById('csPlus');
 const csSubtotal  = document.getElementById('csSubtotal');
 const csShipping  = document.getElementById('csShipping');
 const csTotal     = document.getElementById('csTotal');
+const csTier1     = document.getElementById('csTier1');
+const csTier2     = document.getElementById('csTier2');
 const csTier2Perk = document.getElementById('csTier2Perk');
 const csConfirm   = document.getElementById('csConfirm');
 const csDismiss   = document.getElementById('csDismiss');
@@ -816,8 +818,17 @@ function refreshSheet() {
   csSubtotal.textContent = fmt(subtotal);
   csShipping.textContent = shipping === 0 ? 'Free' : fmt(shipping);
   csTotal.textContent    = fmt(total);
-  csTier2Perk.textContent = `Free Shipping + Price drops to ${fmt(bulkPrice)} each`;
+  csTier2Perk.textContent = `Free shipping + ${fmt(bulkPrice)} each`;
   csMinus.disabled = state.qty <= 1;
+
+  // Highlight whichever bundle the current qty falls into, mirroring the
+  // FREE_SHIP_AT / BULK_AT thresholds used by calcPrices.
+  const tier1Active = state.qty >= FREE_SHIP_AT && state.qty < BULK_AT;
+  const tier2Active = state.qty >= BULK_AT;
+  csTier1.classList.toggle('is-active', tier1Active);
+  csTier2.classList.toggle('is-active', tier2Active);
+  csTier1.setAttribute('aria-pressed', String(tier1Active));
+  csTier2.setAttribute('aria-pressed', String(tier2Active));
 }
 
 function openCartSheet() {
@@ -842,6 +853,10 @@ csMinus.addEventListener('click', () => {
 csPlus.addEventListener('click', () => {
   state.qty += 1; refreshSheet();
 });
+// Tapping a bundle jumps qty to that tier's entry point — the exact
+// threshold that unlocks its perk. The stepper still handles fine-tuning.
+csTier1.addEventListener('click', () => { state.qty = FREE_SHIP_AT; refreshSheet(); });
+csTier2.addEventListener('click', () => { state.qty = BULK_AT; refreshSheet(); });
 csDismiss.addEventListener('click', closeCartSheet);
 backdrop.addEventListener('click', closeCartSheet);
 

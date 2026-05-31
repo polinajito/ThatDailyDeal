@@ -299,23 +299,30 @@
       <button class="cs-qty-btn" id="csPlus" aria-label="Increase quantity">+</button>
     </div>
 
-    <h3 class="cs-heading">Quantity Discounts</h3>
+    <h3 class="cs-heading">Buy more, save more</h3>
+    <p class="cs-hint">Tap an option to jump to that bundle</p>
 
-    <div class="cs-tier">
-      <span class="cs-tier-left">
-        <span class="cs-tier-plus">+</span>
-        <span>4-11 pieces</span>
+    <button type="button" class="cs-tier" id="csTier1" aria-pressed="false">
+      <span class="cs-tier-info">
+        <span class="cs-tier-qty">4–11 pieces</span>
+        <span class="cs-tier-perk">Unlocks free shipping</span>
       </span>
-      <span class="cs-tier-perk">Unlocks Free Shipping</span>
-    </div>
+      <span class="cs-tier-ind" aria-hidden="true">
+        <svg class="cs-ind-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+        <svg class="cs-ind-check" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+      </span>
+    </button>
 
-    <div class="cs-tier">
-      <span class="cs-tier-left">
-        <span class="cs-tier-plus">+</span>
-        <span>12+ pieces</span>
+    <button type="button" class="cs-tier" id="csTier2" aria-pressed="false">
+      <span class="cs-tier-info">
+        <span class="cs-tier-qty">12+ pieces</span>
+        <span class="cs-tier-perk" id="csTier2Perk">Free shipping + $0 each</span>
       </span>
-      <span class="cs-tier-perk" id="csTier2Perk">Free Shipping + Price drops to $0 each</span>
-    </div>
+      <span class="cs-tier-ind" aria-hidden="true">
+        <svg class="cs-ind-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+        <svg class="cs-ind-check" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>
+      </span>
+    </button>
 
     <div class="cs-totals">
       <div class="cs-row"><span>Added to cart</span><span id="csSubtotal">$0.00</span></div>
