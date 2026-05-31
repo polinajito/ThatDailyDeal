@@ -66,7 +66,7 @@ const DEALS = [
     now: 14.99, old: 49.99, off: 70,
     description: 'Lightweight, water-resistant carry-on built for daily commutes and weekend trips. Padded laptop sleeve, hidden anti-theft pocket, and a luggage pass-through strap. Holds up to 22 liters without bulking out.',
     photos: [
-      { type: 'video', src: 'assets/pack.mp4' },
+      { type: 'placeholder', label: 'Main view' },
       { type: 'placeholder', label: 'Front view' },
       { type: 'placeholder', label: 'In use' },
     ],
@@ -77,7 +77,7 @@ const DEALS = [
     now: 9.99, old: 29.99, off: 67,
     description: 'Wraps comfortably around your neck and pushes 360° airflow without messing up your hair. Three speeds, USB-C rechargeable, runs up to 8 hours on a charge. Whisper-quiet at 28 dB.',
     photos: [
-      { type: 'video', src: 'assets/neck_fan.mp4' },
+      { type: 'placeholder', label: 'Main view' },
       { type: 'placeholder', label: 'Worn view' },
       { type: 'placeholder', label: 'Charging port' },
     ],
@@ -88,7 +88,7 @@ const DEALS = [
     now: 39.99,
     description: 'Premium carbon-weave shell, YKK zippers, and a magnetic chest clip that keeps the straps in place on the move. Fits a 16" laptop, a full change of clothes, and a slim toiletry kit. Lifetime warranty against manufacturing defects.',
     photos: [
-      { type: 'video', src: 'assets/pack.mp4' },
+      { type: 'placeholder', label: 'Main view' },
       { type: 'placeholder', label: 'Carbon shell detail' },
       { type: 'placeholder', label: 'Interior layout' },
     ],
@@ -101,7 +101,7 @@ const DEALS = [
     restockAt: '2026-05-15',
     description: 'Memory foam contoured for your lower back. Adjustable strap fits car seats, office chairs, and gaming chairs. Breathable mesh cover unzips for machine washing.',
     photos: [
-      { type: 'video', src: 'assets/lumbar_support.mp4' },
+      { type: 'placeholder', label: 'Main view' },
       { type: 'placeholder', label: 'On a chair' },
       { type: 'placeholder', label: 'Foam profile' },
     ],
@@ -191,7 +191,12 @@ const dtOld       = document.getElementById('dtOld');
 const dtDiscount  = document.getElementById('dtDiscount');
 const dtDesc      = document.getElementById('dtDesc');
 const dtClose     = document.getElementById('dtClose');
-const dtAddToCart = document.getElementById('dtAddToCart');
+const dtLike      = document.getElementById('dtLike');
+const dtShare     = document.getElementById('dtShare');
+const dtBuyNow    = document.getElementById('dtBuyNow');
+const dtBuyNowPrice = document.getElementById('dtBuyNowPrice');
+const dtBuyOldPrice = document.getElementById('dtBuyOldPrice');
+const dtBuyLabel  = document.getElementById('dtBuyLabel');
 const dtRestock   = document.getElementById('dtRestock');
 const dtRestockDate = document.getElementById('dtRestockDate');
 
@@ -325,32 +330,15 @@ function buildCard(deal, dealIdx) {
   const likeBtn = card.querySelector('[data-act="like"]');
   likeBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    if (state.liked.has(dealIdx)) state.liked.delete(dealIdx);
-    else state.liked.add(dealIdx);
-    likeBtn.classList.toggle('is-liked', state.liked.has(dealIdx));
-    showToast(state.liked.has(dealIdx) ? 'Liked' : 'Unliked');
+    const liked = toggleLike(dealIdx);
+    likeBtn.classList.toggle('is-liked', liked);
+    // Keep the details-sheet heart in sync if it's open for this deal.
+    if (currentDealIdx() === dealIdx) dtLike.classList.toggle('is-active', liked);
   });
 
-  card.querySelector('[data-act="share"]').addEventListener('click', async (e) => {
+  card.querySelector('[data-act="share"]').addEventListener('click', (e) => {
     e.stopPropagation();
-    const priceText = onSale
-      ? `${fmt(deal.now)} (was ${fmt(deal.old)})`
-      : fmt(deal.now);
-    const data = {
-      title: deal.name,
-      text: `Check out this deal: ${deal.name} for ${priceText}`,
-      url: location.href,
-    };
-    if (navigator.share) {
-      try { await navigator.share(data); } catch { /* user cancelled */ }
-    } else {
-      try {
-        await navigator.clipboard.writeText(`${data.text} ${data.url}`);
-        showToast('Link copied');
-      } catch {
-        showToast('Share unavailable');
-      }
-    }
+    shareDeal(deal);
   });
 
   card.querySelector('[data-act="mute"]').addEventListener('click', (e) => {
@@ -395,7 +383,7 @@ function buildChallengeCard() {
     </span>
 
     <span class="challenge-hero" aria-hidden="true">
-      <lottie-player class="challenge-anim" src="assets/loopmoney.json" autoplay loop background="transparent"></lottie-player>
+      <lottie-player class="challenge-anim" autoplay loop background="transparent"></lottie-player>
     </span>
 
     <h2 class="challenge-title">Win Real Money</h2>
@@ -430,6 +418,19 @@ function buildChallengeCard() {
     e.stopPropagation();
     showToast('Challenge coming soon');
   });
+
+  // Feed the player the inlined animation data rather than a fetched src:
+  // fetching a local .json is blocked by CORS under file://. whenDefined
+  // ensures the element is upgraded; updateComplete then waits for its first
+  // render so .load() has a container to draw into (the card is built
+  // detached, so loading too early throws and shows the error icon).
+  const player = card.querySelector('.challenge-anim');
+  if (player && window.__loopmoneyLottie) {
+    const data = JSON.stringify(window.__loopmoneyLottie);
+    customElements.whenDefined('lottie-player')
+      .then(() => player.updateComplete || Promise.resolve())
+      .then(() => player.load(data));
+  }
 
   return card;
 }
@@ -642,14 +643,12 @@ function goToDeal(targetIndex) {
 function buildSlide(photo) {
   const slide = document.createElement('div');
   slide.className = 'dt-slide';
-  if (photo.type === 'video') {
-    const v = document.createElement('video');
-    v.src = photo.src;
-    v.autoplay = true;
-    v.loop = true;
-    v.muted = true;
-    v.playsInline = true;
-    slide.appendChild(v);
+  if (photo.src) {
+    // Real product photo (none yet — placeholders are used until assets land).
+    const img = document.createElement('img');
+    img.src = photo.src;
+    img.alt = photo.label || '';
+    slide.appendChild(img);
   } else {
     const ph = document.createElement('div');
     ph.className = 'dt-slide-placeholder';
@@ -666,6 +665,37 @@ function updateDots() {
   dtDots.querySelectorAll('.dt-dot').forEach((dot, i) => {
     dot.classList.toggle('active', i === idx);
   });
+}
+
+/* Shared like/share behavior — used by both the deck card action stack and
+   the details-sheet CTA bar so the two stay in sync and we avoid duplication. */
+function toggleLike(idx) {
+  const liked = !state.liked.has(idx);
+  if (liked) state.liked.add(idx);
+  else state.liked.delete(idx);
+  showToast(liked ? 'Liked' : 'Unliked');
+  return liked;
+}
+
+async function shareDeal(deal) {
+  const priceText = isOnSale(deal)
+    ? `${fmt(deal.now)} (was ${fmt(deal.old)})`
+    : fmt(deal.now);
+  const data = {
+    title: deal.name,
+    text: `Check out this deal: ${deal.name} for ${priceText}`,
+    url: location.href,
+  };
+  if (navigator.share) {
+    try { await navigator.share(data); } catch { /* user cancelled */ }
+  } else {
+    try {
+      await navigator.clipboard.writeText(`${data.text} ${data.url}`);
+      showToast('Link copied');
+    } catch {
+      showToast('Share unavailable');
+    }
+  }
 }
 
 function openDetails() {
@@ -711,19 +741,30 @@ function openDetails() {
   } else {
     dtRestock.hidden = true;
   }
-  dtAddToCart.innerHTML = soldOut
-    ? `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-         <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
-         <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-       </svg>
-       Notify me when back in stock`
-    : `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-         <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
-         <line x1="3" y1="6" x2="21" y2="6"/>
-         <path d="M16 10a4 4 0 0 1-8 0"/>
-       </svg>
-       Add to Cart`;
-  dtAddToCart.setAttribute('aria-label', soldOut ? 'Notify me when back in stock' : 'Add to cart');
+  // Buy-now CTA: "Buy now  $now  $old" (old struck through). When sold out it
+  // becomes a notify prompt with no price.
+  if (soldOut) {
+    dtBuyLabel.textContent = 'Notify me when back in stock';
+    dtBuyNowPrice.hidden = true;
+    dtBuyOldPrice.hidden = true;
+    dtBuyNow.setAttribute('aria-label', 'Notify me when back in stock');
+  } else {
+    dtBuyLabel.textContent = 'Buy now';
+    dtBuyNowPrice.textContent = fmt(d.now);
+    dtBuyNowPrice.hidden = false;
+    if (dOnSale) {
+      dtBuyOldPrice.textContent = fmt(d.old);
+      dtBuyOldPrice.hidden = false;
+    } else {
+      dtBuyOldPrice.hidden = true;
+    }
+    dtBuyNow.setAttribute('aria-label', `Buy now ${fmt(d.now)}`);
+  }
+
+  // Reflect this deal's like state on the heart toggle.
+  const liked = state.liked.has(currentDealIdx());
+  dtLike.classList.toggle('is-active', liked);
+  dtLike.setAttribute('aria-pressed', String(liked));
 
   document.body.classList.add('details-open');
 
@@ -740,7 +781,23 @@ function closeDetails() {
 dtCarousel.addEventListener('scroll', updateDots);
 dtClose.addEventListener('click', closeDetails);
 dtBackdrop.addEventListener('click', closeDetails);
-dtAddToCart.addEventListener('click', () => {
+
+dtLike.addEventListener('click', () => {
+  const idx = currentDealIdx();
+  if (idx < 0) return;
+  const liked = toggleLike(idx);
+  dtLike.classList.toggle('is-active', liked);
+  dtLike.setAttribute('aria-pressed', String(liked));
+  // Keep the deck card heart in sync.
+  currentCard()?.querySelector('[data-act="like"]')?.classList.toggle('is-liked', liked);
+});
+
+dtShare.addEventListener('click', () => {
+  const d = currentDeal();
+  if (d) shareDeal(d);
+});
+
+dtBuyNow.addEventListener('click', () => {
   const soldOut = !isAvailable(currentDeal());
   closeDetails();
   if (soldOut) openNotifySheet();
