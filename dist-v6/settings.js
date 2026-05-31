@@ -15,7 +15,8 @@
   const page = document.getElementById('settingsPage');
   const detailRoot = document.getElementById('settingsDetailRoot');
   const detailPage = document.getElementById('settingsDetailPage');
-  if (!root || !page) return;
+  const confirmRoot = document.getElementById('confirmRoot');
+  if (!root || !page || !confirmRoot) return;
 
   /* ---- Persistence (mirrors tdd.subscriptions in v6.js) ---- */
   const SETTINGS_KEY = 'tdd.settings';
@@ -125,17 +126,21 @@
           ${destructiveRow({ name: 'trash',  label: 'Request Account Deletion', action: 'delete' })}
         </div>
       </section>
-    </div>
-
-    <div class="confirm-backdrop" id="confirmBackdrop"></div>
-    <div class="confirm-sheet" id="confirmSheet" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
-      <div class="confirm-title" id="confirmTitle"></div>
-      <div class="confirm-sub" id="confirmSub"></div>
-      <div class="confirm-actions">
-        <button class="btn btn-destructive btn-lg" id="confirmOk"></button>
-        <button class="btn btn-secondary btn-ghost btn-lg" id="confirmCancel">Cancel</button>
-      </div>
     </div>`;
+
+  /* ---- Confirm sheet — rendered at top level so it overlays both sub-pages ---- */
+  if (confirmRoot) {
+    confirmRoot.innerHTML = `
+      <div class="confirm-backdrop" id="confirmBackdrop"></div>
+      <div class="confirm-sheet" id="confirmSheet" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+        <div class="confirm-title" id="confirmTitle"></div>
+        <div class="confirm-sub" id="confirmSub"></div>
+        <div class="confirm-actions">
+          <button class="btn btn-destructive btn-lg" id="confirmOk"></button>
+          <button class="btn btn-secondary btn-ghost btn-lg" id="confirmCancel">Cancel</button>
+        </div>
+      </div>`;
+  }
 
   /* ---- Apply the persisted mute default to live playback ---- */
   function applyMute(on) {
@@ -170,19 +175,19 @@
     });
   });
 
-  /* ---- Confirm sheet (reused for destructive actions) ---- */
-  const confirmSheet = root.querySelector('#confirmSheet');
-  const confirmBackdrop = root.querySelector('#confirmBackdrop');
-  const confirmTitle = root.querySelector('#confirmTitle');
-  const confirmSub = root.querySelector('#confirmSub');
-  const confirmOk = root.querySelector('#confirmOk');
-  const confirmCancel = root.querySelector('#confirmCancel');
+  /* ---- Confirm sheet (reused for destructive actions + discard prompt) ---- */
+  const confirmTitle = confirmRoot.querySelector('#confirmTitle');
+  const confirmSub = confirmRoot.querySelector('#confirmSub');
+  const confirmOk = confirmRoot.querySelector('#confirmOk');
+  const confirmCancel = confirmRoot.querySelector('#confirmCancel');
+  const confirmBackdrop = confirmRoot.querySelector('#confirmBackdrop');
   let onConfirm = null;
 
-  function openConfirm({ title, sub, okLabel, onOk }) {
+  function openConfirm({ title, sub, okLabel, okClass = 'btn-destructive', onOk }) {
     confirmTitle.textContent = title;
     confirmSub.textContent = sub;
     confirmOk.textContent = okLabel;
+    confirmOk.className = `btn ${okClass} btn-lg`;
     onConfirm = onOk;
     document.body.classList.add('confirm-open');
   }
@@ -242,12 +247,27 @@
       <img class="keyboard-mock" src="assets/keyboard.png" alt="" aria-hidden="true" draggable="false">`;
     document.body.classList.add('settings-detail-open');
     detailPage.setAttribute('aria-hidden', 'false');
-    detailRoot.querySelector('#detailBack').addEventListener('click', closeDetail);
-    detailRoot.querySelector('#detailForm').addEventListener('submit', (e) => e.preventDefault());
 
-    /* Keyboard mockup: slide up while a (non-readonly) field is focused. */
     const form = detailRoot.querySelector('#detailForm');
     const keyboard = detailRoot.querySelector('.keyboard-mock');
+    const saveBtn = detailRoot.querySelector('#detailSave');
+    const inputs = [...form.querySelectorAll('.field-input[name]')];
+
+    // Dirty tracking — Save is enabled only when a value differs from its
+    // initial state (typing then reverting counts as clean again).
+    const initial = {};
+    inputs.forEach((i) => { initial[i.name] = i.value; });
+    const isDirty = () => inputs.some((i) => !i.readOnly && i.value !== initial[i.name]);
+    function refreshSave() {
+      const clean = !isDirty();
+      saveBtn.classList.toggle('is-disabled', clean);
+      saveBtn.setAttribute('aria-disabled', String(clean));
+    }
+    refreshSave(); // starts disabled — nothing changed yet
+    form.addEventListener('submit', (e) => e.preventDefault());
+    form.addEventListener('input', refreshSave);
+
+    /* Keyboard mockup: slide up while a (non-readonly) field is focused. */
     // Tapping the keyboard image keeps the field focused (don't blur).
     keyboard.addEventListener('mousedown', (e) => e.preventDefault());
     form.addEventListener('focusin', (e) => {
@@ -267,21 +287,39 @@
         }
       }, 0);
     });
-    detailRoot.querySelector('#detailSave').addEventListener('click', () => {
+
+    // Save — tapping while disabled explains why; otherwise persist + return.
+    saveBtn.addEventListener('click', () => {
+      if (!isDirty()) { showToast("You haven't changed anything — nothing to save"); return; }
       const data = {};
-      detailRoot.querySelectorAll('.field-input[name]').forEach((inp) => {
-        if (!inp.readOnly) data[inp.name] = inp.value;
-      });
+      inputs.forEach((i) => { if (!i.readOnly) data[i.name] = i.value; });
       saveProfile(key, data);
       showToast('Saved');
       closeDetail();
     });
+
+    // Back / Escape — warn before discarding unsaved edits.
+    requestCloseDetail = () => {
+      if (isDirty()) {
+        openConfirm({
+          title: 'Discard changes?',
+          sub: "Your edits will be lost if you leave without saving.",
+          okLabel: 'Discard',
+          onOk: closeDetail,
+        });
+      } else {
+        closeDetail();
+      }
+    };
+    detailRoot.querySelector('#detailBack').addEventListener('click', () => requestCloseDetail());
   }
   function closeDetail() {
     document.body.classList.remove('settings-detail-open');
     document.body.classList.remove('keyboard-up');
     if (detailPage) detailPage.setAttribute('aria-hidden', 'true');
   }
+  // Reassigned per detail page (dirty-aware); defaults to a plain close.
+  let requestCloseDetail = closeDetail;
 
   /* ---- Row actions ---- */
   const ACTIONS = {
@@ -306,11 +344,11 @@
     btn.addEventListener('click', () => { const fn = ACTIONS[btn.dataset.action]; if (fn) fn(); });
   });
 
-  /* ---- Escape unwinds the stack: detail → confirm → settings ---- */
+  /* ---- Escape unwinds the stack: confirm → detail (dirty-aware) → settings ---- */
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
-    if (document.body.classList.contains('settings-detail-open')) closeDetail();
-    else if (document.body.classList.contains('confirm-open')) closeConfirm();
+    if (document.body.classList.contains('confirm-open')) closeConfirm();
+    else if (document.body.classList.contains('settings-detail-open')) requestCloseDetail();
     else if (document.body.classList.contains('settings-open')) closeSettings();
   });
 })();

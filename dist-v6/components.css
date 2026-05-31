@@ -139,6 +139,16 @@
 .btn-destructive.btn-ghost { color: var(--color-red); }
 .btn-destructive.btn-ghost:hover { background: color-mix(in srgb, var(--color-red) 8%, transparent); }
 
+/* Disabled look — visual only. Keep the element clickable (use .is-disabled
+   + aria-disabled, NOT the disabled attribute) so a tap can still explain why
+   it's inert (e.g. "nothing to save"). */
+.btn.is-disabled {
+  opacity: .45;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.btn.is-disabled:active { transform: none; }
+
 /* Ghost — transparent fill, colored border + text. Composes on top of
    a color variant: .btn-primary.btn-ghost or .btn-secondary.btn-ghost. */
 .btn-ghost {
