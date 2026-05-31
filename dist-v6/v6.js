@@ -218,7 +218,6 @@ const state = {
   index: 0,
   muted: true,
   paused: false,
-  cartCount: 0,
   liked: new Set(),
   qty: 1,
   notifyOpenForIdx: null,
@@ -811,6 +810,70 @@ function calcPrices(deal, qty) {
   return { unit, subtotal, shipping, total: subtotal + shipping, bulkPrice };
 }
 
+/* ----- Cart store -----------------------------------------------------
+   One entry per distinct deal: { dealIdx, qty }. The add-to-cart sheet
+   (this file) writes here; the Cart tab (cart.js, a separate classic
+   script) reads + edits here. Both go through window.TDDCart so the
+   feature file stays decoupled from these module-scoped helpers. Every
+   mutation fires a 'cart:change' event the Cart tab re-renders on, and
+   keeps the nav badge in sync. */
+const cart = [];
+
+const cartTotalQty = () => cart.reduce((sum, item) => sum + item.qty, 0);
+
+function syncCartBadge(animate) {
+  cartBadge.textContent = String(cartTotalQty());
+  if (animate) {
+    cartBadge.animate(
+      [{ transform: 'scale(1)' }, { transform: 'scale(1.4)' }, { transform: 'scale(1)' }],
+      { duration: 320, easing: 'cubic-bezier(.22,.61,.36,1)' }
+    );
+  }
+}
+
+function emitCartChange() {
+  window.dispatchEvent(new CustomEvent('cart:change'));
+}
+
+function addToCart(dealIdx, qty) {
+  if (dealIdx < 0 || qty < 1) return;
+  const existing = cart.find((item) => item.dealIdx === dealIdx);
+  if (existing) existing.qty += qty;
+  else cart.push({ dealIdx, qty });
+  syncCartBadge(true);
+  emitCartChange();
+}
+
+function setCartQty(dealIdx, qty) {
+  const item = cart.find((i) => i.dealIdx === dealIdx);
+  if (!item) return;
+  if (qty < 1) { removeFromCart(dealIdx); return; }
+  item.qty = qty;
+  syncCartBadge(false);
+  emitCartChange();
+}
+
+function removeFromCart(dealIdx) {
+  const i = cart.findIndex((it) => it.dealIdx === dealIdx);
+  if (i === -1) return;
+  cart.splice(i, 1);
+  syncCartBadge(false);
+  emitCartChange();
+}
+
+// Public surface for cart.js — getItems hands over deal objects already
+// resolved from DEALS so the feature file never touches the catalog.
+window.TDDCart = {
+  getItems: () => cart.map((item) => ({ dealIdx: item.dealIdx, qty: item.qty, deal: DEALS[item.dealIdx] })),
+  totalQty: cartTotalQty,
+  setQty: setCartQty,
+  remove: removeFromCart,
+  calcPrices,
+  fmt,
+  isOnSale,
+  constants: { SHIPPING_BASE, FREE_SHIP_AT, BULK_AT, BULK_RATIO },
+};
+
 function refreshSheet() {
   const d = currentDeal();
   const { subtotal, shipping, total, bulkPrice } = calcPrices(d, state.qty);
@@ -862,12 +925,7 @@ backdrop.addEventListener('click', closeCartSheet);
 
 csConfirm.addEventListener('click', () => {
   const qty = state.qty;
-  state.cartCount += qty;
-  cartBadge.textContent = String(state.cartCount);
-  cartBadge.animate(
-    [{ transform: 'scale(1)' }, { transform: 'scale(1.4)' }, { transform: 'scale(1)' }],
-    { duration: 320, easing: 'cubic-bezier(.22,.61,.36,1)' }
-  );
+  addToCart(currentDealIdx(), qty);
   showToast(`Added ×${qty}`);
   closeCartSheet();
   // Stay on the current deal — the user can keep scrubbing the deck.

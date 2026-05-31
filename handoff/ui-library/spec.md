@@ -473,6 +473,108 @@ White card: circular gold-tinted icon, bold title, gray supporting text. High-st
 
 ---
 
+### 2.9 Stepper
+
+Compact quantity control on a liquid-glass pill: a round `−` button, the current value, a round `+`. Used by the cart line to edit item amounts; reusable wherever a small numeric stepper is needed.
+
+#### Base — `.stepper`
+
+| Property      | Value                                                            |
+| ------------- | --------------------------------------------------------------- |
+| Layout        | `inline-flex`, items centered, `gap: --space-2`                 |
+| Background    | `--glass-bg` + `--glass-border` + `--glass-blur` (primary glass) |
+| Border radius | `--radius-pill`                                                 |
+| Padding       | `--space-1`                                                     |
+
+#### Children
+
+| Child            | Properties                                                                                                  |
+| ---------------- | ----------------------------------------------------------------------------------------------------------- |
+| `.stepper-btn`   | 28×28px, `--radius-circle`, `rgba(255,255,255,.12)` fill (→ `.22` on hover), white icon, `:active` scales to .9, no shrink. |
+| `.stepper-value` | **Body Medium @ weight 700** / `--color-white`, `min-width: 1.5ch`, centered.                               |
+
+#### States
+
+| State                  | Effect                              |
+| ---------------------- | ----------------------------------- |
+| `.stepper-btn:disabled`| `opacity: .35` — disable `−` at qty 1. |
+
+**Source:** `components.css` (`.stepper`, `.stepper-btn`, `.stepper-value`).
+
+---
+
+### 2.10 Cart line
+
+One item in the cart: a liquid-glass row with a media thumb, the product name + a remove control, a price cluster, a quantity `.stepper`, and the line total. Stack several in a `.cart-list` (column, `gap: --space-3`).
+
+#### Base — `.cart-line`
+
+| Property      | Value                                                            |
+| ------------- | --------------------------------------------------------------- |
+| Layout        | `grid`, `grid-template-columns: 56px 1fr`, `gap: --space-3`      |
+| Background    | `--glass-bg` + `--glass-border` + `--glass-blur` + `--glass-shadow` |
+| Border radius | `--radius-lg`                                                   |
+| Padding       | `--space-3`                                                    |
+| Text color    | `--color-white`                                                |
+
+#### Children
+
+| Child                | Properties                                                                                                  |
+| -------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `.cart-line-thumb`   | 56×56px, `--radius-md`, `object-fit: cover` (a `<video>` in the prototype).                                  |
+| `.cart-line-body`    | Flex column, `min-width: 0`, `gap: --space-2`.                                                               |
+| `.cart-line-top`     | Name + remove, space-between.                                                                                |
+| `.cart-line-name`    | **Title Small @ weight 700** / `--color-white`.                                                             |
+| `.cart-line-remove`  | 28×28px, `--radius-circle`, `rgba(255,255,255,.55)` icon (→ white + faint fill on hover). Trash glyph.       |
+| `.cart-line-prices`  | Baseline-aligned, wrapping cluster: now + old + badges.                                                      |
+| `.cart-line-now`     | **Body Large @ weight 800** / `--color-white` — unit price paid now.                                        |
+| `.cart-line-old`     | **Body Small @ weight 400** / `rgba(255,255,255,.6)`, strikethrough — pre-deal reference price.             |
+| `.cart-line-tag`     | Gold pill (`--color-gold` bg, `--color-ink` text), Label Medium @ 800 — flags a bulk-price unlock.          |
+| `.cart-line-foot`    | Stepper + line total, space-between.                                                                         |
+| `.cart-line-total`   | **Body Medium @ weight 700** / `rgba(255,255,255,.85)`.                                                      |
+
+#### Reuse
+
+Pulls in `.pp-discount` (the red sale badge) and `.stepper` rather than redefining them.
+
+**Source:** `components.css` (`.cart-line` + children, `.cart-list`).
+
+---
+
+### 2.11 Cart summary
+
+Totals panel for the cart / checkout. A stack of label/value rows; modifiers flag the discount and the final total. Subtotal − You saved + Shipping reconciles to Total. Usually followed by a primary `.btn` checkout button.
+
+#### Base — `.cart-summary`
+
+| Property      | Value                                                            |
+| ------------- | --------------------------------------------------------------- |
+| Layout        | Flex column, `gap: --space-2`                                    |
+| Background    | `--glass-bg` + `--glass-border` + `--glass-blur` + `--glass-shadow` |
+| Border radius | `--radius-lg`                                                   |
+| Padding       | `--space-4`                                                    |
+| Text color    | `--color-white`                                                |
+
+#### Children + modifiers
+
+| Element                | Properties                                                                                       |
+| ---------------------- | ------------------------------------------------------------------------------------------------ |
+| `.cart-sum-row`        | Label/value, space-between. **Body Medium @ weight 600** / `rgba(255,255,255,.85)`.              |
+| `.cart-sum-row.is-saved` | `--color-green`, weight 700 — the combined discount row (shown only when savings > 0).         |
+| `.cart-sum-row.is-total` | Hairline top border (`rgba(255,255,255,.18)`), **Title Small @ weight 800** / `--color-white`. |
+
+**Source:** `components.css` (`.cart-summary`, `.cart-sum-row` + `.is-saved` / `.is-total`).
+
+---
+
+### 2.12 Cart empty
+
+Centered placeholder shown when the cart has no items: a muted cart icon, a `.cart-empty-title` (Title Large @ 800), and a `.cart-empty-sub` (Body Medium @ 500, `rgba(255,255,255,.6)`).
+
+**Source:** `components.css` (`.cart-empty`, `.cart-empty-icon`, `.cart-empty-title`, `.cart-empty-sub`).
+
+---
+
 ## Part 3 — Cross-cutting contracts
 
 ### Tokens over literals
@@ -488,7 +590,7 @@ Every component above binds to tokens. Implementations on the Flutter side shoul
 
 ### Liquid-glass surfaces
 
-Four components adopt the primary glass bundle and should feel like one material: `.price-pill`, `.menu`, `.deals-banner`, and `.btn` with `.btn-glass`. All four pull from the same four tokens (`--glass-bg`, `--glass-border`, `--glass-blur`, `--glass-shadow`). If a fifth glass surface is needed, reuse those tokens — don't redefine the values inline.
+Several components adopt the primary glass bundle and should feel like one material: `.price-pill`, `.menu`, `.deals-banner`, `.btn` with `.btn-glass`, and the cart family (`.stepper`, `.cart-line`, `.cart-summary`). All pull from the same four tokens (`--glass-bg`, `--glass-border`, `--glass-blur`, `--glass-shadow`). If a new glass surface is needed, reuse those tokens — don't redefine the values inline.
 
 ### Showcase parity
 
