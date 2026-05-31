@@ -944,9 +944,19 @@ body.details-open .details-sheet { transform: translateY(0); }
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 22px;
+  margin-bottom: 14px;
   flex-wrap: wrap;
 }
+/* Like + Share — secondary actions sitting on one line under the price.
+   Button visuals reuse the .btn family (components.css); this only sets
+   the row layout and lets the two buttons share the width evenly. */
+.dt-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.dt-actions .btn { flex: 1; }
 .dt-now {
   /* Headline Large @ weight 800, lh 1 */
   font-size:      var(--type-headline-large-size);
@@ -996,9 +1006,9 @@ body.details-open .details-sheet { transform: translateY(0); }
 }
 
 /* Sticky CTA bar — always visible regardless of scroll position.
-   Action row: like + share icon buttons next to a wide Buy-now button.
+   Holds the wide Buy-now button (like + share moved up under the price).
    Button visuals come from components.css (.btn family); this only handles
-   the prototype-specific row layout and the Buy-now price content. */
+   the prototype-specific bar layout and the Buy-now price content. */
 .dt-cta-bar {
   flex: 0 0 auto;
   display: flex;
