@@ -434,7 +434,9 @@ body.deals-complete .deck { display: none; }
   top: 110px;
   left: 50%;
   transform: translateX(-50%) translateY(-8px);
-  z-index: 8;
+  /* Above the sub-page (40) and its sheets (51) so transient feedback is
+     never occluded — e.g. tapping a Settings row. */
+  z-index: 60;
   transition: opacity .25s var(--ease-out), transform .25s var(--ease-out);
 }
 .toast.show {
@@ -446,7 +448,7 @@ body.deals-complete .deck { display: none; }
   top: 88px;
   left: var(--space-4);
   right: var(--space-4);
-  z-index: 9;
+  z-index: 60; /* same as .toast — confirmations stay above the sub-page/sheets */
   transform: translateY(-12px);
   transition: opacity .28s var(--ease-out), transform .28s var(--ease-out);
 }
@@ -536,7 +538,206 @@ body.flag-popup-open .flag-popup {
   line-height:    var(--type-label-small-lh);
   letter-spacing: .5px;
   display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  border: 0;
+  font-family: inherit;
 }
+
+/* ============== SUB-PAGE (full-screen drill-ins, e.g. Settings) ==============
+   A full-screen layer that slides in over everything (header, deck, bottom
+   nav). Its own header carries a back button + title in place of the brand.
+   Open by adding body.<name>-open; mirrors the body[data-tab] screen show. */
+.subpage {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #3D65BD 0, #3D65BD 122px, var(--color-blue-deep) 55%, var(--color-blue-night) 100%);
+  transform: translateX(100%);
+  transition: transform .35s var(--ease-out);
+  overflow: hidden;
+}
+body.settings-open .subpage[data-subpage="settings"] { transform: translateX(0); }
+
+/* Detail drill-in (Contact / Shipping / Account) stacks one level above
+   the settings list and slides in over it. */
+.subpage[data-subpage="settings-detail"] { z-index: 41; }
+body.settings-detail-open .subpage[data-subpage="settings-detail"] { transform: translateX(0); }
+
+/* The feature mounts (#settingsRoot, #settingsDetailRoot) are the flex
+   columns that hold the header + scrollable body; each fills the sub-page's
+   height so the body's flex-basis:0 resolves against a definite height and
+   overflow-y scrolls. */
+#settingsRoot,
+#settingsDetailRoot {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.subpage-header {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  padding: 60px var(--space-4) 6px;
+  flex-shrink: 0;
+}
+.subpage-back { justify-self: start; }
+.subpage-title {
+  text-align: center;
+  color: var(--color-white);
+  /* Title Medium, tracking 0.2px */
+  font-size:      var(--type-title-medium-size);
+  font-weight:    var(--type-title-medium-weight);
+  line-height:    var(--type-title-medium-lh);
+  letter-spacing: .2px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.4);
+}
+
+.subpage-body {
+  flex: 1 1 0;       /* basis 0 so the body fills the leftover height, not its content height */
+  min-height: 0;     /* and can shrink below content size, enabling overflow-y scroll */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--space-3) var(--space-4) var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.subpage-section { display: flex; flex-direction: column; }
+/* Reuse .ns-section's type treatment, but lift the color for the dark surface. */
+.subpage-section .ns-section { color: rgba(255, 255, 255, .55); }
+
+/* Pinned footer — keeps a primary CTA (e.g. Save) within thumb reach at the
+   bottom of a sub-page, outside the scrolling body. */
+.subpage-footer {
+  flex-shrink: 0;
+  padding: var(--space-3) var(--space-4) var(--space-5);
+}
+.subpage-footer .btn { width: 100%; }
+
+/* On-screen keyboard mockup — slides up from the bottom when a detail-form
+   field is focused. Decorative image (375×293, shown full-width); taps on it
+   keep the field focused (handled in settings.js). */
+.keyboard-mock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  aspect-ratio: 375 / 293; /* deterministic height before the image loads */
+  display: block;
+  z-index: 70;
+  transform: translateY(100%);
+  transition: transform .28s var(--ease-out);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, .3);
+  user-select: none;
+}
+body.keyboard-up .keyboard-mock { transform: translateY(0); }
+/* When the keyboard is up the visible area shrinks: lift the Save footer to
+   sit directly on top of the keyboard, and pad the scroll area so the focused
+   field clears both. --kb-h is set in settings.js from the rendered height. */
+body.keyboard-up .subpage[data-subpage="settings-detail"] .subpage-footer {
+  transform: translateY(calc(-1 * var(--kb-h, 307px)));
+}
+body.keyboard-up .subpage[data-subpage="settings-detail"] .subpage-body {
+  padding-bottom: calc(var(--kb-h, 307px) + 96px);
+}
+.subpage-footer { transition: transform .28s var(--ease-out); }
+
+/* Settings profile header */
+.settings-profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-1);
+}
+.settings-profile-avatar {
+  width: 64px; height: 64px;
+  border-radius: var(--radius-circle);
+  background: var(--color-red);
+  color: var(--color-white);
+  display: flex; align-items: center; justify-content: center;
+  /* Title Large */
+  font-size:      var(--type-title-large-size);
+  font-weight:    var(--type-title-large-weight);
+  letter-spacing: .5px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-md);
+}
+.settings-profile-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.settings-profile-name {
+  /* Title Medium */
+  font-size:      var(--type-title-medium-size);
+  font-weight:    var(--type-title-medium-weight);
+  line-height:    var(--type-title-medium-lh);
+  color: var(--color-white);
+}
+.settings-profile-email {
+  /* Body Small */
+  font-size:      var(--type-body-small-size);
+  font-weight:    var(--type-body-small-weight);
+  line-height:    var(--type-body-small-lh);
+  color: rgba(255, 255, 255, .6);
+}
+
+/* ============== CONFIRM SHEET (reusable yes/no for destructive actions) ====
+   Same backdrop + slide-up pattern as the details / cart / notify sheets.
+   Toggled by body.confirm-open; content is filled by the consumer. */
+.confirm-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s var(--ease-out);
+  z-index: 80; /* above the detail sub-page (41) and keyboard (70) */
+}
+.confirm-sheet {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 100%;
+  transform: translate(-50%, 100%);
+  background: var(--color-white);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  box-shadow: var(--shadow-sheet);
+  padding: var(--space-5) var(--space-4) var(--space-6);
+  z-index: 81; /* above the detail sub-page (41) and keyboard (70) */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: transform .3s var(--ease-out);
+}
+body.confirm-open .confirm-backdrop { opacity: 1; pointer-events: auto; }
+body.confirm-open .confirm-sheet { transform: translate(-50%, 0); }
+.confirm-title {
+  /* Title Medium @ weight 800 */
+  font-size:      var(--type-title-medium-size);
+  font-weight:    800;
+  line-height:    var(--type-title-medium-lh);
+  color: var(--color-ink);
+  text-align: center;
+}
+.confirm-sub {
+  /* Body Medium */
+  font-size:      var(--type-body-medium-size);
+  font-weight:    var(--type-body-medium-weight);
+  line-height:    var(--type-body-medium-lh);
+  color: var(--color-gray-700);
+  text-align: center;
+}
+.confirm-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.confirm-actions .btn { width: 100%; }
 
 /* ============== DEAL COUNTER (lives inside each card) ============== */
 .deal-counter {

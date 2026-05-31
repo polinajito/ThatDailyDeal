@@ -145,19 +145,9 @@
     </div>
   </section>
 
+  <!-- Events feature: markup rendered by events.js into #eventsRoot -->
   <section class="screen screen-coming-soon" data-tab="events">
-    <div class="cs-placeholder">
-      <span class="cs-placeholder-icon">
-        <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-      </span>
-      <h2>Events</h2>
-      <p>Coming soon</p>
-    </div>
+    <div id="eventsRoot"></div>
   </section>
 
   <section class="screen screen-coming-soon" data-tab="cart">
@@ -425,9 +415,24 @@
     <button class="ns-dismiss" id="nsSkip">Skip this deal</button>
   </div>
 
+  <!-- ============== SETTINGS SUB-PAGE ============== -->
+  <!-- Full-screen drill-in opened from the header avatar.
+       Markup rendered by settings.js into #settingsRoot. -->
+  <section class="subpage" id="settingsPage" data-subpage="settings" aria-hidden="true">
+    <div id="settingsRoot"></div>
+  </section>
+  <!-- Settings detail drill-in (Contact / Shipping / Account); populated by settings.js -->
+  <section class="subpage" id="settingsDetailPage" data-subpage="settings-detail" aria-hidden="true">
+    <div id="settingsDetailRoot"></div>
+  </section>
+  <!-- Confirm sheet mount — top-level so it overlays both settings sub-pages; populated by settings.js -->
+  <div id="confirmRoot"></div>
+
   <!-- Lottie player — drives the challenge card's "loopmoney" animation -->
   <script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js"></script>
   <script src="v6.js"></script>
+  <script src="events.js"></script>
+  <script src="settings.js"></script>
 </div>
 </div>
 </body>
