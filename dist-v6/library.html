@@ -41,6 +41,7 @@
         <li><a href="#deals-banner" class="lib-nav-link">Deals banner</a></li>
         <li><a href="#stamps" class="lib-nav-link">Swipe stamps</a></li>
         <li><a href="#toast" class="lib-nav-link">Toast</a></li>
+        <li><a href="#info-popup" class="lib-nav-link">Info popup</a></li>
       </ul>
     </div>
   </nav>
@@ -705,6 +706,33 @@
               <div class="rich-toast-title">You're on the list</div>
               <div class="rich-toast-sub">We'll notify you when this item is back in stock.</div>
             </div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="lib-component" id="info-popup">
+    <header class="lib-component-header">
+      <h2>Info popup</h2>
+      <p class="lib-component-desc">Brand-blue card centred on the screen behind a dimming backdrop, pairing the brand logo with a sentence of copy. Carries a top-right close (X) and a gold "Okay, cool" CTA (<code>.btn.btn-primary</code>). In the prototype it's opened by tapping the header flag ("America based, serving up deals since 2009.") and dismissed by the X, the CTA, tapping the backdrop, or pressing Escape.</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.info-popup</code>, <code>.info-popup-logo</code>, <code>.info-popup-text</code>, <code>.info-popup-close</code>, <code>.info-popup-cta</code>). Centring, backdrop, and open/close transition stay in <code>v6.css</code>; toggled in <code>v6.js</code> via the <code>body.flag-popup-open</code> state.</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Info popup <span class="lib-variant-state">.info-popup</span></figcaption>
+        <div class="lib-toast-stage">
+          <div class="info-popup">
+            <button class="info-popup-close" aria-label="Close">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+                <line x1="6" y1="6" x2="18" y2="18"/>
+                <line x1="6" y1="18" x2="18" y2="6"/>
+              </svg>
+            </button>
+            <img class="info-popup-logo" src="assets/0_2_TDD_logo_long_orig_colors_transparent.png" alt="ThatDailyDeal" />
+            <p class="info-popup-text">America based, serving up deals since 2009.</p>
+            <button class="btn btn-primary btn-md info-popup-cta">Okay, cool</button>
           </div>
         </div>
       </figure>

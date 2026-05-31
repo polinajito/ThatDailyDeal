@@ -50,8 +50,10 @@
 
   <!-- ============== TOP HEADER ============== -->
   <header class="top-header">
-    <div class="flag" aria-hidden="true">
-      <img src="assets/USflag.png" alt="" />
+    <div class="flag-wrap">
+      <button class="flag" id="flagBtn" aria-label="About ThatDailyDeal" aria-haspopup="dialog" aria-expanded="false">
+        <img src="assets/USflag.png" alt="" aria-hidden="true" />
+      </button>
     </div>
     <img class="brand-logo" src="assets/0_2_TDD_logo_long_orig_colors_transparent.png" alt="ThatDailyDeal" />
     <button class="avatar" aria-label="Profile">JM</button>
@@ -330,6 +332,20 @@
   </div>
 
   <!-- ============== NOTIFY-ME SHEET (sold-out flow) ============== -->
+  <!-- ============== FLAG INFO POPUP ============== -->
+  <div class="flag-popup-backdrop" id="flagBackdrop" aria-hidden="true"></div>
+  <div class="info-popup flag-popup" id="flagPopup" role="dialog" aria-modal="true" aria-label="About ThatDailyDeal">
+    <button class="info-popup-close" id="flagClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+        <line x1="6" y1="6" x2="18" y2="18"/>
+        <line x1="6" y1="18" x2="18" y2="6"/>
+      </svg>
+    </button>
+    <img class="info-popup-logo" src="assets/0_2_TDD_logo_long_orig_colors_transparent.png" alt="ThatDailyDeal" />
+    <p class="info-popup-text">America based, serving up deals since 2009.</p>
+    <button class="btn btn-primary btn-md info-popup-cta" id="flagOk">Okay, cool</button>
+  </div>
+
   <div class="notify-backdrop" id="notifyBackdrop" aria-hidden="true"></div>
 
   <div class="notify-sheet" id="notifySheet" role="dialog" aria-modal="true" aria-labelledby="nsTitle">

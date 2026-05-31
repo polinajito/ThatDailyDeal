@@ -1015,6 +1015,38 @@ nsClose.addEventListener('click', closeNotifySheet);
 notifyBackdrop.addEventListener('click', closeNotifySheet);
 
 /* ============================================================
+   Flag info popup — taps open the centred "America based" modal.
+   ============================================================ */
+const flagBtn = document.getElementById('flagBtn');
+const flagPopup = document.getElementById('flagPopup');
+const flagBackdrop = document.getElementById('flagBackdrop');
+
+function hideFlagPopup() {
+  document.body.classList.remove('flag-popup-open');
+  flagBtn.setAttribute('aria-expanded', 'false');
+}
+function showFlagPopup() {
+  document.body.classList.add('flag-popup-open');
+  flagBtn.setAttribute('aria-expanded', 'true');
+}
+
+flagBtn.addEventListener('click', (e) => {
+  e.stopPropagation();   // don't let the document handler instantly re-close it
+  if (document.body.classList.contains('flag-popup-open')) hideFlagPopup();
+  else showFlagPopup();
+});
+// Tap the close X, the "Okay, cool" CTA, the backdrop, anywhere else, or
+// press Escape to dismiss.
+document.getElementById('flagClose').addEventListener('click', hideFlagPopup);
+document.getElementById('flagOk').addEventListener('click', hideFlagPopup);
+flagBackdrop.addEventListener('click', hideFlagPopup);
+flagPopup.addEventListener('click', (e) => e.stopPropagation());
+document.addEventListener('click', () => hideFlagPopup());
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') hideFlagPopup();
+});
+
+/* ============================================================
    Boot
    ============================================================ */
 document.body.classList.add('is-muted');
