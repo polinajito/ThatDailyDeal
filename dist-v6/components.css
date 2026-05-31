@@ -549,3 +549,58 @@
   color: var(--color-red);
   background: color-mix(in srgb, var(--color-red) 16%, transparent);
 }
+
+/* ============================================================
+   FORM FIELD
+   Labelled text input styled for the dark glass surface (settings
+   detail pages). A .field stacks a .field-label over a .field-input.
+   Drop .field rows inside a .list-card for a grouped form with
+   hairline dividers. [readonly] inputs read as static values.
+   ============================================================ */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-family-primary);
+}
+.field + .field { border-top: 1px solid rgba(255, 255, 255, .12); }
+.field-label {
+  /* Label Medium */
+  font-size:      var(--type-label-medium-size);
+  font-weight:    var(--type-label-medium-weight);
+  line-height:    var(--type-label-medium-lh);
+  letter-spacing: var(--type-label-medium-tracking);
+  color: rgba(255, 255, 255, .6);
+}
+.field-input {
+  width: 100%;
+  font-family: inherit;
+  /* Body Medium */
+  font-size:      var(--type-body-medium-size);
+  font-weight:    var(--type-body-medium-weight);
+  line-height:    var(--type-body-medium-lh);
+  letter-spacing: var(--type-body-medium-tracking);
+  color: var(--color-white);
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: var(--radius-sm);
+  padding: 10px var(--space-3);
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.field-input::placeholder { color: rgba(255, 255, 255, .4); }
+.field-input:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  background: rgba(255, 255, 255, .1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-gold) 28%, transparent);
+}
+.field-input[readonly] {
+  color: rgba(255, 255, 255, .6);
+  background: transparent;
+  border-color: rgba(255, 255, 255, .1);
+  cursor: default;
+}
+.field-input[readonly]:focus { box-shadow: none; border-color: rgba(255, 255, 255, .1); }

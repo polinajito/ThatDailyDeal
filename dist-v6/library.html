@@ -42,6 +42,7 @@
         <li><a href="#stamps" class="lib-nav-link">Swipe stamps</a></li>
         <li><a href="#toast" class="lib-nav-link">Toast</a></li>
         <li><a href="#list-card" class="lib-nav-link">List card</a></li>
+        <li><a href="#form-field" class="lib-nav-link">Form field</a></li>
       </ul>
     </div>
   </nav>
@@ -770,6 +771,36 @@
                 <span class="list-row-label">Log Out</span>
               </span>
             </button>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="lib-component" id="form-field">
+    <header class="lib-component-header">
+      <h2>Form field</h2>
+      <p class="lib-component-desc">Labelled text input for the dark glass surface (settings detail pages). A <code>.field</code> stacks a <code>.field-label</code> over a <code>.field-input</code>; drop <code>.field</code> rows inside a <code>.list-card</code> for a grouped form with hairline dividers. Focus draws a gold border + soft ring. A <code>readonly</code> input reads as a static value (no ring), for non-editable rows like "Member since".</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.field</code>, <code>.field-label</code>, <code>.field-input</code>). Reuses <code>.list-card</code> as the form container. Tokens: <code>--glass-*</code>, <code>--radius-sm</code>, <code>--color-white</code>, <code>--color-gold</code>, type scale.</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Form group <span class="lib-variant-state">.list-card &gt; .field</span></figcaption>
+        <div class="lib-pp-stage">
+          <div class="list-card" style="width: 100%; max-width: 340px;">
+            <label class="field">
+              <span class="field-label">Full name</span>
+              <input class="field-input" type="text" value="Jordan Miller">
+            </label>
+            <label class="field">
+              <span class="field-label">Email</span>
+              <input class="field-input" type="email" placeholder="you@email.com">
+            </label>
+            <label class="field">
+              <span class="field-label">Member since</span>
+              <input class="field-input" type="text" value="March 2024" readonly>
+            </label>
           </div>
         </div>
       </figure>

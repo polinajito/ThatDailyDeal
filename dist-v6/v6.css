@@ -500,10 +500,17 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
 }
 body.settings-open .subpage[data-subpage="settings"] { transform: translateX(0); }
 
-/* The feature mount (#settingsRoot) is the flex column that holds the
-   header + scrollable body; it fills the sub-page's height so the body's
-   flex-basis:0 resolves against a definite height and overflow-y scrolls. */
-#settingsRoot {
+/* Detail drill-in (Contact / Shipping / Account) stacks one level above
+   the settings list and slides in over it. */
+.subpage[data-subpage="settings-detail"] { z-index: 41; }
+body.settings-detail-open .subpage[data-subpage="settings-detail"] { transform: translateX(0); }
+
+/* The feature mounts (#settingsRoot, #settingsDetailRoot) are the flex
+   columns that hold the header + scrollable body; each fills the sub-page's
+   height so the body's flex-basis:0 resolves against a definite height and
+   overflow-y scrolls. */
+#settingsRoot,
+#settingsDetailRoot {
   flex: 1 1 0;
   min-height: 0;
   display: flex;
@@ -544,6 +551,15 @@ body.settings-open .subpage[data-subpage="settings"] { transform: translateX(0);
 .subpage-section { display: flex; flex-direction: column; }
 /* Reuse .ns-section's type treatment, but lift the color for the dark surface. */
 .subpage-section .ns-section { color: rgba(255, 255, 255, .55); }
+
+/* Pinned footer — keeps a primary CTA (e.g. Save) within thumb reach at the
+   bottom of a sub-page, outside the scrolling body. */
+.subpage-footer {
+  flex-shrink: 0;
+  padding: var(--space-3) var(--space-4) var(--space-5);
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+.subpage-footer .btn { width: 100%; }
 
 /* Settings profile header */
 .settings-profile {

@@ -13,6 +13,8 @@
 (() => {
   const root = document.getElementById('settingsRoot');
   const page = document.getElementById('settingsPage');
+  const detailRoot = document.getElementById('settingsDetailRoot');
+  const detailPage = document.getElementById('settingsDetailPage');
   if (!root || !page) return;
 
   /* ---- Persistence (mirrors tdd.subscriptions in v6.js) ---- */
@@ -27,6 +29,17 @@
     const next = { ...loadSettings(), ...patch };
     try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(next)); } catch { /* ignore */ }
     return next;
+  }
+
+  /* ---- Profile persistence for the detail pages (tdd.profile, keyed by page) ---- */
+  const PROFILE_KEY = 'tdd.profile';
+  function loadProfile() {
+    try { return JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}'); } catch { return {}; }
+  }
+  function saveProfile(key, data) {
+    const all = loadProfile();
+    all[key] = { ...(all[key] || {}), ...data };
+    try { localStorage.setItem(PROFILE_KEY, JSON.stringify(all)); } catch { /* ignore */ }
   }
 
   /* ---- Icons (inline SVG, sized by .list-row-icon svg) ---- */
@@ -44,6 +57,19 @@
   };
   const icon = (name, w = 24) =>
     `<svg viewBox="0 0 ${w} ${w}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]}</svg>`;
+
+  const escAttr = (v) => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+
+  /* ---- Shared sub-page header (back button + centered title) ---- */
+  function headerHTML(title, backId) {
+    return `<header class="subpage-header">
+      <button class="btn btn-glass btn-icon-only btn-md subpage-back" id="${backId}" aria-label="Back">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS.back}</svg>
+      </button>
+      <h1 class="subpage-title">${title}</h1>
+      <span aria-hidden="true"></span>
+    </header>`;
+  }
 
   /* ---- Row builders (DRY — one shape per row type) ---- */
   function rowIcon(name) { return `<span class="list-row-icon" aria-hidden="true">${icon(name)}</span>`; }
@@ -63,13 +89,7 @@
   /* ---- Render ---- */
   const s = loadSettings();
   root.innerHTML = `
-    <header class="subpage-header">
-      <button class="btn btn-glass btn-icon-only btn-md subpage-back" id="settingsBack" aria-label="Back">
-        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS.back}</svg>
-      </button>
-      <h1 class="subpage-title">Settings</h1>
-      <span aria-hidden="true"></span>
-    </header>
+    ${headerHTML('Settings', 'settingsBack')}
 
     <div class="subpage-body">
       <div class="settings-profile">
@@ -128,7 +148,7 @@
   /* ---- Open / close the sub-page ---- */
   const avatar = document.querySelector('.avatar');
   function openSettings() { document.body.classList.add('settings-open'); page.setAttribute('aria-hidden', 'false'); }
-  function closeSettings() { closeConfirm(); document.body.classList.remove('settings-open'); page.setAttribute('aria-hidden', 'true'); }
+  function closeSettings() { closeConfirm(); closeDetail(); document.body.classList.remove('settings-open'); page.setAttribute('aria-hidden', 'true'); }
   if (avatar) avatar.addEventListener('click', openSettings);
   root.querySelector('#settingsBack').addEventListener('click', closeSettings);
 
@@ -171,11 +191,78 @@
   confirmCancel.addEventListener('click', closeConfirm);
   confirmOk.addEventListener('click', () => { const fn = onConfirm; closeConfirm(); if (fn) fn(); });
 
+  /* ---- Detail pages (drill-in editable forms) ----
+     Each page is a list of fields; values prefill from tdd.profile,
+     else from the `value` default. Rendered into #settingsDetailRoot. */
+  const PAGES = {
+    contact: { title: 'Contact Information', fields: [
+      { key: 'name',  label: 'Full name', type: 'text',  value: 'Jordan Miller' },
+      { key: 'email', label: 'Email',     type: 'email', value: 'jordan.miller@email.com' },
+      { key: 'phone', label: 'Phone',     type: 'tel',   value: '(555) 012-3456' },
+    ] },
+    shipping: { title: 'Shipping Information', fields: [
+      { key: 'recipient', label: 'Recipient name',        type: 'text', value: 'Jordan Miller' },
+      { key: 'street',    label: 'Street address',        type: 'text', value: '1200 Market St' },
+      { key: 'unit',      label: 'Apt / Suite (optional)', type: 'text', value: '', placeholder: 'Apt, suite, unit' },
+      { key: 'city',      label: 'City',                  type: 'text', value: 'San Francisco' },
+      { key: 'state',     label: 'State',                 type: 'text', value: 'CA' },
+      { key: 'zip',       label: 'ZIP code',              type: 'text', value: '94102' },
+    ] },
+    account: { title: 'Account Information', fields: [
+      { key: 'username',   label: 'Username',     type: 'text',     value: 'jordanm' },
+      { key: 'loginEmail', label: 'Login email',  type: 'email',    value: 'jordan.miller@email.com' },
+      { key: 'password',   label: 'Password',     type: 'password', value: '', placeholder: '••••••••' },
+      { key: 'since',      label: 'Member since', type: 'text',     value: 'March 2024', readonly: true },
+    ] },
+  };
+
+  function fieldHTML(f, saved) {
+    const val = saved && saved[f.key] != null ? saved[f.key] : (f.value || '');
+    return `<label class="field">
+      <span class="field-label">${f.label}</span>
+      <input class="field-input" type="${f.type || 'text'}" name="${f.key}" value="${escAttr(val)}"${f.placeholder ? ` placeholder="${escAttr(f.placeholder)}"` : ''}${f.readonly ? ' readonly' : ''}>
+    </label>`;
+  }
+
+  function openDetail(key) {
+    const pg = PAGES[key];
+    if (!pg || !detailRoot || !detailPage) return;
+    const saved = loadProfile()[key];
+    detailRoot.innerHTML = `
+      ${headerHTML(pg.title, 'detailBack')}
+      <div class="subpage-body">
+        <section class="subpage-section">
+          <h2 class="ns-section">${pg.title}</h2>
+          <form class="list-card" id="detailForm">${pg.fields.map((f) => fieldHTML(f, saved)).join('')}</form>
+        </section>
+      </div>
+      <div class="subpage-footer">
+        <button class="btn btn-primary btn-lg dd-btn" id="detailSave">Save</button>
+      </div>`;
+    document.body.classList.add('settings-detail-open');
+    detailPage.setAttribute('aria-hidden', 'false');
+    detailRoot.querySelector('#detailBack').addEventListener('click', closeDetail);
+    detailRoot.querySelector('#detailForm').addEventListener('submit', (e) => e.preventDefault());
+    detailRoot.querySelector('#detailSave').addEventListener('click', () => {
+      const data = {};
+      detailRoot.querySelectorAll('.field-input[name]').forEach((inp) => {
+        if (!inp.readOnly) data[inp.name] = inp.value;
+      });
+      saveProfile(key, data);
+      showToast('Saved');
+      closeDetail();
+    });
+  }
+  function closeDetail() {
+    document.body.classList.remove('settings-detail-open');
+    if (detailPage) detailPage.setAttribute('aria-hidden', 'true');
+  }
+
   /* ---- Row actions ---- */
   const ACTIONS = {
-    contact:  () => showToast('Contact Information'),
-    shipping: () => showToast('Shipping Information'),
-    account:  () => showToast('Account Information'),
+    contact:  () => openDetail('contact'),
+    shipping: () => openDetail('shipping'),
+    account:  () => openDetail('account'),
     tutorial: () => showToast('Tutorial coming soon'),
     logout:   () => openConfirm({
       title: 'Log out?',
@@ -194,10 +281,11 @@
     btn.addEventListener('click', () => { const fn = ACTIONS[btn.dataset.action]; if (fn) fn(); });
   });
 
-  /* ---- Escape closes confirm first, then the sub-page ---- */
+  /* ---- Escape unwinds the stack: detail → confirm → settings ---- */
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
-    if (document.body.classList.contains('confirm-open')) closeConfirm();
+    if (document.body.classList.contains('settings-detail-open')) closeDetail();
+    else if (document.body.classList.contains('confirm-open')) closeConfirm();
     else if (document.body.classList.contains('settings-open')) closeSettings();
   });
 })();
