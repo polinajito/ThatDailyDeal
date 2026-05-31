@@ -557,9 +557,37 @@ body.settings-detail-open .subpage[data-subpage="settings-detail"] { transform: 
 .subpage-footer {
   flex-shrink: 0;
   padding: var(--space-3) var(--space-4) var(--space-5);
-  border-top: 1px solid rgba(255, 255, 255, .08);
 }
 .subpage-footer .btn { width: 100%; }
+
+/* On-screen keyboard mockup — slides up from the bottom when a detail-form
+   field is focused. Decorative image (375×293, shown full-width); taps on it
+   keep the field focused (handled in settings.js). */
+.keyboard-mock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  aspect-ratio: 375 / 293; /* deterministic height before the image loads */
+  display: block;
+  z-index: 70;
+  transform: translateY(100%);
+  transition: transform .28s var(--ease-out);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, .3);
+  user-select: none;
+}
+body.keyboard-up .keyboard-mock { transform: translateY(0); }
+/* When the keyboard is up the visible area shrinks: lift the Save footer to
+   sit directly on top of the keyboard, and pad the scroll area so the focused
+   field clears both. --kb-h is set in settings.js from the rendered height. */
+body.keyboard-up .subpage[data-subpage="settings-detail"] .subpage-footer {
+  transform: translateY(calc(-1 * var(--kb-h, 307px)));
+}
+body.keyboard-up .subpage[data-subpage="settings-detail"] .subpage-body {
+  padding-bottom: calc(var(--kb-h, 307px) + 96px);
+}
+.subpage-footer { transition: transform .28s var(--ease-out); }
 
 /* Settings profile header */
 .settings-profile {

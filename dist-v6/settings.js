@@ -238,11 +238,35 @@
       </div>
       <div class="subpage-footer">
         <button class="btn btn-primary btn-lg dd-btn" id="detailSave">Save</button>
-      </div>`;
+      </div>
+      <img class="keyboard-mock" src="assets/keyboard.png" alt="" aria-hidden="true" draggable="false">`;
     document.body.classList.add('settings-detail-open');
     detailPage.setAttribute('aria-hidden', 'false');
     detailRoot.querySelector('#detailBack').addEventListener('click', closeDetail);
     detailRoot.querySelector('#detailForm').addEventListener('submit', (e) => e.preventDefault());
+
+    /* Keyboard mockup: slide up while a (non-readonly) field is focused. */
+    const form = detailRoot.querySelector('#detailForm');
+    const keyboard = detailRoot.querySelector('.keyboard-mock');
+    // Tapping the keyboard image keeps the field focused (don't blur).
+    keyboard.addEventListener('mousedown', (e) => e.preventDefault());
+    form.addEventListener('focusin', (e) => {
+      if (!e.target.classList.contains('field-input') || e.target.readOnly) return;
+      // Sync the footer/scroll offset to the keyboard's actual rendered height.
+      const kbH = keyboard.offsetHeight || Math.round(keyboard.clientWidth * 293 / 375);
+      if (kbH) document.body.style.setProperty('--kb-h', kbH + 'px');
+      document.body.classList.add('keyboard-up');
+      setTimeout(() => e.target.scrollIntoView({ block: 'center', behavior: 'smooth' }), 60);
+    });
+    form.addEventListener('focusout', () => {
+      // Hide unless focus moved to another editable field.
+      setTimeout(() => {
+        const a = document.activeElement;
+        if (!a || !a.classList || !a.classList.contains('field-input')) {
+          document.body.classList.remove('keyboard-up');
+        }
+      }, 0);
+    });
     detailRoot.querySelector('#detailSave').addEventListener('click', () => {
       const data = {};
       detailRoot.querySelectorAll('.field-input[name]').forEach((inp) => {
@@ -255,6 +279,7 @@
   }
   function closeDetail() {
     document.body.classList.remove('settings-detail-open');
+    document.body.classList.remove('keyboard-up');
     if (detailPage) detailPage.setAttribute('aria-hidden', 'true');
   }
 
