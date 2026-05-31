@@ -242,6 +242,12 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   gap: var(--space-4);
   padding: var(--space-5);
 }
+.contests-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
 .contests-title {
   margin: 0;
   font-family: var(--font-family-primary);
@@ -249,6 +255,9 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   font-weight: 800;
   color: var(--color-white);
 }
+/* "See all" sits flush-right in the header; trim the ghost button's padding
+   so it reads as a link without losing its tap target. */
+.contests-more { flex-shrink: 0; }
 
 /* ============== DEALS-DONE OVERLAY ============== */
 .deals-done {
@@ -589,16 +598,29 @@ body.settings-open .subpage[data-subpage="settings"] { transform: translateX(0);
 .subpage[data-subpage="settings-detail"] { z-index: 41; }
 body.settings-detail-open .subpage[data-subpage="settings-detail"] { transform: translateX(0); }
 
+/* Full Challenges page — slides in over the Challenges sheet (z-index 7). */
+body.challenges-open .subpage[data-subpage="challenges"] { transform: translateX(0); }
+
 /* The feature mounts (#settingsRoot, #settingsDetailRoot) are the flex
    columns that hold the header + scrollable body; each fills the sub-page's
    height so the body's flex-basis:0 resolves against a definite height and
    overflow-y scrolls. */
 #settingsRoot,
-#settingsDetailRoot {
+#settingsDetailRoot,
+#challengesRoot {
   flex: 1 1 0;
   min-height: 0;
   display: flex;
   flex-direction: column;
+}
+
+/* Placeholder copy on the (not-yet-designed) full Challenges page. */
+.contests-placeholder {
+  margin: 0;
+  color: rgba(255, 255, 255, .65);
+  font-family: var(--font-family-primary);
+  font-size:   var(--type-title-medium-size);
+  font-weight: 500;
 }
 
 .subpage-header {

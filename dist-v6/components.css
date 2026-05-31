@@ -641,21 +641,40 @@
    it renders standalone in the library.
    ============================================================ */
 .challenge-mini {
+  /* --mini-notch: radius of the ticket "perforation" circles punched into
+     each side at the seam between the two bands. */
+  --mini-notch: 13px;
   border-radius: var(--radius-xl);
   overflow: hidden;
   color: var(--color-white);
   font-family: var(--font-family-primary);
-  /* base = footer band colour, in case the rewards row is omitted */
-  background: color-mix(in srgb, var(--color-green) 70%, #000);
+  /* Transparent base so the side notches read through to the page behind.
+     Each band paints its own surface (top gradient + dark-green lower bands). */
+  background: transparent;
 }
+/* Ticket notches: the top band loses two bottom-corner half-circles and the
+   lower band loses the matching top-corner halves, forming full circular
+   cut-outs centred on the seam. Anchoring each mask to its own edge keeps the
+   notches aligned regardless of the bands' (content-driven) heights. The
+   mask-composite (intersect) must follow the `mask` shorthand — the shorthand
+   resets it — so a pixel survives only where BOTH gradients are opaque, i.e.
+   each corner circle becomes a hole. */
 .challenge-mini-top {
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-5);
+  padding: var(--space-4);
   background: linear-gradient(135deg,
     color-mix(in srgb, var(--color-green) 90%, #fff),
     var(--color-green));
+  -webkit-mask:
+    radial-gradient(circle var(--mini-notch) at 0    100%, transparent 99%, #000 100%),
+    radial-gradient(circle var(--mini-notch) at 100% 100%, transparent 99%, #000 100%);
+          mask:
+    radial-gradient(circle var(--mini-notch) at 0    100%, transparent 99%, #000 100%),
+    radial-gradient(circle var(--mini-notch) at 100% 100%, transparent 99%, #000 100%);
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
 }
 .challenge-mini-hero {
   flex-shrink: 0;
@@ -696,6 +715,16 @@
 .challenge-mini-rewards {
   display: flex;
   background: color-mix(in srgb, var(--color-green) 70%, #000);
+  /* Dashed perforation line on the seam, running between the two notches. */
+  border-top: 2px dashed rgba(255, 255, 255, .45);
+  -webkit-mask:
+    radial-gradient(circle var(--mini-notch) at 0    0, transparent 99%, #000 100%),
+    radial-gradient(circle var(--mini-notch) at 100% 0, transparent 99%, #000 100%);
+          mask:
+    radial-gradient(circle var(--mini-notch) at 0    0, transparent 99%, #000 100%),
+    radial-gradient(circle var(--mini-notch) at 100% 0, transparent 99%, #000 100%);
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
 }
 .challenge-mini-reward {
   flex: 1;
@@ -703,7 +732,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: var(--space-4) var(--space-5);
+  padding: var(--space-3) var(--space-4);
 }
 /* "Get" lead-in and the descriptor below share one uppercase label style. */
 .challenge-mini-get,
@@ -719,6 +748,14 @@
   font-weight: 800;
   line-height: 1;
 }
+/* Optional action band — a full-width CTA continuing the dark-green lower
+   section (e.g. "Create Challenge"). Carries its own background now that the
+   parent is transparent. Omitted on cards that aren't actionable. */
+.challenge-mini-cta {
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  background: color-mix(in srgb, var(--color-green) 70%, #000);
+}
+.challenge-mini-cta .btn { width: 100%; }
 
 /* ============================================================
    LIST CARD

@@ -16,7 +16,8 @@
   if (!root) return;
 
   // Active contests. The "weekly-trivia" entry reuses the loopmoney hero;
-  // add more entries as the feature grows.
+  // add more entries as the feature grows. An entry with a `cta` renders an
+  // action band; incoming friend challenges (added later) will omit it.
   const CONTESTS = [
     {
       hero: 'loopmoney',
@@ -27,6 +28,7 @@
         { amount: '$5.00', label: 'for new users' },
         { amount: '$2.00', label: 'for existing' },
       ],
+      cta: 'Create Challenge',
     },
   ];
 
@@ -51,15 +53,58 @@
           <span class="challenge-mini-label">${r.label}</span>
         </div>`).join('')}
       </div>
+      ${c.cta ? `
+      <div class="challenge-mini-cta">
+        <button class="btn btn-primary btn-md" data-action="create">${c.cta}</button>
+      </div>` : ''}
     </article>`;
 
+  // Peek (half-open sheet): action-focused — promo card(s) + a way out to the
+  // full Challenges page. "See all" opens that page (built as a placeholder
+  // below; its Current/Finished contents are designed later).
   root.innerHTML = `
     <div class="contests-page">
-      <h2 class="contests-title">Contests</h2>
+      <div class="contests-head">
+        <h2 class="contests-title">Challenges</h2>
+        <button class="btn btn-secondary btn-ghost btn-sm contests-more" id="challengesSeeAll">See all &rarr;</button>
+      </div>
       ${CONTESTS.map(miniCard).join('')}
     </div>`;
 
   // Hand each mini card's hero the inlined Lottie data (shared loader in
   // assets/loopmoney.js; a fetched src would be blocked under file://).
   root.querySelectorAll('.challenge-mini-anim').forEach((p) => window.playLoopmoney(p));
+
+  // Create Challenge — flow designed later; acknowledge for now (mirrors the
+  // settings.js "tutorial" placeholder).
+  root.querySelectorAll('[data-action="create"]').forEach((btn) => {
+    btn.addEventListener('click', () => showToast('Challenge creation coming soon'));
+  });
+
+  /* ---- Full Challenges page (placeholder) ----
+     Reuses the Settings `.subpage` slide-in chrome. Header shape mirrors
+     settings.js headerHTML(); the body is a placeholder until the
+     Current/Finished tabs + explainer cards are designed. */
+  const page = document.getElementById('challengesPage');
+  const pageRoot = document.getElementById('challengesRoot');
+  if (page && pageRoot) {
+    const backIcon = '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 6 9 12 15 18"/></svg>';
+    pageRoot.innerHTML = `
+      <header class="subpage-header">
+        <button class="btn btn-glass btn-icon-only btn-md subpage-back" id="challengesBack" aria-label="Back">${backIcon}</button>
+        <h1 class="subpage-title">Challenges</h1>
+        <span aria-hidden="true"></span>
+      </header>
+      <div class="subpage-body">
+        <p class="contests-placeholder">Current &amp; finished challenges coming soon.</p>
+      </div>`;
+
+    const open = () => { document.body.classList.add('challenges-open'); page.setAttribute('aria-hidden', 'false'); };
+    const close = () => { document.body.classList.remove('challenges-open'); page.setAttribute('aria-hidden', 'true'); };
+    root.querySelector('#challengesSeeAll').addEventListener('click', open);
+    pageRoot.querySelector('#challengesBack').addEventListener('click', close);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.body.classList.contains('challenges-open')) close();
+    });
+  }
 })();
