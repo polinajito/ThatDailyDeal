@@ -779,6 +779,71 @@
 .challenge-mini-learn:hover { color: var(--color-white); }
 
 /* ============================================================
+   WEEKLY STATS
+   A compact two-cell counter block for "this week" usage against a
+   cap (e.g. challenges sent/accepted, capped at 1/week). An uppercase
+   title sits above a row of liquid-glass cells; each cell shows a
+   label, a big value with a muted "/cap" span, and a contextual
+   subline ("1 left" / "resets Mon"). Reuses the glass tokens.
+   ============================================================ */
+.weekly-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-family: var(--font-family-primary);
+}
+.weekly-stats-title {
+  font-size:   var(--type-label-large-size);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .6);
+}
+.weekly-stats-row {
+  display: flex;
+  gap: var(--space-3);
+}
+.weekly-stat {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+  color: var(--color-white);
+  text-align: center;
+}
+.weekly-stat-label {
+  font-size:   var(--type-label-medium-size);
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .7);
+}
+.weekly-stat-value {
+  font-size:   var(--type-headline-medium-size);
+  font-weight: 800;
+  line-height: 1;
+}
+/* The "/cap" portion reads as a quieter denominator. */
+.weekly-stat-value .wk-cap {
+  font-weight: 700;
+  color: rgba(255, 255, 255, .5);
+}
+.weekly-stat-sub {
+  font-size:   var(--type-label-medium-size);
+  font-weight: 600;
+  color: rgba(255, 255, 255, .55);
+}
+
+/* ============================================================
    LIST CARD
    Grouped liquid-glass list for settings-style screens. A
    .list-card wraps a vertical stack of rows separated by hairline

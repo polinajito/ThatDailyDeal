@@ -48,6 +48,7 @@
         <li><a href="#info-popup" class="lib-nav-link">Info popup</a></li>
         <li><a href="#challenge-card" class="lib-nav-link">Challenge card</a></li>
         <li><a href="#challenge-mini" class="lib-nav-link">Challenge mini</a></li>
+        <li><a href="#weekly-stats" class="lib-nav-link">Weekly stats</a></li>
         <li><a href="#list-card" class="lib-nav-link">List card</a></li>
         <li><a href="#form-field" class="lib-nav-link">Form field</a></li>
       </ul>
@@ -882,6 +883,37 @@
               </div>
             </div>
           </article>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="lib-component" id="weekly-stats">
+    <header class="lib-component-header">
+      <h2>Weekly stats</h2>
+      <p class="lib-component-desc">A compact two-cell counter block for "this week" usage against a cap (e.g. challenges sent / accepted, capped at one each per week). An uppercase title sits above a row of liquid-glass cells; each cell pairs a label, a big value with a muted <code>/cap</code> denominator, and a contextual subline — <code>"N left"</code> while under the cap, <code>"resets Mon"</code> once maxed.</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.weekly-stats</code>, <code>-title</code>, <code>-row</code>; <code>.weekly-stat</code>, <code>-label</code>, <code>-value</code> + <code>.wk-cap</code>, <code>-sub</code>). Rendered into the Challenges tab by <code>contests.js</code>. Tokens: <code>--glass-*</code>, <code>--radius-lg</code>, <code>--color-white</code>, type scale.</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">This week <span class="lib-variant-state">.weekly-stats</span></figcaption>
+        <div class="lib-challenge-mini-stage">
+          <div class="weekly-stats">
+            <span class="weekly-stats-title">This week</span>
+            <div class="weekly-stats-row">
+              <div class="weekly-stat">
+                <span class="weekly-stat-label">Sent</span>
+                <span class="weekly-stat-value">1<span class="wk-cap">/1</span></span>
+                <span class="weekly-stat-sub">resets Mon</span>
+              </div>
+              <div class="weekly-stat">
+                <span class="weekly-stat-label">Accepted</span>
+                <span class="weekly-stat-value">0<span class="wk-cap">/1</span></span>
+                <span class="weekly-stat-sub">1 left</span>
+              </div>
+            </div>
+          </div>
         </div>
       </figure>
     </div>

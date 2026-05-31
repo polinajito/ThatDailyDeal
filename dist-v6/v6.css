@@ -180,6 +180,7 @@ body.no-banner .deals-banner { display: none; }
   bottom: 0;
   background: linear-gradient(180deg, var(--color-blue-dark) 0%, var(--color-blue-deep) 100%);
   border-radius: 22px 22px 0 0;
+  overflow: hidden;   /* clip the inner scroll (and sticky header) to the rounded top */
   --hide-x: 0;
   --hide-y: 120%;
   transform: translate(var(--hide-x), var(--hide-y));
@@ -233,6 +234,7 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
 #contestsRoot {
   flex: 1;
   min-width: 0;
+  min-height: 0;   /* allow the flex item to shrink below content so overflow-y can scroll */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -240,13 +242,26 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  padding: var(--space-5);
+  /* No top padding — the sticky header supplies its own. Extra bottom space
+     so the last content scrolls clear of the floating bottom nav (~74px tall,
+     16px from the bottom). */
+  padding: 0 var(--space-5) calc(var(--space-8) + var(--space-6));
 }
+/* Header pins to the top while the cards scroll beneath it. Full-bleed across
+   the page's horizontal padding (negative side margins + matching padding) so
+   scrolling content passes cleanly under an opaque bar; the background matches
+   the sheet's top colour. */
 .contests-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
+  margin: 0 calc(var(--space-5) * -1);
+  padding: var(--space-5) var(--space-5) var(--space-3);
+  background: var(--color-blue-dark);
 }
 .contests-title {
   margin: 0;

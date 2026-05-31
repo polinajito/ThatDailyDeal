@@ -61,6 +61,27 @@
       </div>` : ''}
     </article>`;
 
+  // Weekly usage against the cap (1 send + 1 accept per week). Demo values;
+  // the subline flips to "resets Mon" once a count hits its cap.
+  const WEEK = {
+    sent:     { used: 1, cap: 1 },
+    accepted: { used: 0, cap: 1 },
+  };
+  const statCell = (label, s) => `
+    <div class="weekly-stat">
+      <span class="weekly-stat-label">${label}</span>
+      <span class="weekly-stat-value">${s.used}<span class="wk-cap">/${s.cap}</span></span>
+      <span class="weekly-stat-sub">${s.used >= s.cap ? 'resets Mon' : `${s.cap - s.used} left`}</span>
+    </div>`;
+  const weeklyStats = `
+    <div class="weekly-stats">
+      <span class="weekly-stats-title">This week</span>
+      <div class="weekly-stats-row">
+        ${statCell('Sent', WEEK.sent)}
+        ${statCell('Accepted', WEEK.accepted)}
+      </div>
+    </div>`;
+
   // Peek (half-open sheet): action-focused — promo card(s) + a way out to the
   // full Challenges page. "See all" opens that page (built as a placeholder
   // below; its Current/Finished contents are designed later).
@@ -71,6 +92,7 @@
         <button class="btn btn-secondary btn-ghost btn-sm contests-more" id="challengesSeeAll">See all &rarr;</button>
       </div>
       ${CONTESTS.map(miniCard).join('')}
+      ${weeklyStats}
     </div>`;
 
   // Hand each mini card's hero the inlined Lottie data (shared loader in
