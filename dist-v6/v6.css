@@ -227,18 +227,23 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   opacity: .65;
 }
 
-/* ============== CONTESTS TAB ============== */
-/* Bottom-sheet screen (sizing/transform set on .screen[data-tab] above).
-   #contestsRoot fills it and scrolls; the cards themselves are the
-   .challenge-mini component from components.css. */
-#contestsRoot {
+/* ============== CONTESTS / EVENTS TABS ============== */
+/* Bottom-sheet screens (sizing/transform set on .screen[data-tab] above).
+   The feature root fills its sheet and scrolls; the cards themselves are
+   shared components from components.css (.challenge-mini for Contests,
+   .event-card for Events). The page/head/title scaffold below is shared by
+   both tabs — same sticky header + scrolling body — so the rules are listed
+   once rather than duplicated per feature. */
+#contestsRoot,
+#eventsRoot {
   flex: 1;
   min-width: 0;
   min-height: 0;   /* allow the flex item to shrink below content so overflow-y can scroll */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
-.contests-page {
+.contests-page,
+.events-page {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
@@ -251,7 +256,8 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
    the page's horizontal padding (negative side margins + matching padding) so
    scrolling content passes cleanly under an opaque bar; the background matches
    the sheet's top colour. */
-.contests-head {
+.contests-head,
+.events-head {
   position: sticky;
   top: 0;
   z-index: 2;
@@ -263,15 +269,16 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   padding: var(--space-5) var(--space-5) var(--space-3);
   background: var(--color-blue-dark);
 }
-.contests-title {
+.contests-title,
+.events-title {
   margin: 0;
   font-family: var(--font-family-primary);
   font-size:   var(--type-headline-small-size);
   font-weight: 800;
   color: var(--color-white);
 }
-/* "See all" sits flush-right in the header; trim the ghost button's padding
-   so it reads as a link without losing its tap target. */
+/* "See all" (a glass button) sits flush-right in the header and shouldn't
+   shrink when the title is long. */
 .contests-more { flex-shrink: 0; }
 
 /* ============== DEALS-DONE OVERLAY ============== */
@@ -615,6 +622,10 @@ body.settings-detail-open .subpage[data-subpage="settings-detail"] { transform: 
 
 /* Full Challenges page — slides in over the Challenges sheet (z-index 7). */
 body.challenges-open .subpage[data-subpage="challenges"] { transform: translateX(0); }
+/* The body is a fixed-height flex column that scrolls; keep its children at
+   their natural height so the promo card (overflow:hidden) isn't squeezed and
+   clipped — everything stays fully visible, you just scroll to it. */
+.challenges-scroll > * { flex-shrink: 0; }
 
 /* How-it-works sheet — a dimmed bottom sheet opened from "Learn more" on a
    challenge card. Slides up over everything (above the contests sheet at 7 and
@@ -1121,10 +1132,11 @@ body.details-open .details-sheet { transform: translateY(0); }
   font-weight: 800;
 }
 .dt-buy-old {
-  /* original price, struck through, dimmed against the gold fill */
+  /* original price, struck through; dimmed ink to match the dark button text
+     (the label/now-price inherit --color-ink) rather than the old light tone */
   font-size: var(--type-body-small-size);
   font-weight: 700;
-  color: rgba(255, 255, 255, .7);
+  color: color-mix(in srgb, var(--color-ink) 60%, transparent);
   text-decoration: line-through;
 }
 .dt-buy-now[hidden],

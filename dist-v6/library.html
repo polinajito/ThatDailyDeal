@@ -48,7 +48,10 @@
         <li><a href="#info-popup" class="lib-nav-link">Info popup</a></li>
         <li><a href="#challenge-card" class="lib-nav-link">Challenge card</a></li>
         <li><a href="#challenge-mini" class="lib-nav-link">Challenge mini</a></li>
+        <li><a href="#event-card" class="lib-nav-link">Event card</a></li>
         <li><a href="#weekly-stats" class="lib-nav-link">Weekly stats</a></li>
+        <li><a href="#seg" class="lib-nav-link">Segmented tabs</a></li>
+        <li><a href="#match-card" class="lib-nav-link">Match card</a></li>
         <li><a href="#list-card" class="lib-nav-link">List card</a></li>
         <li><a href="#form-field" class="lib-nav-link">Form field</a></li>
       </ul>
@@ -888,6 +891,58 @@
     </div>
   </section>
 
+  <section class="lib-component" id="event-card">
+    <header class="lib-component-header">
+      <h2>Event card</h2>
+      <p class="lib-component-desc">Horizontal ticket for an upcoming event. A white left stub stacks the date (month / big day / weekday); a green body carries an eyebrow row (bolt + uppercase kicker), a bold headline, and a time/tagline subline. The seam is a vertical dashed perforation flanked by two circular notches — the same ticket cut-out technique as <code>.challenge-mini</code>, rotated 90°. A faint gold dot and two white dots are baked into the body background as confetti.</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.event-card</code> + <code>-date</code>, <code>-month</code>, <code>-day</code>, <code>-dow</code>, <code>-body</code>, <code>-eyebrow</code>, <code>-title</code>, <code>-sub</code>). Notches/perforation reuse the masking approach from <code>.challenge-mini</code>; colours and type come from <code>tokens.css</code>.</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Event card <span class="lib-variant-state">.event-card</span></figcaption>
+        <div class="lib-challenge-mini-stage">
+          <article class="event-card">
+            <div class="event-card-date">
+              <span class="event-card-month">Jul</span>
+              <span class="event-card-day">27</span>
+              <span class="event-card-dow">Sun</span>
+            </div>
+            <div class="event-card-body">
+              <span class="event-card-eyebrow">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>
+                Weekend Bash
+              </span>
+              <h3 class="event-card-title">Weekend Cash Bash</h3>
+              <p class="event-card-sub">5:00 PM &middot; Play to win</p>
+            </div>
+          </article>
+        </div>
+      </figure>
+
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Longer copy <span class="lib-variant-state">.event-card</span></figcaption>
+        <div class="lib-challenge-mini-stage">
+          <article class="event-card">
+            <div class="event-card-date">
+              <span class="event-card-month">Aug</span>
+              <span class="event-card-day">3</span>
+              <span class="event-card-dow">Sat</span>
+            </div>
+            <div class="event-card-body">
+              <span class="event-card-eyebrow">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>
+                Trivia Night
+              </span>
+              <h3 class="event-card-title">Summer Showdown</h3>
+              <p class="event-card-sub">7:30 PM &middot; Top prize $250</p>
+            </div>
+          </article>
+        </div>
+      </figure>
+    </div>
+  </section>
+
   <section class="lib-component" id="weekly-stats">
     <header class="lib-component-header">
       <h2>Weekly stats</h2>
@@ -913,6 +968,78 @@
                 <span class="weekly-stat-sub">1 left</span>
               </div>
             </div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="lib-component" id="seg">
+    <header class="lib-component-header">
+      <h2>Segmented tabs</h2>
+      <p class="lib-component-desc">A pill-shaped switch on a liquid-glass track for two-or-more mutually exclusive views (e.g. Sent / Accepted challenge history). The active tab fills gold to match the bottom-nav selection. Mark the active <code>.seg-tab</code> with <code>.is-active</code>; the consuming view toggles which panel shows.</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.seg</code>, <code>.seg-tab</code>, <code>.is-active</code>). Tokens: <code>--glass-*</code>, <code>--radius-pill</code>, <code>--color-gold</code>, <code>--shadow-gold-glow</code>, type scale.</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Two-way <span class="lib-variant-state">.seg</span></figcaption>
+        <div class="lib-challenge-mini-stage">
+          <div class="seg" role="tablist" style="width: 100%; max-width: 320px;">
+            <button class="seg-tab is-active" role="tab">Sent</button>
+            <button class="seg-tab" role="tab">Accepted</button>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="lib-component" id="match-card">
+    <header class="lib-component-header">
+      <h2>Match card</h2>
+      <p class="lib-component-desc">A compact challenge-history card: two players (initial avatar + name) either side of a "vs", then an outcome line. The winning player takes <code>.is-winner</code> (gold avatar ring + glow); the outcome reads <code>.is-win</code> (green) or <code>.is-loss</code> (muted), followed by a quiet topic·date subline. Liquid-glass surface; stack several in a <code>.match-list</code>.</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.match-card</code>, <code>.match-players</code>, <code>.match-player</code> + <code>.is-winner</code>, <code>.match-avatar</code>, <code>.match-name</code>, <code>.match-vs</code>, <code>.match-meta</code>, <code>.match-outcome</code> + <code>.is-win</code>/<code>.is-loss</code>, <code>.match-sub</code>, <code>.match-list</code>). Tokens: <code>--glass-*</code>, <code>--radius-lg</code>, <code>--radius-circle</code>, <code>--color-blue</code>, <code>--color-gold</code>, <code>--color-green</code>, type scale.</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Win &amp; loss <span class="lib-variant-state">.match-card</span></figcaption>
+        <div class="lib-challenge-mini-stage">
+          <div class="match-list" style="width: 100%; max-width: 340px;">
+            <article class="match-card">
+              <div class="match-players">
+                <div class="match-player is-winner">
+                  <span class="match-avatar">JM</span>
+                  <span class="match-name">You</span>
+                </div>
+                <span class="match-vs">vs</span>
+                <div class="match-player">
+                  <span class="match-avatar">SL</span>
+                  <span class="match-name">Sarah L.</span>
+                </div>
+              </div>
+              <div class="match-meta">
+                <span class="match-outcome is-win">You won &middot; $5.00</span>
+                <span class="match-sub">Weekly Trivia &middot; May 24</span>
+              </div>
+            </article>
+            <article class="match-card">
+              <div class="match-players">
+                <div class="match-player">
+                  <span class="match-avatar">JM</span>
+                  <span class="match-name">You</span>
+                </div>
+                <span class="match-vs">vs</span>
+                <div class="match-player is-winner">
+                  <span class="match-avatar">DR</span>
+                  <span class="match-name">Devin R.</span>
+                </div>
+              </div>
+              <div class="match-meta">
+                <span class="match-outcome is-loss">Devin R. won &middot; $2.00</span>
+                <span class="match-sub">Weekly Trivia &middot; May 17</span>
+              </div>
+            </article>
           </div>
         </div>
       </figure>

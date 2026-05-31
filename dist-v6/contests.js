@@ -82,33 +82,68 @@
       </div>
     </div>`;
 
+  // The shared feature block — promo card(s) + weekly stats. Used by both the
+  // peek sheet and the top of the full page.
+  const featureHTML = `${CONTESTS.map(miniCard).join('')}${weeklyStats}`;
+
+  /* ---- Challenge history (rough demo data) ----
+     "Sent" = challenges you started; "Accepted" = ones you joined. Each is a
+     past matchup: you vs an opponent, plus who won. */
+  const ME = { initials: 'JM' };
+  const MATCHES = {
+    sent: [
+      { opp: { initials: 'SL', name: 'Sarah L.' }, won: true,  reward: '$5.00', topic: 'Weekly Trivia', date: 'May 24' },
+      { opp: { initials: 'DR', name: 'Devin R.' }, won: false, reward: '$2.00', topic: 'Weekly Trivia', date: 'May 17' },
+      { opp: { initials: 'AK', name: 'Amir K.'  }, won: true,  reward: '$5.00', topic: 'Weekly Trivia', date: 'May 10' },
+    ],
+    accepted: [
+      { opp: { initials: 'MC', name: 'Maya C.'  }, won: false, reward: '$2.00', topic: 'Weekly Trivia', date: 'May 22' },
+      { opp: { initials: 'TP', name: 'Theo P.'  }, won: true,  reward: '$5.00', topic: 'Weekly Trivia', date: 'May 12' },
+    ],
+  };
+
+  const player = (initials, name, winner) => `
+    <div class="match-player${winner ? ' is-winner' : ''}">
+      <span class="match-avatar">${initials}</span>
+      <span class="match-name">${name}</span>
+    </div>`;
+  const matchCard = (m) => `
+    <article class="match-card">
+      <div class="match-players">
+        ${player(ME.initials, 'You', m.won)}
+        <span class="match-vs">vs</span>
+        ${player(m.opp.initials, m.opp.name, !m.won)}
+      </div>
+      <div class="match-meta">
+        <span class="match-outcome ${m.won ? 'is-win' : 'is-loss'}">${m.won ? 'You won' : `${m.opp.name} won`} &middot; ${m.reward}</span>
+        <span class="match-sub">${m.topic} &middot; ${m.date}</span>
+      </div>
+    </article>`;
+
+  // Sent/Accepted segmented control + the two match lists (Sent shown first).
+  const historyHTML = `
+    <div class="seg" role="tablist" aria-label="Challenge history">
+      <button class="seg-tab is-active" data-seg="sent" role="tab">Sent</button>
+      <button class="seg-tab" data-seg="accepted" role="tab">Accepted</button>
+    </div>
+    <div class="match-list" data-seg-panel="sent">${MATCHES.sent.map(matchCard).join('')}</div>
+    <div class="match-list" data-seg-panel="accepted" hidden>${MATCHES.accepted.map(matchCard).join('')}</div>`;
+
   // Peek (half-open sheet): action-focused — promo card(s) + a way out to the
   // full Challenges page. "See all" opens that page (built as a placeholder
   // below; its Current/Finished contents are designed later).
   root.innerHTML = `
     <div class="contests-page">
       <div class="contests-head">
-        <h2 class="contests-title">Challenges</h2>
-        <button class="btn btn-secondary btn-ghost btn-sm contests-more" id="challengesSeeAll">See all &rarr;</button>
+        <h2 class="contests-title">Contests</h2>
+        <button class="btn btn-glass btn-sm contests-more" id="challengesSeeAll">See all &rarr;</button>
       </div>
-      ${CONTESTS.map(miniCard).join('')}
-      ${weeklyStats}
+      ${featureHTML}
     </div>`;
 
-  // Hand each mini card's hero the inlined Lottie data (shared loader in
-  // assets/loopmoney.js; a fetched src would be blocked under file://).
-  root.querySelectorAll('.challenge-mini-anim').forEach((p) => window.playLoopmoney(p));
-
-  // Create Challenge — flow designed later; acknowledge for now (mirrors the
-  // settings.js "tutorial" placeholder).
-  root.querySelectorAll('[data-action="create"]').forEach((btn) => {
-    btn.addEventListener('click', () => showToast('Challenge creation coming soon'));
-  });
-
-  /* ---- Full Challenges page (placeholder) ----
-     Reuses the Settings `.subpage` slide-in chrome. Header shape mirrors
-     settings.js headerHTML(); the body is a placeholder until the
-     Current/Finished tabs + explainer cards are designed. */
+  /* ---- Full Challenges page ----
+     Reuses the Settings `.subpage` slide-in chrome. Shows the same promo card
+     + weekly stats as the peek, then Sent/Accepted history tabs. */
   const page = document.getElementById('challengesPage');
   const pageRoot = document.getElementById('challengesRoot');
   if (page && pageRoot) {
@@ -116,11 +151,12 @@
     pageRoot.innerHTML = `
       <header class="subpage-header">
         <button class="btn btn-glass btn-icon-only btn-md subpage-back" id="challengesBack" aria-label="Back">${backIcon}</button>
-        <h1 class="subpage-title">Challenges</h1>
+        <h1 class="subpage-title">Contests</h1>
         <span aria-hidden="true"></span>
       </header>
-      <div class="subpage-body">
-        <p class="contests-placeholder">Current &amp; finished challenges coming soon.</p>
+      <div class="subpage-body challenges-scroll">
+        ${featureHTML}
+        ${historyHTML}
       </div>`;
 
     const open = () => { document.body.classList.add('challenges-open'); page.setAttribute('aria-hidden', 'false'); };
@@ -130,6 +166,19 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && document.body.classList.contains('challenges-open')) close();
     });
+
+    // Sent / Accepted tabs — toggle the active pill + which match list shows.
+    const seg = pageRoot.querySelector('.seg');
+    if (seg) {
+      seg.querySelectorAll('.seg-tab').forEach((tab) => {
+        tab.addEventListener('click', () => {
+          seg.querySelectorAll('.seg-tab').forEach((t) => t.classList.toggle('is-active', t === tab));
+          pageRoot.querySelectorAll('[data-seg-panel]').forEach((p) => {
+            p.hidden = p.dataset.segPanel !== tab.dataset.seg;
+          });
+        });
+      });
+    }
   }
 
   /* ---- How-it-works sheet (placeholder) ----
@@ -152,11 +201,21 @@
 
     const openHowto = () => { document.body.classList.add('howto-open'); howto.setAttribute('aria-hidden', 'false'); };
     const closeHowto = () => { document.body.classList.remove('howto-open'); howto.setAttribute('aria-hidden', 'true'); };
-    root.querySelectorAll('[data-action="learn"]').forEach((btn) => btn.addEventListener('click', openHowto));
+    // Document-scoped so the promo card on BOTH the peek and the full page wire up.
+    document.querySelectorAll('[data-action="learn"]').forEach((btn) => btn.addEventListener('click', openHowto));
     howtoRoot.querySelector('#howtoClose').addEventListener('click', closeHowto);
     if (howtoBackdrop) howtoBackdrop.addEventListener('click', closeHowto);
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && document.body.classList.contains('howto-open')) closeHowto();
     });
   }
+
+  /* ---- Shared card wiring (peek + page) ----
+     Run after every promo card is in the DOM so both instances animate and
+     respond. Hand each Lottie hero its inlined data (a fetched src is blocked
+     under file://); Create Challenge is acknowledged with a toast for now. */
+  document.querySelectorAll('.challenge-mini-anim').forEach((p) => window.playLoopmoney(p));
+  document.querySelectorAll('[data-action="create"]').forEach((btn) => {
+    btn.addEventListener('click', () => showToast('Challenge creation coming soon'));
+  });
 })();

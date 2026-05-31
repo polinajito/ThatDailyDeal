@@ -8,25 +8,49 @@
    Convention (see dist-v6/CLAUDE.md):
    - index.html provides only the mount point: <div id="eventsRoot">
    - shared visuals must come from components.css classes
-   - feature-only positioning goes in v6.css (or a future events.css)
+     (here: the .event-card family — a horizontal date-stub ticket)
+   - feature-only positioning is the shared bottom-sheet scaffold in
+     v6.css (.events-page / -head / -title, shared with Contests)
    ============================================================ */
 (() => {
   const root = document.getElementById('eventsRoot');
   if (!root) return;
 
-  // Placeholder — same content the static markup used to carry.
-  // Replace with the real events UI as the feature is built out.
+  // Upcoming events, ordered soonest-first. Each renders as one .event-card:
+  // the date stub (month / day / weekday) + a green body (kicker, title, and
+  // a "time · tagline" subline). Demo data; wire to a real feed later.
+  const EVENTS = [
+    { month: 'Jul', day: '27', dow: 'Sun', kicker: 'Weekend Bash', title: 'Weekend Cash Bash', sub: '5:00 PM · Play to win' },
+    { month: 'Aug', day: '3',  dow: 'Sat', kicker: 'Trivia Night', title: 'Summer Showdown',    sub: '7:30 PM · Top prize $250' },
+    { month: 'Aug', day: '10', dow: 'Sat', kicker: 'Live Draw',    title: 'Mega Giveaway',       sub: '6:00 PM · 10 winners' },
+    { month: 'Aug', day: '17', dow: 'Sat', kicker: 'Foodie Fest',  title: 'Taco Throwdown',      sub: '12:00 PM · Free entry' },
+    { month: 'Sep', day: '1',  dow: 'Mon', kicker: 'Labor Day',    title: 'Holiday Deal Drop',   sub: '9:00 AM · Doorbusters' },
+  ];
+
+  // Lightning bolt for the eyebrow row (matches the design's kicker icon).
+  const bolt = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>';
+
+  const eventCard = (e) => `
+    <article class="event-card">
+      <div class="event-card-date">
+        <span class="event-card-month">${e.month}</span>
+        <span class="event-card-day">${e.day}</span>
+        <span class="event-card-dow">${e.dow}</span>
+      </div>
+      <div class="event-card-body">
+        <span class="event-card-eyebrow">${bolt}${e.kicker}</span>
+        <h3 class="event-card-title">${e.title}</h3>
+        <p class="event-card-sub">${e.sub}</p>
+      </div>
+    </article>`;
+
+  // Sticky "Events" header + the scrolling list of cards (shared bottom-sheet
+  // scaffold with the Contests tab — see .events-page in v6.css).
   root.innerHTML = `
-    <div class="cs-placeholder">
-      <span class="cs-placeholder-icon">
-        <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-      </span>
-      <h2>Events</h2>
-      <p>Coming soon</p>
+    <div class="events-page">
+      <div class="events-head">
+        <h2 class="events-title">Events</h2>
+      </div>
+      ${EVENTS.map(eventCard).join('')}
     </div>`;
 })();
