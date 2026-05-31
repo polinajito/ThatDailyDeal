@@ -226,6 +226,30 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   opacity: .65;
 }
 
+/* ============== CONTESTS TAB ============== */
+/* Bottom-sheet screen (sizing/transform set on .screen[data-tab] above).
+   #contestsRoot fills it and scrolls; the cards themselves are the
+   .challenge-mini component from components.css. */
+#contestsRoot {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.contests-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+.contests-title {
+  margin: 0;
+  font-family: var(--font-family-primary);
+  font-size:   var(--type-headline-small-size);
+  font-weight: 800;
+  color: var(--color-white);
+}
+
 /* ============== DEALS-DONE OVERLAY ============== */
 .deals-done {
   position: absolute;

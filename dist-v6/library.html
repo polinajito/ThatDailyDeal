@@ -10,8 +10,10 @@
   <link rel="stylesheet" href="tokens.css" />
   <link rel="stylesheet" href="components.css" />
   <link rel="stylesheet" href="library.css" />
-  <!-- Lottie player — drives the challenge card's "loopmoney" animation -->
+  <!-- Lottie player + inlined loopmoney asset/loader (drives the challenge
+       card + challenge-mini heroes; src="…json" would be CORS-blocked under file://) -->
   <script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js"></script>
+  <script src="assets/loopmoney.js"></script>
 </head>
 <body>
 
@@ -45,6 +47,7 @@
         <li><a href="#toast" class="lib-nav-link">Toast</a></li>
         <li><a href="#info-popup" class="lib-nav-link">Info popup</a></li>
         <li><a href="#challenge-card" class="lib-nav-link">Challenge card</a></li>
+        <li><a href="#challenge-mini" class="lib-nav-link">Challenge mini</a></li>
         <li><a href="#list-card" class="lib-nav-link">List card</a></li>
         <li><a href="#form-field" class="lib-nav-link">Form field</a></li>
       </ul>
@@ -781,18 +784,20 @@
               Play &amp; Win
             </span>
             <span class="challenge-hero" aria-hidden="true">
-              <lottie-player class="challenge-anim" src="assets/loopmoney.json" autoplay loop background="transparent"></lottie-player>
+              <lottie-player class="challenge-anim" autoplay loop background="transparent"></lottie-player>
             </span>
             <h2 class="challenge-title">Win Real Money</h2>
             <p class="challenge-sub">Challenge friends to weekly trivia — winner gets cash toward orders.</p>
             <div class="challenge-rewards">
               <div class="challenge-reward">
+                <span class="challenge-reward-get">Get</span>
                 <span class="challenge-reward-amount">$5.00</span>
-                <span class="challenge-reward-label">New users</span>
+                <span class="challenge-reward-label">for new users</span>
               </div>
               <div class="challenge-reward">
+                <span class="challenge-reward-get">Get</span>
                 <span class="challenge-reward-amount">$2.00</span>
-                <span class="challenge-reward-label">Existing users</span>
+                <span class="challenge-reward-label">for existing</span>
               </div>
             </div>
             <button class="btn btn-primary btn-lg challenge-cta">
@@ -802,6 +807,46 @@
               Start a Challenge
             </button>
             <p class="challenge-foot">Swipe to keep browsing deals →</p>
+          </article>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="lib-component" id="challenge-mini">
+    <header class="lib-component-header">
+      <h2>Challenge mini</h2>
+      <p class="lib-component-desc">Compact, horizontal sibling of the challenge card for list contexts like the Contests tab. A lighter-green top band pairs the money-bag hero with an eyebrow, headline, and one-line copy; a darker-green footer band carries the two reward stats inline (amount over uppercase label) rather than as white chips.</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.challenge-mini</code> + <code>-top</code>, <code>-hero</code>, <code>-anim</code>, <code>-text</code>, <code>-eyebrow</code>, <code>-title</code>, <code>-sub</code>, <code>-rewards</code>/<code>-reward</code>, <code>-amount</code>, <code>-label</code>). Rendered into the Contests tab by <code>contests.js</code>; the loopmoney hero loads via <code>window.playLoopmoney</code> (<code>assets/loopmoney.js</code>).</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Challenge mini <span class="lib-variant-state">.challenge-mini</span></figcaption>
+        <div class="lib-challenge-mini-stage">
+          <article class="challenge-mini">
+            <div class="challenge-mini-top">
+              <span class="challenge-mini-hero" aria-hidden="true">
+                <lottie-player class="challenge-mini-anim" autoplay loop background="transparent"></lottie-player>
+              </span>
+              <div class="challenge-mini-text">
+                <span class="challenge-mini-eyebrow">Weekly Trivia</span>
+                <h3 class="challenge-mini-title">Win real money!</h3>
+                <p class="challenge-mini-sub">Challenge friends &amp; win cash.</p>
+              </div>
+            </div>
+            <div class="challenge-mini-rewards">
+              <div class="challenge-mini-reward">
+                <span class="challenge-mini-get">Get</span>
+                <span class="challenge-mini-amount">$5.00</span>
+                <span class="challenge-mini-label">for new users</span>
+              </div>
+              <div class="challenge-mini-reward">
+                <span class="challenge-mini-get">Get</span>
+                <span class="challenge-mini-amount">$2.00</span>
+                <span class="challenge-mini-label">for existing</span>
+              </div>
+            </div>
           </article>
         </div>
       </figure>
@@ -953,6 +998,14 @@
       el.textContent = root.getPropertyValue(el.dataset.tokenValue).trim();
     });
   })();
+</script>
+
+<script>
+  // Drive the challenge-card + challenge-mini heroes from the inlined
+  // loopmoney data (shared loader in assets/loopmoney.js). A fetched
+  // src="…json" would be CORS-blocked when the library is opened via file://.
+  document.querySelectorAll('.challenge-anim, .challenge-mini-anim')
+    .forEach((p) => window.playLoopmoney(p));
 </script>
 
 </body>

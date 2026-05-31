@@ -391,12 +391,14 @@ function buildChallengeCard() {
 
     <div class="challenge-rewards">
       <div class="challenge-reward">
+        <span class="challenge-reward-get">Get</span>
         <span class="challenge-reward-amount">$5.00</span>
-        <span class="challenge-reward-label">New users</span>
+        <span class="challenge-reward-label">for new users</span>
       </div>
       <div class="challenge-reward">
+        <span class="challenge-reward-get">Get</span>
         <span class="challenge-reward-amount">$2.00</span>
-        <span class="challenge-reward-label">Existing users</span>
+        <span class="challenge-reward-label">for existing</span>
       </div>
     </div>
 
@@ -419,18 +421,10 @@ function buildChallengeCard() {
     showToast('Challenge coming soon');
   });
 
-  // Feed the player the inlined animation data rather than a fetched src:
-  // fetching a local .json is blocked by CORS under file://. whenDefined
-  // ensures the element is upgraded; updateComplete then waits for its first
-  // render so .load() has a container to draw into (the card is built
-  // detached, so loading too early throws and shows the error icon).
-  const player = card.querySelector('.challenge-anim');
-  if (player && window.__loopmoneyLottie) {
-    const data = JSON.stringify(window.__loopmoneyLottie);
-    customElements.whenDefined('lottie-player')
-      .then(() => player.updateComplete || Promise.resolve())
-      .then(() => player.load(data));
-  }
+  // Feed the player the inlined animation data rather than a fetched src
+  // (a local .json is blocked by CORS under file://). Shared loader lives
+  // in assets/loopmoney.js so contests.js + the library reuse it.
+  window.playLoopmoney(card.querySelector('.challenge-anim'));
 
   return card;
 }

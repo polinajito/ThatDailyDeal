@@ -691,6 +691,20 @@ code {
   overflow: hidden;
 }
 
+/* Phone-width frame for the compact challenge-mini card. Same box-sizing
+   normalisation as the full card above. */
+.lib-challenge-mini-stage,
+.lib-challenge-mini-stage * { box-sizing: border-box; }
+.lib-challenge-mini-stage {
+  padding: 20px;
+  border-radius: 14px;
+  background: #2b2f36;
+}
+.lib-challenge-mini-stage .challenge-mini {
+  max-width: 360px;
+  margin: 0 auto;
+}
+
 /* Toggle-state pairs: small label + default + arrow + active button. */
 .lib-btn-state-pair {
   display: flex;
