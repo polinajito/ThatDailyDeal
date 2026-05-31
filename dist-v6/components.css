@@ -493,9 +493,11 @@
 }
 .list-row + .list-row { border-top: 1px solid rgba(255, 255, 255, .12); }
 .list-row:hover { background: rgba(255, 255, 255, .06); }
+.list-row:active { background: rgba(255, 255, 255, .12); } /* press feedback (touch) */
 /* Static rows — the control (e.g. a switch) owns interaction, not the row. */
 .list-row.is-static { cursor: default; }
-.list-row.is-static:hover { background: transparent; }
+.list-row.is-static:hover,
+.list-row.is-static:active { background: transparent; }
 
 .list-row-icon {
   width: 36px;

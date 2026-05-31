@@ -412,7 +412,9 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   top: 110px;
   left: 50%;
   transform: translateX(-50%) translateY(-8px);
-  z-index: 8;
+  /* Above the sub-page (40) and its sheets (51) so transient feedback is
+     never occluded — e.g. tapping a Settings row. */
+  z-index: 60;
   transition: opacity .25s var(--ease-out), transform .25s var(--ease-out);
 }
 .toast.show {
@@ -424,7 +426,7 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   top: 88px;
   left: var(--space-4);
   right: var(--space-4);
-  z-index: 9;
+  z-index: 60; /* same as .toast — confirmations stay above the sub-page/sheets */
   transform: translateY(-12px);
   transition: opacity .28s var(--ease-out), transform .28s var(--ease-out);
 }
