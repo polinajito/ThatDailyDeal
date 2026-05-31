@@ -1249,3 +1249,540 @@
   cursor: default;
 }
 .field-input[readonly]:focus { box-shadow: none; border-color: rgba(255, 255, 255, .1); }
+
+/* ============================================================
+   STEPPER
+   Compact quantity control — − value + on a liquid-glass pill.
+   Round buttons; disable − at the minimum. Used by the cart line
+   to edit item amounts, but reusable anywhere a small numeric
+   stepper is needed.
+   ============================================================ */
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: var(--radius-pill);
+  padding: var(--space-1);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+.stepper-btn {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-circle);
+  background: rgba(255, 255, 255, .12);
+  color: var(--color-white);
+  transition: background-color .15s ease, opacity .15s ease, transform .1s ease;
+}
+.stepper-btn:hover { background: rgba(255, 255, 255, .22); }
+.stepper-btn:active { transform: scale(.9); }
+.stepper-btn:disabled { opacity: .35; cursor: default; }
+.stepper-value {
+  min-width: 1.5ch;
+  text-align: center;
+  /* Body Medium @ weight 700 */
+  font-size:      var(--type-body-medium-size);
+  font-weight:    700;
+  line-height:    1;
+  color: var(--color-white);
+}
+
+/* ============================================================
+   CART LINE
+   One item in the cart: a liquid-glass row with a media thumb,
+   the product name + a remove control, a price cluster (current +
+   struck old + reused .pp-discount sale badge), a quantity .stepper,
+   and the line total. .cart-line-tag flags a bulk-price unlock.
+   Stack several in a .cart-list.
+   ============================================================ */
+.cart-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.cart-line {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: var(--space-3);
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+  color: var(--color-white);
+}
+.cart-line-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  background: rgba(255, 255, 255, .08);
+}
+.cart-line-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.cart-line-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.cart-line-name {
+  /* Title Small @ weight 700 */
+  font-size:      var(--type-title-small-size);
+  font-weight:    700;
+  line-height:    var(--type-title-small-lh);
+  letter-spacing: var(--type-title-small-tracking);
+  color: var(--color-white);
+}
+.cart-line-remove {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-circle);
+  color: rgba(255, 255, 255, .55);
+  transition: color .15s ease, background-color .15s ease;
+}
+.cart-line-remove:hover { color: var(--color-white); background: rgba(255, 255, 255, .12); }
+.cart-line-prices {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.cart-line-now {
+  /* Body Large @ weight 800 — the unit price the user pays now */
+  font-size:      var(--type-body-large-size);
+  font-weight:    800;
+  line-height:    1;
+  color: var(--color-white);
+}
+.cart-line-old {
+  /* Body Small @ weight 400 — strikethrough reference price */
+  font-size:      var(--type-body-small-size);
+  font-weight:    400;
+  line-height:    1;
+  color: rgba(255, 255, 255, .6);
+  text-decoration: line-through;
+}
+.cart-line-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-2);
+  /* Label Medium @ weight 800, tracking -0.2px — mirrors .pp-discount sizing */
+  font-size:      var(--type-label-medium-size);
+  font-weight:    800;
+  line-height:    1;
+  letter-spacing: -.2px;
+  color: var(--color-ink);
+  background: var(--color-gold);
+  border-radius: var(--radius-xs);
+}
+.cart-line-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.cart-line-total {
+  /* Body Medium @ weight 700 */
+  font-size:      var(--type-body-medium-size);
+  font-weight:    700;
+  line-height:    1;
+  color: rgba(255, 255, 255, .85);
+}
+
+/* ============================================================
+   CART SUMMARY
+   Totals panel for the cart / checkout. A stack of .cart-sum-row
+   label/value pairs: .is-saved turns a row green for discounts,
+   .is-total bumps the final row above a hairline divider.
+   ============================================================ */
+.cart-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+  color: var(--color-white);
+}
+.cart-sum-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* Body Medium @ weight 600 */
+  font-size:      var(--type-body-medium-size);
+  font-weight:    600;
+  line-height:    1.2;
+  color: rgba(255, 255, 255, .85);
+}
+.cart-sum-row.is-saved {
+  color: var(--color-green);
+  font-weight: 700;
+}
+.cart-sum-row.is-total {
+  margin-top: var(--space-1);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(255, 255, 255, .18);
+  /* Title Small @ weight 800 */
+  font-size:      var(--type-title-small-size);
+  font-weight:    800;
+  color: var(--color-white);
+}
+
+/* ============================================================
+   CART EMPTY
+   Centered placeholder shown when the cart has no items.
+   ============================================================ */
+.cart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--space-3);
+  padding: var(--space-7) var(--space-4);
+  color: rgba(255, 255, 255, .92);
+}
+.cart-empty-icon { color: rgba(255, 255, 255, .5); }
+.cart-empty-title {
+  /* Title Large @ weight 800 */
+  font-size:      var(--type-title-large-size);
+  font-weight:    800;
+  line-height:    var(--type-title-large-lh);
+  color: var(--color-white);
+}
+.cart-empty-sub {
+  /* Body Medium @ weight 500 */
+  font-size:      var(--type-body-medium-size);
+  font-weight:    500;
+  line-height:    1.4;
+  color: rgba(255, 255, 255, .6);
+}
+
+/* ============================================================
+   GOLD PILL
+   Shared base for any small gold capsule chip (points balances).
+   Modifiers (.points-pill) set their own padding shape, text
+   color, size, and shadow on top of this base. Composable —
+   markup uses both:
+     <span class="gold-pill points-pill">…<svg/>… 1,000 pts</span>
+   ============================================================ */
+.gold-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  background: var(--color-gold);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-family-primary);
+}
+
+/* Points chip — used on .coupon. Dark ink text + subtle drop shadow.
+   Asymmetric padding (tight on the icon side) lets the coin glyph sit
+   flush against the pill's left edge. */
+.points-pill {
+  padding: 5px var(--space-3) 5px var(--space-1);
+  color: var(--color-ink);
+  /* Label Medium @ weight 700 */
+  font-size:      var(--type-label-medium-size);
+  font-weight:    700;
+  line-height:    var(--type-label-medium-lh);
+  letter-spacing: var(--type-label-medium-tracking);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, .12);
+}
+.points-pill svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* ============================================================
+   PROGRESS BAR
+   Thin track + gradient fill. Used inside locked coupons to show
+   earning progress toward unlock; generic enough for reuse in any
+   future "progress toward X" state. The track is dark (semi-
+   transparent black) so it reads on both light (cream) and dark
+   (navy) surfaces; consumers can override `.progress` background
+   when needed.
+
+   Usage:
+     <div class="progress"><i style="width: 64%"></i></div>
+   ============================================================ */
+.progress {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 0, 0, .12);
+  overflow: hidden;
+  margin-top: var(--space-2);
+}
+.progress > i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-green), color-mix(in srgb, var(--color-green) 65%, var(--color-white)));
+  border-radius: inherit;
+}
+
+/* ============================================================
+   COUPON
+   Rewards-tab ticket with a perforated vertical "Activate" stub
+   on the right edge. Variant classes swap the body + stub fills
+   while reusing the same layout, type, and perforation rules.
+
+   Anatomy:
+     .coupon                      — outer grid (body | stub)
+       .coupon-body               — left side (art + info)
+         .coupon-art              — square panel with $ amount
+           .coupon-amount         — Fredoka display number
+         .coupon-info             — title, sub, meta
+           .coupon-title
+           .coupon-sub
+           .coupon-meta           — meta row (points pill, etc.)
+       .stub                      — right side, vertical Activate
+         .stub-text               — rotated label
+         .perf                    — dashed seam
+         .notch.top / .notch.bottom — circle cutouts at seam ends
+                                      (background must match the
+                                      consumer screen — scope it
+                                      with .screen-rewards .notch
+                                      in rewards.css)
+
+   Variants (apply on top of .coupon):
+     .coupon-classic   — cream body + gold stub  (recommended ship)
+     .coupon-burst     — gold→coral gradient + white stub
+     .coupon-foil      — navy body + gold-foil stub (premium)
+     .coupon-pop       — sky→blue body + red stub
+     .coupon-stamp     — vintage cream + navy stub + stars
+
+   States:
+     .coupon.is-locked   — stub disabled, label reads "Locked"
+     .coupon.is-active   — stub turns green, label "Activated"
+     .coupon.is-used     — full ticket desaturated (My Rewards tab)
+   ============================================================ */
+.coupon {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 64px;
+  width: 100%;
+  min-height: 132px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  isolation: isolate;
+  font-family: var(--font-family-primary);
+  box-shadow: var(--shadow-md);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.coupon-body {
+  position: relative;
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-3);
+  cursor: pointer;
+}
+
+.coupon-art {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.coupon-amount {
+  /* Fredoka 700 — load via Google Fonts in the consumer page <head>.
+     Falls back to Poppins (primary font family) when Fredoka is absent. */
+  font-family: "Fredoka", var(--font-family-primary);
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.coupon-amount-sup {
+  font-size: 22px;
+  vertical-align: super;
+  margin-right: 1px;
+}
+
+.coupon-info { min-width: 0; }
+
+.coupon-title {
+  /* Title Small @ weight 800 + uppercase. */
+  margin: 0 0 var(--space-2);
+  font-size:      var(--type-title-small-size);
+  font-weight:    800;
+  line-height:    1.15;
+  letter-spacing: .2px;
+  text-transform: uppercase;
+}
+
+.coupon-sub {
+  /* Body Small @ weight 600 */
+  font-size:   var(--type-body-small-size);
+  font-weight: 600;
+  line-height: var(--type-body-small-lh);
+}
+
+.coupon-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+/* ----- STUB (vertical "Activate" tab) ----- */
+.stub {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  font-family: var(--font-family-primary);
+  font-weight: 800;
+  /* Body Small size; tracking widened so the rotated label spreads
+     vertically the same way the design canvas does. */
+  font-size: var(--type-body-small-size);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  transition: filter .15s ease, transform .12s ease, background-color .2s ease, color .2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.stub:hover  { filter: brightness(1.06); }
+.stub:active { transform: scale(.985); }
+
+.stub-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+
+.perf {
+  position: absolute;
+  top: var(--space-2);
+  bottom: var(--space-2);
+  left: -1px;
+  width: 0;
+  border-left: 2px dashed currentColor;
+  opacity: .55;
+}
+.notch {
+  position: absolute;
+  left: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-circle);
+  /* notch background == screen background. Defaults to blue-deep
+     (the half-sheet gradient bottom); consumers override per
+     context — e.g. `.screen-rewards .notch { background: ... }`. */
+  background: var(--color-blue-deep);
+}
+.notch.top    { top: -7px; }
+.notch.bottom { bottom: -7px; }
+
+/* ============================================================
+   COUPON — CLASSIC CREAM (recommended ship variant)
+   ============================================================ */
+.coupon-classic                { background: #FFF8EA; color: var(--color-blue-dark); }
+.coupon-classic .coupon-art    {
+  background: linear-gradient(160deg, var(--color-white) 0%, #ffe9c0 100%);
+  border: 1.5px dashed color-mix(in srgb, var(--color-blue-dark) 35%, transparent);
+}
+.coupon-classic .coupon-amount { color: var(--color-blue-dark); }
+.coupon-classic .coupon-title  { color: var(--color-blue-dark); }
+.coupon-classic .coupon-sub    { color: var(--color-gray-500); }
+.coupon-classic .stub          { background: var(--color-gold); color: var(--color-ink); }
+.coupon-classic .perf          { color: var(--color-blue-dark); }
+
+/* ============================================================
+   COUPON — BURST (bright gold→coral with confetti)
+   ============================================================ */
+.coupon-burst                  { background: linear-gradient(135deg, #FFD86B 0%, var(--color-gold) 45%, #E85A4F 100%); color: var(--color-white); }
+.coupon-burst .coupon-art      { background: var(--color-white); box-shadow: 0 4px 10px rgba(0,0,0,.18), inset 0 -3px 0 rgba(0,0,0,.06); }
+.coupon-burst .coupon-amount   { color: var(--color-red); }
+.coupon-burst .coupon-title    { color: var(--color-white); text-shadow: 0 1px 0 rgba(0, 0, 0, .18); }
+.coupon-burst .coupon-sub      { color: rgba(255, 255, 255, .92); font-weight: 700; }
+.coupon-burst .progress        { background: rgba(0, 0, 0, .18); }
+.coupon-burst .progress > i    { background: var(--color-white); }
+.coupon-burst .stub            { background: var(--color-white); color: var(--color-blue-dark); }
+.coupon-burst .perf            { color: var(--color-blue-dark); opacity: .35; }
+/* Confetti overlay — apply <span class="coupon-confetti"></span> inside .coupon */
+.coupon-confetti {
+  position: absolute; inset: 0; pointer-events: none; opacity: .55;
+  background-image:
+    radial-gradient(circle at 12% 20%, #fff 1.5px, transparent 2.5px),
+    radial-gradient(circle at 80% 30%, #fff 2px,   transparent 3px),
+    radial-gradient(circle at 30% 78%, #fff 1.5px, transparent 2.5px),
+    radial-gradient(circle at 65% 85%, #fff 2px,   transparent 3px),
+    radial-gradient(circle at 50% 40%, #fff 1px,   transparent 2px);
+}
+
+/* ============================================================
+   COUPON — FOIL (premium navy + gold-foil stub)
+   ============================================================ */
+.coupon-foil                   { background: linear-gradient(160deg, var(--color-blue-dark) 0%, var(--color-blue-deep) 100%); color: var(--color-white); }
+.coupon-foil .coupon-art       { background: radial-gradient(circle at 30% 30%, #FFD86B 0%, var(--color-gold) 55%, var(--color-gold-dark) 100%); box-shadow: inset 0 2px 0 rgba(255,255,255,.4), inset 0 -2px 0 rgba(0,0,0,.2), 0 4px 10px rgba(0,0,0,.3); }
+.coupon-foil .coupon-amount    { color: var(--color-ink); text-shadow: 0 1px 0 rgba(255,255,255,.4); }
+.coupon-foil .coupon-title     { color: var(--color-white); }
+.coupon-foil .coupon-sub       { color: rgba(255, 255, 255, .7); }
+.coupon-foil .stub             { background: linear-gradient(180deg, var(--color-gold) 0%, var(--color-gold-dark) 100%); color: var(--color-ink); box-shadow: inset 1px 0 0 rgba(255,255,255,.35), inset 0 1px 0 rgba(255,255,255,.45); }
+.coupon-foil .perf             { color: var(--color-white); opacity: .4; }
+
+/* ============================================================
+   COUPON — POP (sky→blue body, tilted white badge, red stub)
+   ============================================================ */
+.coupon-pop                    { background: linear-gradient(180deg, #6FA8FF 0%, var(--color-blue) 100%); color: var(--color-white); overflow: visible; }
+.coupon-pop .coupon-art        { width: 96px; height: 96px; border-radius: var(--radius-circle); background: var(--color-white); border: 4px solid var(--color-gold); box-shadow: 0 6px 14px rgba(0,0,0,.25); transform: rotate(-6deg); }
+.coupon-pop .coupon-amount     { color: var(--color-blue-dark); }
+.coupon-pop .coupon-title      { color: var(--color-white); font-size: var(--type-title-medium-size); }
+.coupon-pop .coupon-sub        { color: rgba(255, 255, 255, .85); font-weight: 600; }
+.coupon-pop .points-pill       { background: rgba(0, 0, 0, .25); color: var(--color-white); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22); }
+.coupon-pop .stub              { background: var(--color-red); color: var(--color-white); }
+.coupon-pop .perf              { color: var(--color-white); opacity: .55; }
+
+/* ============================================================
+   COUPON — STAMP (vintage admission ticket with star corners)
+   ============================================================ */
+.coupon-stamp                  { background: #FFEFCB; color: var(--color-blue-dark); }
+.coupon-stamp .coupon-body     { margin: 6px; border: 2px solid var(--color-blue-dark); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); }
+.coupon-stamp .coupon-art      { background: var(--color-red); color: var(--color-white); box-shadow: 0 4px 0 rgba(0,0,0,.18); }
+.coupon-stamp .coupon-amount   { color: var(--color-white); }
+.coupon-stamp .coupon-title    { color: var(--color-blue-dark); font-size: var(--type-body-medium-size); }
+.coupon-stamp .coupon-sub      { color: var(--color-blue-dark); opacity: .65; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; font-size: 11px; }
+.coupon-stamp .stub            { background: var(--color-blue-dark); color: var(--color-gold); }
+.coupon-stamp .perf            { color: var(--color-blue-dark); opacity: .35; }
+/* Optional star corners — drop <svg class="coupon-star tl">…</svg> etc. */
+.coupon-star { position: absolute; width: 14px; height: 14px; color: var(--color-red); }
+.coupon-star.tl { top: var(--space-2);    left: var(--space-3); }
+.coupon-star.tr { top: var(--space-2);    right: 84px; }
+.coupon-star.bl { bottom: var(--space-2); left: var(--space-3); }
+.coupon-star.br { bottom: var(--space-2); right: 84px; }
+
+/* ============================================================
+   COUPON — STATES (apply on top of any variant)
+   ============================================================ */
+.coupon.is-locked .stub  { opacity: .55; cursor: not-allowed; }
+.coupon.is-active .stub  { background: var(--color-green); color: var(--color-white); }
+.coupon.is-used          { filter: grayscale(.55) opacity(.75); }
+.coupon.is-used .stub    { background: var(--color-red); color: var(--color-white); }

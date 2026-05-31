@@ -1,0 +1,179 @@
+/* ============================================================
+   ThatDailyDeal — Rewards feature positioning
+   Per-feature CSS (linked after v6.css), following dist-v6/CLAUDE.md
+   rule 5: feature-only layout lives here; shared visuals (the
+   .coupon / .gold-pill / .progress families) live in components.css.
+
+   Owns the layout of the rewards half-sheet: a reusable half-sheet
+   header, a segmented tab control, the points-hero card, and the
+   scrollable coupon list. Coupons themselves are JS-rendered into
+   #rewardsList by rewards.js.
+
+   References tokens.css variables only — no hex/rgba theme literals
+   beyond the intentional translucent-white surface tints.
+   ============================================================ */
+
+/* Reusable header for any half-sheet screen (a .screen[data-tab=…]
+   that slides up from the bottom). Centered title + optional sub. */
+.half-sheet-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-1);
+  color: var(--color-white);
+  margin-bottom: var(--space-4);
+}
+.half-sheet-title {
+  margin: 0;
+  font-size:      var(--type-headline-medium-size);
+  font-weight:    var(--type-headline-medium-weight);
+  line-height:    var(--type-headline-medium-lh);
+  letter-spacing: var(--type-headline-medium-tracking);
+}
+.half-sheet-sub {
+  margin: 0;
+  font-size:      var(--type-body-small-size);
+  font-weight:    var(--type-body-small-weight);
+  line-height:    var(--type-body-small-lh);
+  letter-spacing: var(--type-body-small-tracking);
+  color: rgba(255, 255, 255, .65);
+}
+
+/* ============== REWARDS HALF-SHEET ============== */
+/* The sheet sizing, blue gradient, 22px top radius and slide-up
+   transform come from v6.css `.screen[data-tab="rewards"]`. Here we
+   only stack the feature root as a column. rewards.js renders the
+   header / tabs / points hero / coupon list directly into
+   #rewardsRoot (no inner page wrapper), so the column layout lives on
+   the root: a fixed header/tabs/hero with the coupon list scrolling
+   within the remaining height. */
+.screen-rewards { flex-direction: column; }
+#rewardsRoot {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;   /* allow shrink so the inner list can scroll */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-4) calc(var(--space-4) + 90px);
+}
+
+/* Segmented control. Uses the half-sheet's dark surface as the
+   inactive backdrop; active tab is the gold accent. */
+.rewards-tabs {
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  background: rgba(0, 0, 0, .25);
+  border-radius: var(--radius-md);
+}
+.rewards-tab {
+  flex: 1;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, .7);
+  font: inherit;
+  font-family: var(--font-family-primary);
+  /* Body Small @ weight 700 */
+  font-size:   var(--type-body-small-size);
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color .18s ease, color .18s ease;
+}
+.rewards-tab.is-active {
+  background: var(--color-gold);
+  color: var(--color-blue-dark);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, .18);
+}
+
+/* Subtle light-glass panel — light-tinted gradient + thin white
+   border. Different from --glass-bg (dark-tinted) because this sits
+   against an already-dark surface and needs to read as a lifted card. */
+.points-hero {
+  background: linear-gradient(180deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, .04));
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.points-hero-coin {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-circle);
+  background: radial-gradient(circle at 30% 30%, #FFD86B, var(--color-gold) 60%, var(--color-gold-dark));
+  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45), inset 0 -2px 0 rgba(0, 0, 0, .18);
+  flex-shrink: 0;
+}
+.points-hero-meta { display: flex; flex-direction: column; min-width: 0; }
+.points-hero-label {
+  /* Label Small @ caps, wider tracking for the "AVAILABLE POINTS" cap. */
+  font-size:      var(--type-label-small-size);
+  font-weight:    700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  opacity: .7;
+}
+.points-hero-value {
+  font-family: "Fredoka", var(--font-family-primary);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1;
+  margin-top: 2px;
+}
+.points-hero-next {
+  margin-left: auto;
+  text-align: right;
+  /* Label Small */
+  font-size:   var(--type-label-small-size);
+  font-weight: 700;
+}
+.points-hero-next b {
+  display: block;
+  color: var(--color-gold);
+  font-size: var(--type-body-small-size);
+}
+
+/* Scrollable coupon list — fills remaining height of the half-sheet. */
+.rewards-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  /* Inner padding so cards aren't flush against the scroll edges. */
+  padding-bottom: var(--space-2);
+}
+.rewards-list[hidden] { display: none; }
+.rewards-empty {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, .65);
+  text-align: center;
+  padding: var(--space-5);
+  font-size:   var(--type-body-small-size);
+  font-weight: 500;
+}
+.rewards-empty[hidden] { display: none; }
+
+/* Notch background is the screen gradient base. Override the
+   components.css default (--color-blue-deep) so the ticket cuts
+   read as actual holes through the rewards half-sheet surface. */
+.screen-rewards .notch { background: var(--color-blue-dark); }

@@ -4,9 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>ThatDailyDeal</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" />
   <link rel="stylesheet" href="tokens.css" />
   <link rel="stylesheet" href="components.css" />
   <link rel="stylesheet" href="v6.css" />
+  <link rel="stylesheet" href="rewards.css" />
 </head>
 <body>
 
@@ -117,20 +119,9 @@
     <div id="contestsRoot"></div>
   </section>
 
-  <section class="screen screen-coming-soon" data-tab="rewards">
-    <div class="cs-placeholder">
-      <span class="cs-placeholder-icon">
-        <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 12 20 22 4 22 4 12"/>
-          <rect x="2" y="7" width="20" height="5"/>
-          <line x1="12" y1="22" x2="12" y2="7"/>
-          <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
-          <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
-        </svg>
-      </span>
-      <h2>Rewards</h2>
-      <p>Coming soon</p>
-    </div>
+  <!-- Rewards feature: markup rendered by rewards.js into #rewardsRoot -->
+  <section class="screen screen-rewards" data-tab="rewards">
+    <div id="rewardsRoot"></div>
   </section>
 
   <!-- Events feature: markup rendered by events.js into #eventsRoot -->
@@ -138,18 +129,9 @@
     <div id="eventsRoot"></div>
   </section>
 
-  <section class="screen screen-coming-soon" data-tab="cart">
-    <div class="cs-placeholder">
-      <span class="cs-placeholder-icon">
-        <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <path d="M16 10a4 4 0 0 1-8 0"/>
-        </svg>
-      </span>
-      <h2>Cart</h2>
-      <p>Coming soon</p>
-    </div>
+  <!-- Cart feature: markup rendered by cart.js into #cartRoot -->
+  <section class="screen" data-tab="cart">
+    <div id="cartRoot"></div>
   </section>
 
   <!-- Tap toast (small, dark — incidental feedback) -->
@@ -464,6 +446,8 @@
   <script src="events.js"></script>
   <script src="settings.js"></script>
   <script src="contests.js"></script>
+  <script src="cart.js"></script>
+  <script src="rewards.js"></script>
 </div>
 </div>
 </body>

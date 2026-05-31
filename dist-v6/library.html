@@ -54,6 +54,10 @@
         <li><a href="#match-card" class="lib-nav-link">Match card</a></li>
         <li><a href="#list-card" class="lib-nav-link">List card</a></li>
         <li><a href="#form-field" class="lib-nav-link">Form field</a></li>
+        <li><a href="#stepper" class="lib-nav-link">Stepper</a></li>
+        <li><a href="#cart-line" class="lib-nav-link">Cart line</a></li>
+        <li><a href="#cart-summary" class="lib-nav-link">Cart summary</a></li>
+        <li><a href="#coupon" class="lib-nav-link">Coupon</a></li>
       </ul>
     </div>
   </nav>
@@ -1126,6 +1130,341 @@
               <input class="field-input" type="text" value="March 2024" readonly>
             </label>
           </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="lib-component" id="stepper">
+    <header class="lib-component-header">
+      <h2>Stepper</h2>
+      <p class="lib-component-desc">Compact quantity control on a liquid-glass pill — a round <code>−</code> button, the current value, and a round <code>+</code>. Disable <code>−</code> at the minimum (1). Used by the cart line to edit item amounts; reusable wherever a small numeric stepper is needed.</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.stepper</code>, <code>.stepper-btn</code>, <code>.stepper-value</code>). Tokens: <code>--glass-*</code>, <code>--radius-pill</code>, <code>--radius-circle</code>, <code>--color-white</code>, type scale.</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Default <span class="lib-variant-state">.stepper</span></figcaption>
+        <div class="lib-pp-stage">
+          <div class="stepper">
+            <button class="stepper-btn" aria-label="Decrease quantity"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            <span class="stepper-value">2</span>
+            <button class="stepper-btn" aria-label="Increase quantity"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </div>
+        </div>
+      </figure>
+
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">At minimum <span class="lib-variant-state">.stepper-btn:disabled</span></figcaption>
+        <div class="lib-pp-stage">
+          <div class="stepper">
+            <button class="stepper-btn" aria-label="Decrease quantity" disabled><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            <span class="stepper-value">1</span>
+            <button class="stepper-btn" aria-label="Increase quantity"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="lib-component" id="cart-line">
+    <header class="lib-component-header">
+      <h2>Cart line</h2>
+      <p class="lib-component-desc">One item in the cart: a liquid-glass row with a media thumb, the product name + a remove control, a price cluster (current price + struck old price + a reused <code>.pp-discount</code> sale badge), a quantity <code>.stepper</code>, and the line total. <code>.cart-line-tag</code> flags a bulk-price unlock (gold pill). Stack several in a <code>.cart-list</code>.</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.cart-line</code> + <code>-thumb</code>, <code>-body</code>, <code>-top</code>, <code>-name</code>, <code>-remove</code>, <code>-prices</code>, <code>-now</code>, <code>-old</code>, <code>-tag</code>, <code>-foot</code>, <code>-total</code>; <code>.cart-list</code>). Reuses <code>.pp-discount</code> + <code>.stepper</code>. Tokens: <code>--glass-*</code>, <code>--radius-lg</code>, <code>--radius-md</code>, <code>--color-white</code>, <code>--color-gold</code>, type scale.</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">On sale <span class="lib-variant-state">.cart-line</span></figcaption>
+        <div class="lib-pp-stage">
+          <div class="cart-list" style="width: 100%; max-width: 360px;">
+            <article class="cart-line">
+              <span class="cart-line-thumb" aria-hidden="true"></span>
+              <div class="cart-line-body">
+                <div class="cart-line-top">
+                  <span class="cart-line-name">Hands-Free Neck Fan</span>
+                  <button class="cart-line-remove" aria-label="Remove"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                </div>
+                <div class="cart-line-prices">
+                  <span class="cart-line-now">$9.99</span>
+                  <span class="cart-line-old">$29.99</span>
+                  <span class="pp-discount">-67%</span>
+                </div>
+                <div class="cart-line-foot">
+                  <div class="stepper">
+                    <button class="stepper-btn" aria-label="Decrease quantity"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                    <span class="stepper-value">2</span>
+                    <button class="stepper-btn" aria-label="Increase quantity"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                  </div>
+                  <span class="cart-line-total">$19.98</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </figure>
+
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Bulk unlocked <span class="lib-variant-state">.cart-line-tag</span></figcaption>
+        <div class="lib-pp-stage">
+          <div class="cart-list" style="width: 100%; max-width: 360px;">
+            <article class="cart-line">
+              <span class="cart-line-thumb" aria-hidden="true"></span>
+              <div class="cart-line-body">
+                <div class="cart-line-top">
+                  <span class="cart-line-name">Travel Backpack — Daily Carry</span>
+                  <button class="cart-line-remove" aria-label="Remove"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+                </div>
+                <div class="cart-line-prices">
+                  <span class="cart-line-now">$6.00</span>
+                  <span class="cart-line-old">$49.99</span>
+                  <span class="pp-discount">-70%</span>
+                  <span class="cart-line-tag">Bulk price</span>
+                </div>
+                <div class="cart-line-foot">
+                  <div class="stepper">
+                    <button class="stepper-btn" aria-label="Decrease quantity"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                    <span class="stepper-value">12</span>
+                    <button class="stepper-btn" aria-label="Increase quantity"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+                  </div>
+                  <span class="cart-line-total">$71.95</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="lib-component" id="cart-summary">
+    <header class="lib-component-header">
+      <h2>Cart summary</h2>
+      <p class="lib-component-desc">Totals panel for the cart / checkout. A stack of <code>.cart-sum-row</code> label/value pairs: <code>.is-saved</code> turns a row green for the combined discount, <code>.is-total</code> bumps the final row above a hairline divider. Subtotal − You saved + Shipping reconciles to Total. Usually followed by a primary <code>.btn</code> checkout button.</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.cart-summary</code>, <code>.cart-sum-row</code> + <code>.is-saved</code> / <code>.is-total</code>). Tokens: <code>--glass-*</code>, <code>--radius-lg</code>, <code>--color-white</code>, <code>--color-green</code>, type scale.</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">With savings <span class="lib-variant-state">.cart-summary</span></figcaption>
+        <div class="lib-pp-stage">
+          <div style="width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 12px;">
+            <div class="cart-summary">
+              <div class="cart-sum-row"><span>Subtotal (4 items)</span><span>$109.97</span></div>
+              <div class="cart-sum-row is-saved"><span>You saved</span><span>−$70.01</span></div>
+              <div class="cart-sum-row"><span>Shipping</span><span>Free</span></div>
+              <div class="cart-sum-row is-total"><span>Total</span><span>$39.96</span></div>
+            </div>
+            <button class="btn btn-primary btn-lg" style="width: 100%;">Checkout · $39.96</button>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="lib-component" id="coupon">
+    <header class="lib-component-header">
+      <h2>Coupon</h2>
+      <p class="lib-component-desc">Rewards-tab redemption ticket. The right edge is a perforated vertical <strong>stub</strong> the user taps to activate — "Activate" is part of the ticket, not a button below it (movie-ticket vocabulary). A square art panel carries the <code>$</code> amount, beside a title, sub, and a gold points pill. Five visual variants — <code>.coupon-classic</code> (recommended ship), <code>.coupon-burst</code>, <code>.coupon-foil</code>, <code>.coupon-pop</code>, <code>.coupon-stamp</code> — and three states: <strong>locked</strong> (<code>.is-locked</code>, disabled stub + progress bar toward unlock), <strong>active</strong> (<code>.is-active</code>, green stub reading "Activated"), and <strong>used</strong> (<code>.is-used</code>, desaturated, for the My Rewards tab).</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.coupon</code> + <code>-body</code>, <code>-art</code>, <code>-amount</code>, <code>-info</code>, <code>-title</code>, <code>-sub</code>, <code>-meta</code>; <code>.stub</code>, <code>.stub-text</code>, <code>.perf</code>, <code>.notch</code>; variants <code>.coupon-classic/-burst/-foil/-pop/-stamp</code> + <code>.coupon-confetti</code>/<code>.coupon-star</code>; states <code>.is-locked/.is-active/.is-used</code>). Composes <code>.gold-pill.points-pill</code> and <code>.progress</code>. Rendered into the Rewards tab by <code>rewards.js</code>; positioned by <code>rewards.css</code> (the <code>.screen-rewards .notch</code> override matches the notch holes to the sheet gradient). Tokens: <code>--color-gold</code>, <code>--color-gold-dark</code>, <code>--color-blue</code>, <code>--color-blue-dark</code>, <code>--color-blue-deep</code>, <code>--color-red</code>, <code>--color-green</code>, <code>--color-ink</code>, <code>--shadow-md</code>, the <code>--type-*</code> scale. Display amount uses <strong>Fredoka</strong> (falls back to Poppins).</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Variants &amp; states <span class="lib-variant-state">.coupon + variant + state</span></figcaption>
+        <div class="lib-coupon-stage">
+
+          <!-- Classic — unlocked (recommended ship) -->
+          <div class="coupon coupon-classic">
+            <div class="coupon-body">
+              <div class="coupon-art"><span class="coupon-amount"><span class="coupon-amount-sup">$</span>5</span></div>
+              <div class="coupon-info">
+                <h3 class="coupon-title">$5 Coupon Code</h3>
+                <div class="coupon-sub">TDD Store credit · never expires</div>
+                <div class="coupon-meta">
+                  <span class="gold-pill points-pill">
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 6l1.6 3.4 3.7.4-2.8 2.6.8 3.6L12 14.2 8.7 16l.8-3.6L6.7 9.8l3.7-.4L12 6z" fill="#fff" opacity=".9"/></svg>
+                    1,000 pts
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button class="stub" aria-label="Activate $5 Coupon Code">
+              <span class="perf" aria-hidden="true"></span>
+              <span class="notch top" aria-hidden="true"></span>
+              <span class="notch bottom" aria-hidden="true"></span>
+              <span class="stub-text">Activate</span>
+            </button>
+          </div>
+
+          <!-- Classic — locked (progress toward unlock) -->
+          <div class="coupon coupon-classic is-locked">
+            <div class="coupon-body">
+              <div class="coupon-art"><span class="coupon-amount"><span class="coupon-amount-sup">$</span>25</span></div>
+              <div class="coupon-info">
+                <h3 class="coupon-title">$25 Coupon Code</h3>
+                <div class="coupon-sub">So close — keep earning!</div>
+                <div class="progress" aria-hidden="true"><i style="width: 96%"></i></div>
+                <div class="coupon-meta">
+                  <span class="gold-pill points-pill">
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 6l1.6 3.4 3.7.4-2.8 2.6.8 3.6L12 14.2 8.7 16l.8-3.6L6.7 9.8l3.7-.4L12 6z" fill="#fff" opacity=".9"/></svg>
+                    3,118/3,250 pts
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button class="stub" disabled aria-label="Locked — not enough points">
+              <span class="perf" aria-hidden="true"></span>
+              <span class="notch top" aria-hidden="true"></span>
+              <span class="notch bottom" aria-hidden="true"></span>
+              <span class="stub-text">Locked</span>
+            </button>
+          </div>
+
+          <!-- Classic — active (post-redeem) -->
+          <div class="coupon coupon-classic is-active">
+            <div class="coupon-body">
+              <div class="coupon-art"><span class="coupon-amount"><span class="coupon-amount-sup">$</span>10</span></div>
+              <div class="coupon-info">
+                <h3 class="coupon-title">$10 Coupon Code</h3>
+                <div class="coupon-sub">TDD Store credit · never expires</div>
+                <div class="coupon-meta">
+                  <span class="gold-pill points-pill">
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 6l1.6 3.4 3.7.4-2.8 2.6.8 3.6L12 14.2 8.7 16l.8-3.6L6.7 9.8l3.7-.4L12 6z" fill="#fff" opacity=".9"/></svg>
+                    1,750 pts
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button class="stub" aria-label="Activated">
+              <span class="perf" aria-hidden="true"></span>
+              <span class="notch top" aria-hidden="true"></span>
+              <span class="notch bottom" aria-hidden="true"></span>
+              <span class="stub-text">Activated</span>
+            </button>
+          </div>
+
+          <!-- Classic — used (My Rewards tab) -->
+          <div class="coupon coupon-classic is-used">
+            <div class="coupon-body">
+              <div class="coupon-art"><span class="coupon-amount"><span class="coupon-amount-sup">$</span>5</span></div>
+              <div class="coupon-info">
+                <h3 class="coupon-title">$5 Coupon Code</h3>
+                <div class="coupon-sub">Redeemed · order #10482</div>
+                <div class="coupon-meta">
+                  <span class="gold-pill points-pill">
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 6l1.6 3.4 3.7.4-2.8 2.6.8 3.6L12 14.2 8.7 16l.8-3.6L6.7 9.8l3.7-.4L12 6z" fill="#fff" opacity=".9"/></svg>
+                    1,000 pts
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button class="stub" aria-label="Used">
+              <span class="perf" aria-hidden="true"></span>
+              <span class="notch top" aria-hidden="true"></span>
+              <span class="notch bottom" aria-hidden="true"></span>
+              <span class="stub-text">Used</span>
+            </button>
+          </div>
+
+          <!-- Burst variant (with confetti) -->
+          <div class="coupon coupon-burst">
+            <span class="coupon-confetti" aria-hidden="true"></span>
+            <div class="coupon-body">
+              <div class="coupon-art"><span class="coupon-amount"><span class="coupon-amount-sup">$</span>10</span></div>
+              <div class="coupon-info">
+                <h3 class="coupon-title">$10 Coupon Code</h3>
+                <div class="coupon-sub">Limited drop · this week only</div>
+                <div class="coupon-meta">
+                  <span class="gold-pill points-pill">
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 6l1.6 3.4 3.7.4-2.8 2.6.8 3.6L12 14.2 8.7 16l.8-3.6L6.7 9.8l3.7-.4L12 6z" fill="#fff" opacity=".9"/></svg>
+                    1,750 pts
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button class="stub" aria-label="Activate $10 Coupon Code">
+              <span class="perf" aria-hidden="true"></span>
+              <span class="notch top" aria-hidden="true"></span>
+              <span class="notch bottom" aria-hidden="true"></span>
+              <span class="stub-text">Activate</span>
+            </button>
+          </div>
+
+          <!-- Foil variant (premium) -->
+          <div class="coupon coupon-foil">
+            <div class="coupon-body">
+              <div class="coupon-art"><span class="coupon-amount"><span class="coupon-amount-sup">$</span>25</span></div>
+              <div class="coupon-info">
+                <h3 class="coupon-title">$25 Coupon Code</h3>
+                <div class="coupon-sub">Premium reward · never expires</div>
+                <div class="coupon-meta">
+                  <span class="gold-pill points-pill">
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 6l1.6 3.4 3.7.4-2.8 2.6.8 3.6L12 14.2 8.7 16l.8-3.6L6.7 9.8l3.7-.4L12 6z" fill="#fff" opacity=".9"/></svg>
+                    3,250 pts
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button class="stub" aria-label="Activate $25 Coupon Code">
+              <span class="perf" aria-hidden="true"></span>
+              <span class="notch top" aria-hidden="true"></span>
+              <span class="notch bottom" aria-hidden="true"></span>
+              <span class="stub-text">Activate</span>
+            </button>
+          </div>
+
+          <!-- Pop variant (tilted badge, red stub) -->
+          <div class="coupon coupon-pop">
+            <div class="coupon-body">
+              <div class="coupon-art"><span class="coupon-amount"><span class="coupon-amount-sup">$</span>5</span></div>
+              <div class="coupon-info">
+                <h3 class="coupon-title">$5 Coupon Code</h3>
+                <div class="coupon-sub">TDD Store credit</div>
+                <div class="coupon-meta">
+                  <span class="gold-pill points-pill">
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 6l1.6 3.4 3.7.4-2.8 2.6.8 3.6L12 14.2 8.7 16l.8-3.6L6.7 9.8l3.7-.4L12 6z" fill="#fff" opacity=".9"/></svg>
+                    1,000 pts
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button class="stub" aria-label="Activate $5 Coupon Code">
+              <span class="perf" aria-hidden="true"></span>
+              <span class="notch top" aria-hidden="true"></span>
+              <span class="notch bottom" aria-hidden="true"></span>
+              <span class="stub-text">Activate</span>
+            </button>
+          </div>
+
+          <!-- Stamp variant (vintage ticket with star corners) -->
+          <div class="coupon coupon-stamp">
+            <svg class="coupon-star tl" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6L12 2z"/></svg>
+            <svg class="coupon-star tr" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6L12 2z"/></svg>
+            <svg class="coupon-star bl" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6L12 2z"/></svg>
+            <svg class="coupon-star br" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 17.3 5.8 20.9l1.6-6.8L2.2 8.9l6.9-.6L12 2z"/></svg>
+            <div class="coupon-body">
+              <div class="coupon-art"><span class="coupon-amount"><span class="coupon-amount-sup">$</span>10</span></div>
+              <div class="coupon-info">
+                <h3 class="coupon-title">$10 Coupon Code</h3>
+                <div class="coupon-sub">Admit one · TDD credit</div>
+                <div class="coupon-meta">
+                  <span class="gold-pill points-pill">
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 6l1.6 3.4 3.7.4-2.8 2.6.8 3.6L12 14.2 8.7 16l.8-3.6L6.7 9.8l3.7-.4L12 6z" fill="#fff" opacity=".9"/></svg>
+                    1,750 pts
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button class="stub" aria-label="Activate $10 Coupon Code">
+              <span class="perf" aria-hidden="true"></span>
+              <span class="notch top" aria-hidden="true"></span>
+              <span class="notch bottom" aria-hidden="true"></span>
+              <span class="stub-text">Activate</span>
+            </button>
+          </div>
+
         </div>
       </figure>
     </div>

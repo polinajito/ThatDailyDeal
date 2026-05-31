@@ -606,6 +606,20 @@ code {
   background: var(--color-blue);
 }
 
+/* ============== COUPON DEMO STAGE ============== */
+/* Navy tile matching the rewards half-sheet gradient base so the
+   ticket perforation notches (default .notch bg = --color-blue-deep)
+   read as holes through the surface, exactly as on the rewards screen. */
+.lib-coupon-stage {
+  padding: 24px;
+  border-radius: 14px;
+  background: var(--color-blue-deep);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.lib-coupon-stage .coupon { max-width: 360px; }
+
 /* ============== BUTTON LIBRARY-SECTION SCAFFOLD ============== */
 .lib-btn-group {
   margin-top: 24px;
