@@ -41,6 +41,7 @@
         <li><a href="#deals-banner" class="lib-nav-link">Deals banner</a></li>
         <li><a href="#stamps" class="lib-nav-link">Swipe stamps</a></li>
         <li><a href="#toast" class="lib-nav-link">Toast</a></li>
+        <li><a href="#list-card" class="lib-nav-link">List card</a></li>
       </ul>
     </div>
   </nav>
@@ -320,6 +321,15 @@
       <div class="lib-btn-row">
         <button class="btn btn-primary btn-md btn-ghost">Maybe later</button>
         <button class="btn btn-secondary btn-md btn-ghost">Cancel</button>
+      </div>
+    </div>
+
+    <div class="lib-btn-group">
+      <h3 class="lib-btn-group-title">Destructive</h3>
+      <p class="lib-btn-group-note">Red fill (<code>.btn-destructive</code>) for irreversible confirmations — log out, delete account. Composes with <code>.btn-ghost</code> for a softer outlined variant.</p>
+      <div class="lib-btn-row">
+        <button class="btn btn-destructive btn-md">Log out</button>
+        <button class="btn btn-destructive btn-md btn-ghost">Cancel</button>
       </div>
     </div>
 
@@ -705,6 +715,61 @@
               <div class="rich-toast-title">You're on the list</div>
               <div class="rich-toast-sub">We'll notify you when this item is back in stock.</div>
             </div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="lib-component" id="list-card">
+    <header class="lib-component-header">
+      <h2>List card</h2>
+      <p class="lib-component-desc">Grouped liquid-glass list for settings-style screens. A <code>.list-card</code> stacks <code>.list-row</code> items separated by hairline dividers. Each row takes an optional leading <code>.list-row-icon</code>, a <code>.list-row-text</code> block (<code>.list-row-label</code> + optional <code>.list-row-sub</code>), and a trailing slot — a gold <code>.list-row-chevron</code> disclosure arrow or a control (reuse the <code>.ns-switch</code> toggle). Tappable rows are <code>&lt;button&gt;</code>; rows whose control owns interaction use <code>.is-static</code>. <code>.list-row-destructive</code> turns the label red for irreversible actions.</p>
+      <p class="lib-source">Visual: <code>components.css</code> (<code>.list-card</code>, <code>.list-row</code>, <code>.list-row-icon</code>, <code>.list-row-text</code>, <code>.list-row-label</code>, <code>.list-row-sub</code>, <code>.list-row-chevron</code>, <code>.list-row-destructive</code>). Reuses the <code>.ns-switch</code> toggle. Tokens: <code>--glass-*</code>, <code>--radius-lg</code>, <code>--radius-sm</code>, <code>--color-white</code>, <code>--color-gold</code>, <code>--color-red</code>, type scale.</p>
+    </header>
+
+    <div class="lib-component-variants">
+      <figure class="lib-component-variant">
+        <figcaption class="lib-variant-label">Settings group <span class="lib-variant-state">.list-card</span></figcaption>
+        <div class="lib-pp-stage">
+          <div class="list-card" style="width: 100%; max-width: 340px;">
+            <button class="list-row">
+              <span class="list-row-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/>
+                </svg>
+              </span>
+              <span class="list-row-text">
+                <span class="list-row-label">Contact Information</span>
+              </span>
+              <svg class="list-row-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </button>
+            <div class="list-row is-static">
+              <span class="list-row-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+                </svg>
+              </span>
+              <span class="list-row-text">
+                <span class="list-row-label">Mute Video by Default</span>
+                <span class="list-row-sub">Videos start muted when opened</span>
+              </span>
+              <span class="ns-switch" data-on="true">
+                <span class="ns-switch-track" aria-hidden="true"><span class="ns-switch-thumb"></span></span>
+              </span>
+            </div>
+            <button class="list-row list-row-destructive">
+              <span class="list-row-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+              </span>
+              <span class="list-row-text">
+                <span class="list-row-label">Log Out</span>
+              </span>
+            </button>
           </div>
         </div>
       </figure>

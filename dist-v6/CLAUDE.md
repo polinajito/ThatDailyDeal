@@ -27,6 +27,28 @@ components live in two files that both pages link:
    button visuals, menu structure, etc.
 4. **`library.css` is page chrome only** — the sidebar, foundation demos,
    and `.lib-*` scaffolding. Never put a shared component there.
+5. **One feature = one JS file, migrated on build-out.** Each *feature*
+   tab (`events`, `contests`, `rewards`, `cart`…) owns a classic script
+   (`events.js`, etc.) loaded after `v6.js`. `index.html` carries only a
+   thin mount point for it —
+   `<section class="screen" data-tab="events"><div id="eventsRoot"></div></section>`
+   — and the feature file renders its own markup into that root (mirroring
+   how `v6.js` fills the deals `#deck`). This keeps `index.html` a skeleton
+   and `v6.js` the app shell (nav, screen-switching, toggles).
+   - **Migrate on build-out, not eagerly.** A tab that's still a trivial
+     "Coming soon" placeholder may stay inline in `index.html`; split it
+     into its own file the moment it gets real content. (As of this
+     writing only `events` is split; `contests`/`rewards`/`cart` remain
+     inline placeholders.)
+   - **The `deals` shell screen stays in `v6.js`.** It's the home screen
+     and its deck rendering is woven into the swipe/navigation logic, so
+     it is a deliberate exception to the one-file rule.
+   - Classic scripts, **not** ES modules: `<script type="module">` is
+     blocked under `file://`, and library previews open these files
+     directly. Wrap each feature in an IIFE to avoid global leakage.
+   - Feature-only positioning may go in a per-feature CSS file
+     (`events.css`) linked alongside `v6.css`, following rules 2–3.
+     Shared visuals still land in `components.css` first (rule 1).
 
 ## Quick map
 

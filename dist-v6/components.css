@@ -129,6 +129,16 @@
 }
 .btn-secondary:hover { background: var(--color-blue-dark); }
 
+/* Destructive — red fill for irreversible confirmations (log out, delete). */
+.btn-destructive {
+  background: var(--color-red);
+  color: var(--color-white);
+  box-shadow: 0 4px 14px rgba(212, 58, 54, .35);
+}
+.btn-destructive:hover { background: color-mix(in srgb, var(--color-red) 86%, black); }
+.btn-destructive.btn-ghost { color: var(--color-red); }
+.btn-destructive.btn-ghost:hover { background: color-mix(in srgb, var(--color-red) 8%, transparent); }
+
 /* Ghost — transparent fill, colored border + text. Composes on top of
    a color variant: .btn-primary.btn-ghost or .btn-secondary.btn-ghost. */
 .btn-ghost {
@@ -442,4 +452,98 @@
   line-height:    var(--type-body-small-lh);
   letter-spacing: var(--type-body-small-tracking);
   color: var(--color-gray-700);
+}
+
+/* ============================================================
+   LIST CARD
+   Grouped liquid-glass list for settings-style screens. A
+   .list-card wraps a vertical stack of rows separated by hairline
+   dividers. Each row carries an optional leading .list-row-icon, a
+   .list-row-text block (.list-row-label + optional .list-row-sub),
+   and a trailing slot — a .list-row-chevron disclosure arrow or a
+   control (reuse the .ns-switch toggle). Tappable rows are <button>
+   .list-row; rows whose control owns interaction use .is-static.
+   Add .list-row-destructive for red, irreversible actions.
+   ============================================================ */
+.list-card {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+  overflow: hidden;
+  font-family: var(--font-family-primary);
+}
+
+.list-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-4);
+  background: transparent;
+  border: 0;
+  text-align: left;
+  color: var(--color-white);
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.list-row + .list-row { border-top: 1px solid rgba(255, 255, 255, .12); }
+.list-row:hover { background: rgba(255, 255, 255, .06); }
+/* Static rows — the control (e.g. a switch) owns interaction, not the row. */
+.list-row.is-static { cursor: default; }
+.list-row.is-static:hover { background: transparent; }
+
+.list-row-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, .1);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.list-row-icon svg { width: 20px; height: 20px; }
+
+.list-row-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.list-row-label {
+  /* Title Small */
+  font-size:      var(--type-title-small-size);
+  font-weight:    var(--type-title-small-weight);
+  line-height:    var(--type-title-small-lh);
+  letter-spacing: var(--type-title-small-tracking);
+  color: var(--color-white);
+}
+.list-row-sub {
+  /* Body Small */
+  font-size:      var(--type-body-small-size);
+  font-weight:    var(--type-body-small-weight);
+  line-height:    var(--type-body-small-lh);
+  letter-spacing: var(--type-body-small-tracking);
+  color: rgba(255, 255, 255, .6);
+}
+
+.list-row-chevron {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--color-gold);
+}
+
+/* Destructive rows — red label + red-tinted icon for log out / delete. */
+.list-row-destructive .list-row-label { color: var(--color-red); }
+.list-row-destructive .list-row-icon {
+  color: var(--color-red);
+  background: color-mix(in srgb, var(--color-red) 16%, transparent);
 }
