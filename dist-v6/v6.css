@@ -6,6 +6,10 @@
   /* Prototype-only easing curve. All colors / radii / shadows / glass
      come from tokens.css. */
   --ease-out: cubic-bezier(.22, .61, .36, 1);
+  /* Top inset reserved for the (fake) iOS status bar; the header pads by
+     this and the deck sits below it. Overridden on real mobile (where the
+     OS draws the real status bar) to the safe-area top. */
+  --header-top: 60px;
 }
 
 * { box-sizing: border-box; }
@@ -105,6 +109,15 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   z-index: 50;
   pointer-events: none;
   clip-path: inset(0 0 90% 0);
+}
+/* Whenever the frame is dropped (phone-sized viewport OR a real touch
+   device), hide the fake iOS status bar — the OS draws the real one — and
+   pull the header up to the safe-area top so there's no wasted band of
+   empty blue above the content. Matches the frameless media condition
+   above. (viewport-fit=cover in index.html makes env() available.) */
+@media (max-width: 767px), (hover: none) and (pointer: coarse) {
+  .status-bar { display: none; }
+  :root { --header-top: calc(env(safe-area-inset-top, 0px) + var(--space-2)); }
 }
 
 /* ============== TOP-OF-CARD STACK ============== */
@@ -424,8 +437,9 @@ body.deals-complete .deck { display: none; }
 .deck {
   position: absolute;
   /* Inset below the solid header band — the .phone-screen blue gradient
-     shows through the 110px gap above the deck. */
-  inset: 110px 0 0;
+     shows through the gap above the deck (header inset + flag row + breathing
+     room). Tracks --header-top so it follows the header up on mobile. */
+  inset: calc(var(--header-top) + 50px) 0 0;
   z-index: 1;
 }
 
@@ -551,7 +565,7 @@ body.deals-complete .deck { display: none; }
   display: grid;
   grid-template-columns: 40px 1fr 40px;
   align-items: center;
-  padding: 60px var(--space-4) 6px;
+  padding: var(--header-top) var(--space-4) 6px;
 }
 .flag {
   width: 30px; height: 30px;
