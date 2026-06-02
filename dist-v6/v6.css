@@ -158,9 +158,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   display: flex;
   flex-direction: column;   /* feature root fills the sheet as a single column */
   top: auto;
-  /* Tall enough that the open sheet rises just below the top header card
-     (~100px: 60px status-bar inset + the 30px flag/avatar row + padding). */
-  height: calc(100% - 100px);
+  /* Tall enough that the open sheet rises just below the header. Tracks
+     --header-top (status-bar inset) + the flag/avatar row, so on mobile —
+     where --header-top shrinks to the safe-area — the sheet still meets the
+     header bottom instead of leaving a gap. Desktop resolves to ~100px. */
+  height: calc(100% - var(--header-top) - 40px);
   bottom: 0;
   background: linear-gradient(180deg, var(--color-blue-dark) 0%, var(--color-blue-deep) 100%);
   border-radius: 22px 22px 0 0;

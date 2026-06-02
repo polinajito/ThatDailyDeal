@@ -1075,6 +1075,78 @@ navBtns.forEach((btn) => {
 });
 
 /* ============================================================
+   Swipe-down to dismiss a tab sheet
+   Drag the open sheet downward to close it back to Deals — but only when
+   its content is scrolled to the top, so the gesture never steals a normal
+   content scroll. The sheet follows the finger and the existing CSS
+   transition carries it the rest of the way down on release.
+   ============================================================ */
+const SHEET_CLOSE_DY = 90;   // px downward to commit a dismiss
+
+// Nearest scrollable ancestor of `el` up to (and including) `root`.
+function scrollableAncestor(el, root) {
+  let n = el;
+  while (n && n !== root.parentElement) {
+    if (n.scrollHeight > n.clientHeight + 1) {
+      const oy = getComputedStyle(n).overflowY;
+      if (oy === 'auto' || oy === 'scroll') return n;
+    }
+    n = n.parentElement;
+  }
+  return null;
+}
+
+function bindSheetDismiss(screen) {
+  let drag = null;
+
+  const clear = () => {
+    if (drag && drag.active) { screen.style.transition = ''; screen.style.transform = ''; }
+    drag = null;
+  };
+
+  screen.addEventListener('pointerdown', (e) => {
+    if (e.button !== undefined && e.button !== 0) return;
+    const scroller = scrollableAncestor(e.target, screen);
+    if (scroller && scroller.scrollTop > 0) return;   // mid-scroll → leave it alone
+    drag = { x0: e.clientX, y0: e.clientY, dy: 0, active: false, scroller, id: e.pointerId };
+  });
+
+  screen.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    drag.dy = e.clientY - drag.y0;
+    const dx = e.clientX - drag.x0;
+    if (drag.scroller && drag.scroller.scrollTop > 0) { clear(); return; }
+    if (!drag.active) {
+      if (drag.dy > 8 && drag.dy > Math.abs(dx)) {
+        drag.active = true;
+        screen.style.transition = 'none';
+        screen.setPointerCapture?.(drag.id);
+      } else if (drag.dy < -2 || Math.abs(dx) > 10) {
+        clear(); return;   // upward / sideways → not a dismiss
+      } else return;
+    }
+    if (drag.dy < 0) drag.dy = 0;
+    e.preventDefault();
+    screen.style.transform = `translateY(${drag.dy}px)`;
+  }, { passive: false });
+
+  screen.addEventListener('pointerup', () => {
+    if (!drag) return;
+    const commit = drag.active && drag.dy > SHEET_CLOSE_DY;
+    screen.style.transition = '';
+    screen.style.transform = '';   // hand back to CSS: snaps to 0 (stay) or 120% (close)
+    if (commit) closeSheet();
+    drag = null;
+  });
+
+  screen.addEventListener('pointercancel', clear);
+}
+
+document.querySelectorAll(
+  '.screen[data-tab="contests"], .screen[data-tab="rewards"], .screen[data-tab="events"], .screen[data-tab="cart"]'
+).forEach(bindSheetDismiss);
+
+/* ============================================================
    Notify-me sheet (sold-out flow)
    ============================================================ */
 const pushSupported = typeof window !== 'undefined' && 'Notification' in window;
