@@ -161,6 +161,7 @@ const BULK_RATIO    = 0.4;
 const fmt = (n) => `$${n.toFixed(2)}`;
 
 const deck       = document.getElementById('deck');
+const deckBack   = document.getElementById('deckBack');
 const cartBadge  = document.getElementById('cartBadge');
 const toast      = document.getElementById('toast');
 
@@ -463,11 +464,18 @@ function mountDeck() {
 
   tickBanner();
   applyVideoState();
+  updateBack();
 }
 
 // The card currently on top of the stack (deal or challenge interstitial).
 function currentCard() {
   return deck.querySelector('.deal-card.top, .challenge-card.top');
+}
+
+// Show the Back button only when there's an earlier deal to return to.
+function updateBack() {
+  if (!deckBack) return;
+  deckBack.hidden = !(state.index > 0) || document.body.classList.contains('deals-complete');
 }
 
 function applyVideoState() {
@@ -607,6 +615,7 @@ function flyOff(direction, cardEl) {
 
     tickBanner();
     applyVideoState();
+    updateBack();
   } else {
     // No more cards — show the "All Deals Viewed!" screen after the fly-off.
     state.index = SEQUENCE.length;
@@ -620,6 +629,47 @@ function flyOff(direction, cardEl) {
 function skipDeal(cardEl) {
   showToast('Skipped');
   flyOff('left', cardEl);
+}
+
+/* ============================================================
+   Go back — the mirror of flyOff. The current top demotes to the
+   under (next) slot and the previous card sweeps back in from the
+   left, over it. state.index is the source of truth, so the demoted
+   card stays correctly addressed for a later forward swipe.
+   ============================================================ */
+function goBack() {
+  if (state.index <= 0) return;
+
+  const oldTop   = currentCard();
+  const oldUnder = deck.querySelector('.deal-card.under, .challenge-card.under');
+  if (oldUnder) oldUnder.remove();          // old "next" — no longer adjacent
+
+  if (oldTop) {                             // demote current top → under
+    oldTop.classList.remove('top');
+    oldTop.classList.add('under');
+    oldTop.style.transform = '';
+  }
+
+  state.index -= 1;
+  state.paused = false;
+  document.body.classList.remove('is-paused');
+
+  // Build the previous card and slide it in from the left (reverse of a
+  // left fly-off) so it sweeps over the current card.
+  const prev = buildSeqCard(state.index, false);
+  prev.style.transition = 'none';
+  prev.style.transform  = 'translateX(-140vw) rotate(-22deg)';
+  prev.style.opacity    = '0';
+  deck.appendChild(prev);
+  bindSwipe(prev);
+  void prev.offsetWidth;                    // force reflow so the next change animates
+  prev.style.transition = '';
+  prev.style.transform  = '';
+  prev.style.opacity    = '';
+
+  tickBanner();
+  applyVideoState();
+  updateBack();
 }
 
 /* ============================================================
@@ -965,6 +1015,7 @@ setInterval(tickBanner, 1000);
 function showDealsDone() {
   dealsDoneEl.hidden = false;
   document.body.classList.add('deals-complete');
+  updateBack();   // hide Back behind the overlay
   // Pause every deck video while the overlay covers the deck.
   deck.querySelectorAll('.card-video').forEach((v) => v.pause());
   tickCountdown();
@@ -980,6 +1031,8 @@ function hideDealsDone() {
     countdownTimer = null;
   }
 }
+
+deckBack.addEventListener('click', goBack);
 
 document.getElementById('ddRestart').addEventListener('click', () => {
   state.index = 0;

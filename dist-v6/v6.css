@@ -917,6 +917,15 @@ body.confirm-open .confirm-sheet { transform: translate(-50%, 0); }
   flex-direction: column;
   gap: var(--space-3);
 }
+/* Back button — left-side counterpart to the action stack, same baseline.
+   Screen chrome (sibling of the deck), so it stays put while cards fly off. */
+.deck-back {
+  position: absolute;
+  left: var(--space-4);
+  bottom: 84px;
+  z-index: 5;
+}
+.deck-back[hidden] { display: none; }
 /* .act-btn now consumes its visual from components.css (.btn.btn-glass
    .btn-icon-only.btn-md). The rules below are prototype-only behavior:
    a stronger :active scale, the like-state color shift, and the icon
