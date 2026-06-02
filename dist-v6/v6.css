@@ -176,7 +176,9 @@ body.no-banner .deals-banner { display: none; }
 .screen[data-tab="cart"] {
   display: flex;
   top: auto;
-  height: calc(50% + 100px);
+  /* Tall enough that the open sheet rises just below the top header card
+     (~100px: 60px status-bar inset + the 30px flag/avatar row + padding). */
+  height: calc(100% - 100px);
   bottom: 0;
   background: linear-gradient(180deg, var(--color-blue-dark) 0%, var(--color-blue-deep) 100%);
   border-radius: 22px 22px 0 0;
