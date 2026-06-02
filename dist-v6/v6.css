@@ -467,9 +467,9 @@ body.deals-complete .deck { display: none; }
   overflow: hidden;
   will-change: transform, opacity;
   transition: transform .42s cubic-bezier(.32, .72, 0, 1), opacity .42s cubic-bezier(.32, .72, 0, 1);
-  /* Allow vertical native scroll to pass through; the deck owns horizontal
-     swipes via pointer events. */
-  touch-action: pan-y;
+  /* The deck owns swipes on all axes (left/right navigate, up adds to
+     cart), so suppress native panning while dragging a card. */
+  touch-action: none;
 }
 .deal-card {
   background: #111;
@@ -495,6 +495,14 @@ body.deals-complete .deck { display: none; }
   transform: translateX(-140vw) rotate(-22deg) !important;
   opacity: 0;
 }
+/* Back-swipe on the first card — nothing behind it, so nudge and spring. */
+@keyframes deck-bounce {
+  0%   { transform: none; }
+  32%  { transform: translateX(-28px) rotate(-2deg); }
+  100% { transform: none; }
+}
+.deal-card.bounce,
+.challenge-card.bounce { animation: deck-bounce .32s ease; }
 
 .card-video {
   position: absolute;
@@ -516,14 +524,15 @@ body.deals-complete .deck { display: none; }
 /* Swipe-stamp visibility — visual rules for .swipe-stamp + variants
    live in components.css; this block only wires the deal-card state
    classes (set by the swipe gesture) to the matching stamp's opacity.
-   Drag right → Add (available) / Notify (sold-out); drag left → Skip. */
+   Drag up → Add (available) / Notify (sold-out); left → Back; right → Next. */
 .deal-card.show-add  .stamp-add  { opacity: 1; }
-.deal-card.show-skip .stamp-skip { opacity: 1; }
+.deal-card.show-back .stamp-back { opacity: 1; }
+.deal-card.show-next .stamp-next { opacity: 1; }
 .deal-card.sold-out .stamp-soldout { opacity: 1; }
 .deal-card:not(.sold-out) .stamp-soldout { display: none; }
-/* Hide the persistent "Sold Out" stamp while a swipe stamp is showing */
-.deal-card.sold-out.show-notify .stamp-soldout,
-.deal-card.sold-out.show-skip   .stamp-soldout { opacity: 0; }
+/* Hide the persistent centred "Sold Out" stamp while the Notify swipe
+   stamp (also centred) is showing on an up-swipe. */
+.deal-card.sold-out.show-notify .stamp-soldout { opacity: 0; }
 
 /* ============== TOAST ============== */
 /* Visual: components.css (.toast / .rich-toast families). v6.css owns
@@ -920,15 +929,6 @@ body.confirm-open .confirm-sheet { transform: translate(-50%, 0); }
   flex-direction: column;
   gap: var(--space-3);
 }
-/* Back button — left-side counterpart to the action stack, same baseline.
-   Screen chrome (sibling of the deck), so it stays put while cards fly off. */
-.deck-back {
-  position: absolute;
-  left: var(--space-4);
-  bottom: 84px;
-  z-index: 5;
-}
-.deck-back[hidden] { display: none; }
 /* .act-btn now consumes its visual from components.css (.btn.btn-glass
    .btn-icon-only.btn-md). The rules below are prototype-only behavior:
    a stronger :active scale, the like-state color shift, and the icon

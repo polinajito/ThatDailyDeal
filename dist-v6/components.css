@@ -338,7 +338,7 @@
    gesture, or persistently on sold-out cards. The base class
    hides the stamp by default (opacity: 0) — visibility is owned
    by the consumer (e.g. .deal-card in the prototype toggles
-   .show-add / .show-skip / .show-notify / .sold-out to reveal
+   .show-add / .show-back / .show-next / .show-notify / .sold-out to reveal
    the matching stamp). Stamps need a positioned ancestor.
    ============================================================ */
 .swipe-stamp {
@@ -359,12 +359,17 @@
   z-index: 4;
   transition: opacity .12s ease;
 }
-.stamp-add  { left: var(--space-5);  color: var(--color-green); transform: rotate(-12deg); }
-.stamp-skip { right: var(--space-5); color: var(--color-red);   transform: rotate( 12deg); }
-/* Muted skip — used when the underlying product is unavailable, so the
-   skip cue stays semantically meaningful without the "you're losing a
-   good deal" red urgency. */
-.stamp-skip.is-muted { color: var(--color-gray-300); }
+/* Add / Notify ride the up-swipe, so they sit top-centre. */
+.stamp-add  { left: 50%; color: var(--color-green); transform: translateX(-50%) rotate(-8deg); }
+/* Back / Next ride the horizontal swipe: Next hugs the left edge, Back the right. */
+.stamp-next { left:  var(--space-5); color: var(--color-white); transform: rotate(-12deg); }
+.stamp-back { right: var(--space-5); color: var(--color-white); transform: rotate( 12deg); }
+.stamp-back, .stamp-next {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.stamp-back svg, .stamp-next svg { width: 40px; height: 40px; }
 .stamp-soldout {
   left: 50%;
   color: var(--color-red);
@@ -372,9 +377,9 @@
   white-space: nowrap;
 }
 .stamp-notify {
-  left: var(--space-5);
+  left: 50%;
   color: var(--color-gold);
-  transform: rotate(-12deg);
+  transform: translateX(-50%) rotate(-8deg);
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);

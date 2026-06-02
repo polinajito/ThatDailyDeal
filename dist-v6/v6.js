@@ -161,7 +161,6 @@ const BULK_RATIO    = 0.4;
 const fmt = (n) => `$${n.toFixed(2)}`;
 
 const deck       = document.getElementById('deck');
-const deckBack   = document.getElementById('deckBack');
 const cartBadge  = document.getElementById('cartBadge');
 const toast      = document.getElementById('toast');
 
@@ -240,7 +239,18 @@ function buildCard(deal, dealIdx, isUnder) {
     <div class="card-overlay"></div>
     <div class="deal-counter">Deal ${dealIdx + 1} of ${DEALS.length} for today</div>
     <div class="swipe-stamp stamp-add">Add</div>
-    <div class="swipe-stamp stamp-skip ${soldOut ? 'is-muted' : ''}">Skip</div>
+    <div class="swipe-stamp stamp-back">
+      <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 18l-6 -6l6 -6"/>
+      </svg>
+      Back
+    </div>
+    <div class="swipe-stamp stamp-next">
+      Next
+      <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 6l6 6l-6 6"/>
+      </svg>
+    </div>
     <div class="swipe-stamp stamp-soldout">Sold Out</div>
     <div class="swipe-stamp stamp-notify">
       <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -464,18 +474,11 @@ function mountDeck() {
 
   tickBanner();
   applyVideoState();
-  updateBack();
 }
 
 // The card currently on top of the stack (deal or challenge interstitial).
 function currentCard() {
   return deck.querySelector('.deal-card.top, .challenge-card.top');
-}
-
-// Show the Back button only when there's an earlier deal to return to.
-function updateBack() {
-  if (!deckBack) return;
-  deckBack.hidden = !(state.index > 0) || document.body.classList.contains('deals-complete');
 }
 
 function applyVideoState() {
@@ -491,20 +494,25 @@ function applyVideoState() {
 
 /* ============================================================
    Swipe gestures
-   left  → skip (fly off)
-   right → add-to-cart (available) / notify back-in-stock (sold-out)
+   left  → go back (previous card sweeps in from the right; bounces on
+           the first card)
+   right → dismiss / advance (current card flies off right, next card
+           emerges from behind; last card → "All Deals Viewed!" screen)
+   up    → add-to-cart (available) / notify back-in-stock (sold-out)
    tap   → product details
-   The challenge interstitial has no add/skip/details actions — any
-   horizontal swipe simply advances past it.
+   The challenge interstitial has no add/details actions — left goes
+   back, right advances, up does nothing.
    ============================================================ */
-const SWIPE_COMMIT  = 80;   // horizontal px to commit a swipe
+const SWIPE_COMMIT  = 80;   // px to commit a swipe (either axis)
 const SHOW_THRESH   = 30;   // px before a swipe stamp appears
+
+const STAMP_CLASSES = ['show-add', 'show-notify', 'show-back', 'show-next'];
 
 function bindSwipe(card) {
   let drag = null;
   const challenge = isChallengeCard(card);
   const cardSoldOut = card.classList.contains('sold-out');
-  const rightStamp = cardSoldOut ? 'show-notify' : 'show-add';
+  const upStamp = cardSoldOut ? 'show-notify' : 'show-add';
 
   const onDown = (e) => {
     if (e.button !== undefined && e.button !== 0) return;
@@ -517,44 +525,44 @@ function bindSwipe(card) {
     if (!drag) return;
     drag.dx = e.clientX - drag.x0;
     drag.dy = e.clientY - drag.y0;
+    card.classList.remove(...STAMP_CLASSES);
 
     if (Math.abs(drag.dx) > Math.abs(drag.dy)) {
+      // Horizontal: follow the finger; right = advance, left = back.
       const rot = drag.dx * 0.05;
       card.style.transform = `translate(${drag.dx}px, ${drag.dy * 0.4}px) rotate(${rot}deg)`;
-
-      // The challenge card has no add/skip semantics, so it shows no stamp.
       if (!challenge) {
-        if (drag.dx >  SHOW_THRESH) {
-          card.classList.add(rightStamp);
-          card.classList.remove('show-skip');
-        } else if (drag.dx < -SHOW_THRESH) {
-          card.classList.add('show-skip');
-          card.classList.remove(rightStamp);
-        } else {
-          card.classList.remove('show-add', 'show-notify', 'show-skip');
-        }
+        if (drag.dx >  SHOW_THRESH) card.classList.add('show-next');
+        else if (drag.dx < -SHOW_THRESH) card.classList.add('show-back');
       }
+    } else if (drag.dy < 0) {
+      // Upward: lift the card; commits to add-to-cart (or notify).
+      card.style.transform = `translateY(${drag.dy}px)`;
+      if (!challenge && drag.dy < -SHOW_THRESH) card.classList.add(upStamp);
+    } else {
+      // Downward drag has no action — just track it.
+      card.style.transform = `translateY(${drag.dy * 0.4}px)`;
     }
   };
 
   const onUp = () => {
     if (!drag) return;
-    card.classList.remove('dragging', 'show-add', 'show-notify', 'show-skip');
+    card.classList.remove('dragging', ...STAMP_CLASSES);
+    const horizontal = Math.abs(drag.dx) > Math.abs(drag.dy);
 
-    if (Math.abs(drag.dx) > SWIPE_COMMIT && Math.abs(drag.dx) > Math.abs(drag.dy)) {
-      if (challenge) {
-        // No add/skip action — either direction just advances.
-        flyOff(drag.dx > 0 ? 'right' : 'left', card);
-      } else if (drag.dx > 0) {
-        if (cardSoldOut) {
-          notifyBackInStock();
-          flyOff('right', card);
-        } else {
-          card.style.transform = '';   // snap back
-          openCartSheet();
-        }
+    if (horizontal && Math.abs(drag.dx) > SWIPE_COMMIT) {
+      if (drag.dx > 0) {
+        flyOff('right', card);               // dismiss / advance (last card → end screen)
+      } else if (state.index <= 0) {
+        bounce(card);                         // nothing behind the first card
       } else {
-        skipDeal(card);
+        goBack();                             // previous card sweeps in from the right
+      }
+    } else if (!horizontal && drag.dy < -SWIPE_COMMIT) {
+      card.style.transform = '';              // snap back, stay on the card
+      if (!challenge) {
+        if (cardSoldOut) openNotifySheet();
+        else openCartSheet();
       }
     } else {
       card.style.transform = '';
@@ -573,7 +581,7 @@ function bindSwipe(card) {
   card.addEventListener('pointermove', onMove);
   card.addEventListener('pointerup', onUp);
   card.addEventListener('pointercancel', () => {
-    card.classList.remove('dragging', 'show-add', 'show-notify', 'show-skip');
+    card.classList.remove('dragging', ...STAMP_CLASSES);
     if (drag) card.style.transform = '';
     drag = null;
   });
@@ -615,7 +623,6 @@ function flyOff(direction, cardEl) {
 
     tickBanner();
     applyVideoState();
-    updateBack();
   } else {
     // No more cards — show the "All Deals Viewed!" screen after the fly-off.
     state.index = SEQUENCE.length;
@@ -626,15 +633,20 @@ function flyOff(direction, cardEl) {
   setTimeout(() => oldTop.remove(), TRANSITION_MS);
 }
 
-function skipDeal(cardEl) {
-  showToast('Skipped');
-  flyOff('left', cardEl);
+/* A back-swipe on the first card has nothing behind it — nudge the card
+   and spring it back (keyframes live in v6.css). */
+function bounce(cardEl) {
+  const el = cardEl || currentCard();
+  if (!el) return;
+  el.style.transform = '';
+  el.classList.add('bounce');
+  setTimeout(() => el.classList.remove('bounce'), 320);
 }
 
 /* ============================================================
    Go back — the mirror of flyOff. The current top demotes to the
    under (next) slot and the previous card sweeps back in from the
-   left, over it. state.index is the source of truth, so the demoted
+   right, over it. state.index is the source of truth, so the demoted
    card stays correctly addressed for a later forward swipe.
    ============================================================ */
 function goBack() {
@@ -654,11 +666,11 @@ function goBack() {
   state.paused = false;
   document.body.classList.remove('is-paused');
 
-  // Build the previous card and slide it in from the left (reverse of a
-  // left fly-off) so it sweeps over the current card.
+  // Build the previous card and slide it in from the right (reverse of a
+  // right fly-off) so it sweeps over the current card.
   const prev = buildSeqCard(state.index, false);
   prev.style.transition = 'none';
-  prev.style.transform  = 'translateX(-140vw) rotate(-22deg)';
+  prev.style.transform  = 'translateX(140vw) rotate(22deg)';
   prev.style.opacity    = '0';
   deck.appendChild(prev);
   bindSwipe(prev);
@@ -669,7 +681,6 @@ function goBack() {
 
   tickBanner();
   applyVideoState();
-  updateBack();
 }
 
 /* ============================================================
@@ -1015,7 +1026,6 @@ setInterval(tickBanner, 1000);
 function showDealsDone() {
   dealsDoneEl.hidden = false;
   document.body.classList.add('deals-complete');
-  updateBack();   // hide Back behind the overlay
   // Pause every deck video while the overlay covers the deck.
   deck.querySelectorAll('.card-video').forEach((v) => v.pause());
   tickCountdown();
@@ -1031,8 +1041,6 @@ function hideDealsDone() {
     countdownTimer = null;
   }
 }
-
-deckBack.addEventListener('click', goBack);
 
 document.getElementById('ddRestart').addEventListener('click', () => {
   state.index = 0;
