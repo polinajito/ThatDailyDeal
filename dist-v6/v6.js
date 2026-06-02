@@ -5,60 +5,6 @@
    sitting just below the brand bar.
    ============================================================ */
 
-// Preview controls — variant toggles.
-// Each entry maps a URL param to a body class (applied when value="off").
-// URL param drives initial state (so library iframes and shared links
-// work); the on-page segmented control mirrors and updates it. Controls
-// are auto-hidden when the page is embedded in an iframe so design
-// library previews stay clean.
-(() => {
-  // Each toggle adds `bodyClass` to <body> when its selected segment's
-  // data-value matches `activeValue`. URL syncs to `?<param>=<activeValue>`
-  // when active, omits it when default.
-  const TOGGLES = [
-    { param: 'banner', bodyClass: 'no-banner',    activeValue: 'off',   defaultValue: 'on'      },
-    { param: 'scrim',  bodyClass: 'no-scrim',     activeValue: 'off',   defaultValue: 'on'      },
-    { param: 'header', bodyClass: 'header-solid', activeValue: 'solid', defaultValue: 'default' },
-  ];
-
-  const params = new URLSearchParams(location.search);
-  TOGGLES.forEach(({ param, bodyClass, activeValue }) => {
-    if (params.get(param) === activeValue) document.body.classList.add(bodyClass);
-  });
-
-  const inIframe = window.self !== window.top;
-  const controls = document.getElementById('previewControls');
-  if (!controls || inIframe) return;
-  controls.hidden = false;
-
-  const setState = (cfg, value) => {
-    const { param, bodyClass, activeValue } = cfg;
-    document.body.classList.toggle(bodyClass, value === activeValue);
-    controls.querySelectorAll(`[data-toggle="${param}"]`).forEach((btn) => {
-      const active = btn.dataset.value === value;
-      btn.classList.toggle('is-active', active);
-      btn.setAttribute('aria-pressed', String(active));
-    });
-    const next = new URLSearchParams(location.search);
-    if (value === activeValue) next.set(param, activeValue);
-    else next.delete(param);
-    const qs = next.toString();
-    history.replaceState(null, '', qs ? `?${qs}${location.hash}` : `${location.pathname}${location.hash}`);
-  };
-
-  TOGGLES.forEach((cfg) => {
-    const initial = params.get(cfg.param) === cfg.activeValue ? cfg.activeValue : cfg.defaultValue;
-    setState(cfg, initial);
-  });
-
-  controls.querySelectorAll('.preview-segment').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const cfg = TOGGLES.find((t) => t.param === btn.dataset.toggle);
-      if (cfg) setState(cfg, btn.dataset.value);
-    });
-  });
-})();
-
 const DEALS = [
   {
     video: 'assets/pack.mp4',
