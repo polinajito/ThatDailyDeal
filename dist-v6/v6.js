@@ -185,18 +185,8 @@ function buildCard(deal, dealIdx, isUnder) {
     <div class="card-overlay"></div>
     <div class="deal-counter">Deal ${dealIdx + 1} of ${DEALS.length} for today</div>
     <div class="swipe-stamp stamp-add">Add</div>
-    <div class="swipe-stamp stamp-back">
-      <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M15 18l-6 -6l6 -6"/>
-      </svg>
-      Back
-    </div>
-    <div class="swipe-stamp stamp-next">
-      Next
-      <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M9 6l6 6l-6 6"/>
-      </svg>
-    </div>
+    <img class="swipe-stamp stamp-back" src="assets/back.svg" alt="" aria-hidden="true" />
+    <img class="swipe-stamp stamp-next" src="assets/next.svg" alt="" aria-hidden="true" />
     <div class="swipe-stamp stamp-soldout">Sold Out</div>
     <div class="swipe-stamp stamp-notify">
       <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

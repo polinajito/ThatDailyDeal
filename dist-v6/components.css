@@ -361,15 +361,20 @@
 }
 /* Add / Notify ride the up-swipe, so they sit top-centre. */
 .stamp-add  { left: 50%; color: var(--color-green); transform: translateX(-50%) rotate(-8deg); }
-/* Back / Next ride the horizontal swipe: Next hugs the left edge, Back the right. */
-.stamp-next { left:  var(--space-5); color: var(--color-white); transform: rotate(-12deg); }
-.stamp-back { right: var(--space-5); color: var(--color-white); transform: rotate( 12deg); }
-.stamp-back, .stamp-next {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
+/* Back / Next ride the horizontal swipe: Next hugs the left edge, Back the
+   right. Both are self-contained glass badge artwork (assets/next.svg,
+   back.svg), so they drop the text-stamp border/padding and just size the
+   image. */
+.stamp-back,
+.stamp-next {
+  width: 220px;
+  height: auto;
+  border: 0;
+  padding: 0;
+  border-radius: 0;
 }
-.stamp-back svg, .stamp-next svg { width: 40px; height: 40px; }
+.stamp-next { left:  var(--space-5); transform: rotate(-12deg); }
+.stamp-back { right: var(--space-5); transform: rotate( 12deg); }
 .stamp-soldout {
   left: 50%;
   color: var(--color-red);
