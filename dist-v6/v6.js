@@ -226,12 +226,12 @@ const state = {
 /* ============================================================
    Card builder — includes side buttons so they fly with the card
    ============================================================ */
-function buildCard(deal, dealIdx) {
+function buildCard(deal, dealIdx, isUnder) {
   const card = document.createElement('article');
   const soldOut = !isAvailable(deal);
   const onSale = isOnSale(deal);
   const subscribed = !!getSubscription(dealIdx);
-  card.className = 'deal-card' + (soldOut ? ' sold-out' : '') + (subscribed ? ' is-subscribed' : '');
+  card.className = 'deal-card ' + (isUnder ? 'under' : 'top') + (soldOut ? ' sold-out' : '') + (subscribed ? ' is-subscribed' : '');
   card.dataset.dealIdx = String(dealIdx);
   const isLiked = state.liked.has(dealIdx);
   card.innerHTML = `
@@ -368,13 +368,14 @@ function buildCard(deal, dealIdx) {
 
 /* ============================================================
    Challenge card — a non-deal interstitial that rides the same
-   filmstrip. Pure promo/CTA card: no video, price, banner, or
-   swipe-up actions (those are guarded off in bindSwipe). Visual lives
-   in components.css (.challenge-*).
+   card stack. Pure promo/CTA card: no video, price, banner, or
+   add/skip actions (those are guarded off in bindSwipe — any
+   horizontal swipe simply advances past it). Visual lives in
+   components.css (.challenge-*).
    ============================================================ */
-function buildChallengeCard() {
+function buildChallengeCard(isUnder) {
   const card = document.createElement('article');
-  card.className = 'challenge-card';
+  card.className = 'challenge-card ' + (isUnder ? 'under' : 'top');
   card.innerHTML = `
     <span class="challenge-badge">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -430,100 +431,78 @@ function buildChallengeCard() {
   return card;
 }
 
+// Build the card at the given SEQUENCE position — a deal card or the
+// challenge interstitial — in top or under state.
+function buildSeqCard(seqIndex, isUnder) {
+  const item = SEQUENCE[seqIndex];
+  if (!item) return null;
+  return item.kind === 'challenge'
+    ? buildChallengeCard(isUnder)
+    : buildCard(item.deal, item.dealIdx, isUnder);
+}
+
 function mountDeck() {
   deck.innerHTML = '';
 
-  // Build the filmstrip: one card per deal, all peers inside a single
-  // horizontal track. Navigation slides the track rather than destroying
-  // cards, so the user can move backwards as well as forwards.
-  const track = document.createElement('div');
-  track.className = 'deck-track';
-  SEQUENCE.forEach((item) => track.appendChild(
-    item.kind === 'challenge' ? buildChallengeCard() : buildCard(item.deal, item.dealIdx)
-  ));
-  deck.appendChild(track);
-
   if (state.index < 0) state.index = 0;
-  if (state.index >= SEQUENCE.length) state.index = SEQUENCE.length - 1;
-
+  if (state.index >= SEQUENCE.length) {
+    showDealsDone();
+    return;
+  }
   hideDealsDone();
-  positionTrack();
-  bindSwipe(track);
+
+  // Two-card stack: the current card on top, the next one peeking behind.
+  // Swiping the top card flies it off and promotes the under card (flyOff).
+  const under = buildSeqCard(state.index + 1, true);
+  if (under) deck.appendChild(under);
+  const top = buildSeqCard(state.index, false);
+  if (top) {
+    deck.appendChild(top);
+    bindSwipe(top);
+  }
 
   tickBanner();
   applyVideoState();
 }
 
-// The card currently centered in the viewport.
+// The card currently on top of the stack (deal or challenge interstitial).
 function currentCard() {
-  const track = deck.querySelector('.deck-track');
-  return track ? track.children[state.index] || null : null;
-}
-
-// Depth: the centered deal sits at full size (closest to the user); cards
-// scale down the further they are from centre. `pos` is the current
-// fractional position — an integer at rest, fractional mid-drag — so the
-// outgoing card shrinks and the incoming one grows continuously as you swipe.
-const DEPTH_MIN_SCALE = 0.9;
-function applyDepth(pos) {
-  const track = deck.querySelector('.deck-track');
-  if (!track) return;
-  Array.from(track.children).forEach((cardEl, i) => {
-    const dist = Math.min(1, Math.abs(i - pos));
-    const scale = 1 - dist * (1 - DEPTH_MIN_SCALE);
-    cardEl.style.transform = `scale(${scale})`;
-  });
-}
-
-// Slide the track so the current deal fills the viewport.
-function positionTrack() {
-  const track = deck.querySelector('.deck-track');
-  if (!track) return;
-  track.style.transform = `translateX(${-state.index * 100}%)`;
-  applyDepth(state.index);
+  return deck.querySelector('.deal-card.top, .challenge-card.top');
 }
 
 function applyVideoState() {
-  const track = deck.querySelector('.deck-track');
-  if (!track) return;
-  Array.from(track.children).forEach((card, idx) => {
-    const video = card.querySelector('.card-video');
-    if (!video) return;
-    if (idx === state.index) {
-      video.muted = state.muted;
-      if (state.paused) video.pause();
-      else video.play().catch(() => {});
-    } else {
-      video.muted = true;
-      video.pause();
-    }
-  });
+  const topVideo = deck.querySelector('.deal-card.top .card-video');
+  if (topVideo) {
+    topVideo.muted = state.muted;
+    if (state.paused) topVideo.pause();
+    else topVideo.play().catch(() => {});
+  }
+  const underVideo = deck.querySelector('.deal-card.under .card-video');
+  if (underVideo) underVideo.muted = true;
 }
 
 /* ============================================================
-   Swipe gestures (stories-style)
-   drag left  → next deal      drag right → previous deal (bounce at start)
-   drag up    → add-to-cart (available) / notify (sold-out)
-   tap        → product details
+   Swipe gestures
+   left  → skip (fly off)
+   right → add-to-cart (available) / notify back-in-stock (sold-out)
+   tap   → product details
+   The challenge interstitial has no add/skip/details actions — any
+   horizontal swipe simply advances past it.
    ============================================================ */
-const SWIPE_COMMIT  = 80;   // horizontal px to change deal
-const LIFT_COMMIT   = 80;   // upward px to trigger add / notify
-const SHOW_THRESH   = 30;   // px before the up-swipe stamp appears
+const SWIPE_COMMIT  = 80;   // horizontal px to commit a swipe
+const SHOW_THRESH   = 30;   // px before a swipe stamp appears
 
-function bindSwipe(track) {
+function bindSwipe(card) {
   let drag = null;
-  let axis = null;   // 'x' | 'y' once the gesture direction is locked
-  let card = null;   // the current card at gesture start
-
-  const viewportW = () => deck.clientWidth || track.clientWidth || 1;
+  const challenge = isChallengeCard(card);
+  const cardSoldOut = card.classList.contains('sold-out');
+  const rightStamp = cardSoldOut ? 'show-notify' : 'show-add';
 
   const onDown = (e) => {
     if (e.button !== undefined && e.button !== 0) return;
     drag = { x0: e.clientX, y0: e.clientY, dx: 0, dy: 0 };
-    axis = null;
-    card = currentCard();
-    track.classList.add('dragging');
-    track.setPointerCapture?.(e.pointerId);
+    card.classList.add('dragging');
+    card.setPointerCapture?.(e.pointerId);
   };
 
   const onMove = (e) => {
@@ -531,102 +510,116 @@ function bindSwipe(track) {
     drag.dx = e.clientX - drag.x0;
     drag.dy = e.clientY - drag.y0;
 
-    if (!axis && (Math.abs(drag.dx) > 8 || Math.abs(drag.dy) > 8)) {
-      axis = Math.abs(drag.dx) > Math.abs(drag.dy) ? 'x' : 'y';
-    }
+    if (Math.abs(drag.dx) > Math.abs(drag.dy)) {
+      const rot = drag.dx * 0.05;
+      card.style.transform = `translate(${drag.dx}px, ${drag.dy * 0.4}px) rotate(${rot}deg)`;
 
-    if (axis === 'x') {
-      // Rubber-band when dragging toward a deal that doesn't exist.
-      let dx = drag.dx;
-      const atFirst = state.index === 0;
-      const atLast  = state.index === SEQUENCE.length - 1;
-      if ((dx > 0 && atFirst) || (dx < 0 && atLast)) dx *= 0.25;
-      const w = viewportW();
-      track.style.transform = `translateX(${-state.index * w + dx}px)`;
-      // Drag left (dx<0) advances → current shrinks, next grows, and vice-versa.
-      applyDepth(state.index - dx / w);
-    } else if (axis === 'y' && card && !isChallengeCard(card)) {
-      // Only an upward lift is meaningful; ignore downward drag. The
-      // challenge card has no add/notify action, so it ignores vertical drag.
-      const lift = Math.min(0, drag.dy);
-      card.classList.add('dragging');
-      card.style.transform = `translateY(${lift}px)`;
-      const soldOut = card.classList.contains('sold-out');
-      card.classList.toggle(soldOut ? 'show-notify' : 'show-add', drag.dy < -SHOW_THRESH);
-    }
-  };
-
-  const clearDrag = () => {
-    track.classList.remove('dragging');
-    if (card) {
-      card.classList.remove('dragging', 'show-add', 'show-notify');
-      card.style.transform = '';
+      // The challenge card has no add/skip semantics, so it shows no stamp.
+      if (!challenge) {
+        if (drag.dx >  SHOW_THRESH) {
+          card.classList.add(rightStamp);
+          card.classList.remove('show-skip');
+        } else if (drag.dx < -SHOW_THRESH) {
+          card.classList.add('show-skip');
+          card.classList.remove(rightStamp);
+        } else {
+          card.classList.remove('show-add', 'show-notify', 'show-skip');
+        }
+      }
     }
   };
 
   const onUp = () => {
     if (!drag) return;
-    const { dx, dy } = drag;
-    const challenge = isChallengeCard(card);
-    const committedX = axis === 'x' && Math.abs(dx) > SWIPE_COMMIT;
-    // The challenge card has no add/notify (swipe-up) or details (tap) action.
-    const committedY = axis === 'y' && -dy > LIFT_COMMIT && !challenge;
-    const tap = !axis && Math.abs(dx) < 6 && Math.abs(dy) < 6 && !challenge;
-    const soldOut = card && card.classList.contains('sold-out');
+    card.classList.remove('dragging', 'show-add', 'show-notify', 'show-skip');
 
-    clearDrag();
-
-    if (committedX) {
-      // Stories direction: drag left advances, drag right goes back.
-      goToDeal(dx < 0 ? state.index + 1 : state.index - 1);
-    } else if (committedY) {
-      positionTrack();
-      if (soldOut) openNotifySheet();
-      else openCartSheet();
+    if (Math.abs(drag.dx) > SWIPE_COMMIT && Math.abs(drag.dx) > Math.abs(drag.dy)) {
+      if (challenge) {
+        // No add/skip action — either direction just advances.
+        flyOff(drag.dx > 0 ? 'right' : 'left', card);
+      } else if (drag.dx > 0) {
+        if (cardSoldOut) {
+          notifyBackInStock();
+          flyOff('right', card);
+        } else {
+          card.style.transform = '';   // snap back
+          openCartSheet();
+        }
+      } else {
+        skipDeal(card);
+      }
     } else {
-      // Snap back. A near-zero drag is a tap → open the details sheet.
-      // (Buttons inside the card stop propagation, so their taps never
-      // reach here.)
-      positionTrack();
-      if (tap) openDetails();
+      card.style.transform = '';
+      // No meaningful drag → treat as a tap and open the details sheet.
+      // Buttons inside the card stop propagation on pointerdown, so taps
+      // on like/share/mute/pause never reach this handler. The challenge
+      // card has no details sheet.
+      if (!challenge && Math.abs(drag.dx) < 6 && Math.abs(drag.dy) < 6) {
+        openDetails();
+      }
     }
-    drag = null; axis = null; card = null;
+    drag = null;
   };
 
-  track.addEventListener('pointerdown', onDown);
-  track.addEventListener('pointermove', onMove);
-  track.addEventListener('pointerup', onUp);
-  track.addEventListener('pointercancel', () => {
-    clearDrag();
-    positionTrack();
-    drag = null; axis = null; card = null;
+  card.addEventListener('pointerdown', onDown);
+  card.addEventListener('pointermove', onMove);
+  card.addEventListener('pointerup', onUp);
+  card.addEventListener('pointercancel', () => {
+    card.classList.remove('dragging', 'show-add', 'show-notify', 'show-skip');
+    if (drag) card.style.transform = '';
+    drag = null;
   });
 }
 
 /* ============================================================
-   Deal navigation
-   Slides the filmstrip to a neighbouring deal. Cards are kept, never
-   removed — going back is just sliding the track the other way. Trying
-   to go before the first deal bounces; going past the last shows the
-   "All Deals Viewed!" overlay.
+   Fly-off / advance helpers
+   Smoothly animate: top flies off, under glides forward, new under
+   slips in behind. No hard rebuild of the deck — the under card is
+   reused, so the CSS transition carries it from under-state to
+   top-state in one continuous motion. Walks SEQUENCE, so the next
+   card may be a deal or the challenge interstitial.
    ============================================================ */
-function goToDeal(targetIndex) {
-  if (targetIndex < 0) {            // no previous deal — bounce back
-    positionTrack();
-    return;
-  }
-  if (targetIndex >= SEQUENCE.length) { // swiped next off the last card
-    positionTrack();
-    showDealsDone();
-    return;
+const TRANSITION_MS = 420;
+
+function flyOff(direction, cardEl) {
+  const oldTop = cardEl || currentCard();
+  if (!oldTop) return;
+
+  // Old top: animate off-screen.
+  oldTop.style.transform = '';
+  oldTop.classList.add(direction === 'right' ? 'fly-right' : 'fly-left');
+
+  const oldUnder = deck.querySelector('.deal-card.under, .challenge-card.under');
+
+  if (oldUnder) {
+    // Promote under → top (transition animates from under-state to identity).
+    oldUnder.classList.remove('under');
+    oldUnder.classList.add('top');
+    bindSwipe(oldUnder);
+
+    state.index += 1;
+    state.paused = false;
+    document.body.classList.remove('is-paused');
+
+    // Build the new under card (the item after the new top), if any.
+    const newUnder = buildSeqCard(state.index + 1, true);
+    if (newUnder) deck.insertBefore(newUnder, deck.firstChild);
+
+    tickBanner();
+    applyVideoState();
+  } else {
+    // No more cards — show the "All Deals Viewed!" screen after the fly-off.
+    state.index = SEQUENCE.length;
+    setTimeout(showDealsDone, TRANSITION_MS - 80);
   }
 
-  state.index = targetIndex;
-  state.paused = false;
-  document.body.classList.remove('is-paused');
-  positionTrack();
-  tickBanner();
-  applyVideoState();
+  // Clean up the flown-off card after its animation completes.
+  setTimeout(() => oldTop.remove(), TRANSITION_MS);
+}
+
+function skipDeal(cardEl) {
+  showToast('Skipped');
+  flyOff('left', cardEl);
 }
 
 /* ============================================================
@@ -1212,7 +1205,7 @@ nsSubmit.addEventListener('click', () => {
 
 nsSkip.addEventListener('click', () => {
   closeNotifySheet();
-  goToDeal(state.index + 1);
+  flyOff('left', currentCard());
 });
 
 nsClose.addEventListener('click', closeNotifySheet);

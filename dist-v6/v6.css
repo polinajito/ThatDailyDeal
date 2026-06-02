@@ -445,52 +445,53 @@ body.deals-complete .deck { display: none; }
 .dd-btn { width: 100%; }
 
 /* ============== DECK + CARD ============== */
-/* The deck is a clipping viewport; .deck-track is a horizontal filmstrip
-   holding one .deal-card per deal. Navigation slides the track by whole
-   card-widths (translateX), so cards are kept — the user can scrub back
-   and forth (stories-style) rather than the deck consuming cards. */
+/* Tinder-style card stack: the deck holds the top card and the under card
+   peeking behind it. Swiping the top card flies it off; the under card is
+   promoted in place (the CSS transition carries it from under-state to
+   top), and a fresh under card slips in behind. Deal cards and the
+   challenge interstitial share the stack — the challenge card's surface
+   lives in components.css; .deal-card keeps the video-card background. */
 .deck {
   position: absolute;
   inset: 0;
   z-index: 1;
-  overflow: hidden;
 }
-.deck-track {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  will-change: transform;
-  transition: transform .42s cubic-bezier(.32, .72, 0, 1);
-}
-/* No transition while a finger is dragging — the track (and every card's
-   depth scale) tracks the pointer live. */
-.deck-track.dragging { transition: none; }
-.deck-track.dragging .deal-card { transition: none; }
 
-/* Deck cards (deal + challenge interstitial) share the filmstrip
-   structure: each fills the viewport and opts out of native panning so
-   the deck owns both axes. The challenge card's surface lives in
-   components.css; .deal-card keeps the video-card background. */
 .deal-card,
 .challenge-card {
-  position: relative;
-  flex: 0 0 100%;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  will-change: transform;
-  /* Carries the vertical "lift" toward the swipe-up action; snaps back when
-     the gesture is released. */
-  transition: transform .42s cubic-bezier(.32, .72, 0, 1);
-  /* The deck owns both axes (horizontal = navigate, up = add/notify), so
-     opt out of native panning — nothing inside the deck scrolls. */
-  touch-action: none;
+  will-change: transform, opacity;
+  transition: transform .42s cubic-bezier(.32, .72, 0, 1), opacity .42s cubic-bezier(.32, .72, 0, 1);
+  /* Allow vertical native scroll to pass through; the deck owns horizontal
+     swipes via pointer events. */
+  touch-action: pan-y;
 }
 .deal-card {
   background: #111;
   border-radius: 0;
 }
-.deal-card.dragging { transition: none; }
+.deal-card.under,
+.challenge-card.under {
+  z-index: 0;
+  transform: translateY(-12px) scale(.96);
+  transform-origin: 50% 0%;
+}
+.deal-card.top,
+.challenge-card.top { z-index: 1; }
+.deal-card.dragging,
+.challenge-card.dragging { transition: none; }
+.deal-card.fly-right,
+.challenge-card.fly-right {
+  transform: translateX(140vw) rotate(22deg) !important;
+  opacity: 0;
+}
+.deal-card.fly-left,
+.challenge-card.fly-left {
+  transform: translateX(-140vw) rotate(-22deg) !important;
+  opacity: 0;
+}
 
 .card-video {
   position: absolute;
@@ -511,15 +512,15 @@ body.deals-complete .deck { display: none; }
 
 /* Swipe-stamp visibility — visual rules for .swipe-stamp + variants
    live in components.css; this block only wires the deal-card state
-   classes (set by the swipe-up gesture) to the matching stamp's opacity.
-   Add (available) / Notify (sold-out) now flash during a swipe UP toward
-   the add-to-cart / notify action — horizontal swipes navigate and show
-   no stamp. */
+   classes (set by the swipe gesture) to the matching stamp's opacity.
+   Drag right → Add (available) / Notify (sold-out); drag left → Skip. */
 .deal-card.show-add  .stamp-add  { opacity: 1; }
+.deal-card.show-skip .stamp-skip { opacity: 1; }
 .deal-card.sold-out .stamp-soldout { opacity: 1; }
 .deal-card:not(.sold-out) .stamp-soldout { display: none; }
-/* Hide the persistent "Sold Out" stamp while the Notify stamp is showing */
-.deal-card.sold-out.show-notify .stamp-soldout { opacity: 0; }
+/* Hide the persistent "Sold Out" stamp while a swipe stamp is showing */
+.deal-card.sold-out.show-notify .stamp-soldout,
+.deal-card.sold-out.show-skip   .stamp-soldout { opacity: 0; }
 
 /* ============== TOAST ============== */
 /* Visual: components.css (.toast / .rich-toast families). v6.css owns
