@@ -475,11 +475,12 @@ body.deals-complete .deck { display: none; }
   background: #111;
   border-radius: 0;
 }
+/* The next card sits directly behind the current one, fully covered —
+   no peek. It's revealed only as the top card flies off (or is promoted
+   to top by flyOff). */
 .deal-card.under,
 .challenge-card.under {
   z-index: 0;
-  transform: translateY(-12px) scale(.96);
-  transform-origin: 50% 0%;
 }
 .deal-card.top,
 .challenge-card.top { z-index: 1; }

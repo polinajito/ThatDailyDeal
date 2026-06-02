@@ -646,7 +646,7 @@ function bounce(cardEl) {
 /* ============================================================
    Go back — the mirror of flyOff. The current top demotes to the
    under (next) slot and the previous card sweeps back in from the
-   right, over it. state.index is the source of truth, so the demoted
+   left, over it. state.index is the source of truth, so the demoted
    card stays correctly addressed for a later forward swipe.
    ============================================================ */
 function goBack() {
@@ -666,11 +666,11 @@ function goBack() {
   state.paused = false;
   document.body.classList.remove('is-paused');
 
-  // Build the previous card and slide it in from the right (reverse of a
-  // right fly-off) so it sweeps over the current card.
+  // Build the previous card and slide it in from the left (reverse of a
+  // left fly-off) so it sweeps over the current card.
   const prev = buildSeqCard(state.index, false);
   prev.style.transition = 'none';
-  prev.style.transform  = 'translateX(140vw) rotate(22deg)';
+  prev.style.transform  = 'translateX(-140vw) rotate(-22deg)';
   prev.style.opacity    = '0';
   deck.appendChild(prev);
   bindSwipe(prev);
