@@ -175,6 +175,7 @@ body.no-banner .deals-banner { display: none; }
 .screen[data-tab="events"],
 .screen[data-tab="cart"] {
   display: flex;
+  flex-direction: column;   /* feature root fills the sheet as a single column */
   top: auto;
   /* Tall enough that the open sheet rises just below the top header card
      (~100px: 60px status-bar inset + the 30px flag/avatar row + padding). */

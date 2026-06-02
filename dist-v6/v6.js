@@ -1072,8 +1072,6 @@ function showRichToast({ title, subtitle, duration = 2800 }) {
    ============================================================ */
 const navBtns = document.querySelectorAll('.bottom-nav .menu-item');
 
-const TAB_ORDER = ['deals', 'contests', 'rewards', 'events', 'cart'];
-
 function setHidePosition(screen, x, y) {
   screen.style.setProperty('--hide-x', x);
   screen.style.setProperty('--hide-y', y);
@@ -1089,32 +1087,46 @@ function preposition(screen, x, y) {
 function switchTab(newTab) {
   const prev = document.body.dataset.tab;
   if (newTab === prev) return;
-  const horizontal = prev !== 'deals' && newTab !== 'deals';
 
-  if (horizontal) {
-    const goingRight = TAB_ORDER.indexOf(newTab) > TAB_ORDER.indexOf(prev);
-    const outgoing = document.querySelector(`.screen[data-tab="${prev}"]`);
-    const incoming = document.querySelector(`.screen[data-tab="${newTab}"]`);
-    if (outgoing) setHidePosition(outgoing, goingRight ? '-100%' : '100%', '0');
-    if (incoming) preposition(incoming, goingRight ? '100%' : '-100%', '0');
-  } else if (newTab !== 'deals') {
-    const incoming = document.querySelector(`.screen[data-tab="${newTab}"]`);
-    if (incoming) preposition(incoming, '0', '120%');
-  } else {
+  // Sheets always travel vertically: the open sheet slides back down to the
+  // bottom while the new one rises from the bottom. Switching between two
+  // sheets runs both at once (old closes, new opens) rather than swapping
+  // them horizontally.
+  if (prev !== 'deals') {
     const outgoing = document.querySelector(`.screen[data-tab="${prev}"]`);
     if (outgoing) setHidePosition(outgoing, '0', '120%');
+  }
+  if (newTab !== 'deals') {
+    const incoming = document.querySelector(`.screen[data-tab="${newTab}"]`);
+    if (incoming) preposition(incoming, '0', '120%');
   }
 
   document.body.dataset.tab = newTab;
 }
 
+// Select a tab and sync the nav highlight + video state. The highlight is the
+// "you are here" cue that makes re-tap-to-close a natural guess.
+function selectTab(tab) {
+  navBtns.forEach((b) => b.classList.toggle('is-selected', b.dataset.tab === tab));
+  switchTab(tab);
+  applyVideoState();
+}
+
+// Closing any sheet just routes back to the Deals home screen.
+function closeSheet() {
+  selectTab('deals');
+}
+
 navBtns.forEach((btn) => {
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
-    navBtns.forEach((b) => b.classList.remove('is-selected'));
-    btn.classList.add('is-selected');
-    switchTab(btn.dataset.tab);
-    applyVideoState();
+    const tab = btn.dataset.tab;
+    // Re-tap the tab whose sheet is already open → close back to Deals.
+    if (tab !== 'deals' && tab === document.body.dataset.tab) {
+      closeSheet();
+    } else {
+      selectTab(tab);
+    }
   });
 });
 

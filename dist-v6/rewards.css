@@ -41,14 +41,12 @@
 }
 
 /* ============== REWARDS HALF-SHEET ============== */
-/* The sheet sizing, blue gradient, 22px top radius and slide-up
-   transform come from v6.css `.screen[data-tab="rewards"]`. Here we
-   only stack the feature root as a column. rewards.js renders the
-   header / tabs / points hero / coupon list directly into
-   #rewardsRoot (no inner page wrapper), so the column layout lives on
-   the root: a fixed header/tabs/hero with the coupon list scrolling
-   within the remaining height. */
-.screen-rewards { flex-direction: column; }
+/* The sheet sizing, blue gradient, 22px top radius, slide-up transform and
+   column direction all come from v6.css `.screen[data-tab="rewards"]`.
+   rewards.js renders the header / tabs / points hero / coupon list directly
+   into #rewardsRoot (no inner page wrapper), so the column layout lives on
+   the root: a fixed header/tabs/hero with the coupon list scrolling within
+   the remaining height. */
 #rewardsRoot {
   flex: 1;
   min-width: 0;
