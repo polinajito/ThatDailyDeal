@@ -48,8 +48,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* Desktop: wrap the screen in the iPhone 15 Pro mockup PNG.
    PNG is 1660×3372; its screen rect is x=88..1567, y=76..3295
    (1480×3220). Scaled so screen is exactly 393×852, the frame
-   becomes 441×892 with padding 20/25/20/23. */
-@media (min-width: 768px) {
+   becomes 441×892 with padding 20/25/20/23.
+   `pointer: fine` gates this to mouse/trackpad devices — a real phone
+   or tablet (coarse pointer) never gets the mock, even if its viewport
+   happens to be wide. */
+@media (min-width: 768px) and (pointer: fine) {
   .phone-frame {
     width: 441px;
     height: 892px;
@@ -69,8 +72,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   }
 }
 
-/* Phone-sized viewports: drop the frame, fill the device */
-@media (max-width: 767px) {
+/* Drop the frame and fill the device on phone-sized viewports OR on any
+   real touch device (coarse pointer, no hover) — so opening the prototype
+   on an actual phone shows the bare app, not the desktop mockup. */
+@media (max-width: 767px), (hover: none) and (pointer: coarse) {
   .phone-frame {
     width: 100vw;
     height: 100dvh;
@@ -84,50 +89,11 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   }
 }
 
-/* ============== TOP SCRIM ============== */
-/* Dark-to-transparent gradient sitting above the cards but below the
-   status bar and header content. Improves legibility of icons + logo
-   against bright video frames. */
-.top-scrim {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 160px;
-  z-index: 3;
-  pointer-events: none;
-  background: linear-gradient(180deg,
-    rgba(0, 0, 0, .62) 0%,
-    rgba(0, 0, 0, .42) 40%,
-    rgba(0, 0, 0, 0)   100%);
-}
-body.no-scrim .top-scrim { display: none; }
-
-/* ============== HEADER STYLE: solid ============== */
-/* Reveals the blue gradient already baked into .phone-screen (line 42)
-   as a solid-looking header band by hiding the dark scrim and pushing
-   the deck down. The deal-card carries the rounded top + its own
-   overflow:hidden — the deck stays open so a swiped card can slide
-   past its bounds without getting clipped to the deck's rectangle. */
-body.header-solid .top-scrim { display: none; }
-body.header-solid .deck {
-  top: 110px;
-}
-/* Apply the rounded top to .card-video and .card-overlay as well as the
-   card itself. Relying only on the parent's overflow:hidden + radius is
-   unreliable in Safari/Chromium once the card has a transform (under-state
-   or fly-out), which strips the rounded clip from the <video> layer. */
-body.header-solid .deal-card,
-body.header-solid .challenge-card,
-body.header-solid .card-video,
-body.header-solid .card-overlay {
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-}
-/* The pill + banner stack lives inside the deal-card; with the deck
-   inset by 110px, push the stack down so the rounded card-top reads. */
-body.header-solid .card-top-stack {
-  top: var(--space-3);
-}
+/* ============== HEADER BAND ==============
+   The header is always "solid": there is no dark scrim, the deck is inset
+   below a blue band (the .phone-screen gradient showing through the gap
+   above it), and the cards carry a rounded top. Those offsets/radii are
+   baked into the base .deck / .deal-card / .card-top-stack rules below. */
 
 /* ============== iOS SYSTEM OVERLAYS ============== */
 .status-bar {
@@ -148,7 +114,9 @@ body.header-solid .card-top-stack {
    components stay in components.css. */
 .card-top-stack {
   position: absolute;
-  top: 100px;
+  /* Just below the rounded card top (the card itself starts at the deck's
+     110px inset, under the solid header band). */
+  top: var(--space-3);
   left: var(--space-4);
   right: var(--space-4);
   z-index: 3;
@@ -157,9 +125,9 @@ body.header-solid .card-top-stack {
   gap: var(--space-2);
 }
 
-/* Banner visibility — both rules still target .deals-banner directly. */
+/* The "Today's deals end in" banner is hidden by default (rendered with the
+   `hidden` attribute in v6.js); remove that attribute to bring it back. */
 .deals-banner[hidden] { display: none; }
-body.no-banner .deals-banner { display: none; }
 
 /* ============== SCREENS (tab routing) ============== */
 .screen {
@@ -455,7 +423,9 @@ body.deals-complete .deck { display: none; }
    lives in components.css; .deal-card keeps the video-card background. */
 .deck {
   position: absolute;
-  inset: 0;
+  /* Inset below the solid header band — the .phone-screen blue gradient
+     shows through the 110px gap above the deck. */
+  inset: 110px 0 0;
   z-index: 1;
 }
 
@@ -472,7 +442,15 @@ body.deals-complete .deck { display: none; }
 }
 .deal-card {
   background: #111;
-  border-radius: 0;
+}
+/* Rounded card top for the solid-header look. Applied to the video and
+   overlay layers too: Safari/Chromium drop a parent's rounded clip from
+   those layers once the card has a transform (under-state / fly-out). */
+.deal-card,
+.challenge-card,
+.card-video,
+.card-overlay {
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 /* The next card sits directly behind the current one, fully covered —
    no peek. It's revealed only as the top card flies off (or is promoted

@@ -1,8 +1,8 @@
 /* ============================================================
    ThatDailyDeal — v6
-   Same as v5 (swipe-only deck, tap-to-open product details), with
-   a persistent "Today's deals end in HH:MM:SS" countdown banner
-   sitting just below the brand bar.
+   Swipe deck (left = back, right = advance, up = add to cart) with a
+   solid header band and tap-to-open product details. The "Today's deals
+   end in HH:MM:SS" banner is hidden by default (see .deals-banner).
    ============================================================ */
 
 const DEALS = [
@@ -266,7 +266,7 @@ function buildCard(deal, dealIdx, isUnder) {
         </div>
       </div>
 
-      <div class="deals-banner" role="status" aria-live="polite">
+      <div class="deals-banner" role="status" aria-live="polite" hidden>
         <svg class="deals-banner-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="13" r="8"/>
           <line x1="12" y1="9" x2="12" y2="13"/>
