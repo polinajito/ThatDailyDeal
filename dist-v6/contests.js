@@ -135,7 +135,7 @@
   root.innerHTML = `
     <div class="contests-page">
       <div class="contests-head">
-        <h2 class="contests-title">Contests</h2>
+        <h2 class="contests-title">Fun</h2>
         <button class="btn btn-glass btn-sm contests-more" id="challengesSeeAll">See all &rarr;</button>
       </div>
       ${featureHTML}
@@ -151,7 +151,7 @@
     pageRoot.innerHTML = `
       <header class="subpage-header">
         <button class="btn btn-glass btn-icon-only btn-md subpage-back" id="challengesBack" aria-label="Back">${backIcon}</button>
-        <h1 class="subpage-title">Contests</h1>
+        <h1 class="subpage-title">Fun</h1>
         <span aria-hidden="true"></span>
       </header>
       <div class="subpage-body challenges-scroll">
