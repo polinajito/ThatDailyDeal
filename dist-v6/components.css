@@ -253,12 +253,12 @@
 .menu-item:hover { color: var(--color-white); }
 
 .menu-item.is-selected {
-  color: var(--color-ink);   /* dark icon + label for WCAG contrast on the gold pill */
-  background: color-mix(in srgb, var(--color-gold) 85%, transparent);
+  color: var(--color-white);   /* white icon + label on the brand-blue pill */
+  background: var(--color-blue);
   border: 1px solid rgba(255, 255, 255, .22);
   box-shadow:
-    0 4px 14px rgba(240, 161, 42, .45),
-    inset 0 1px 0 rgba(255, 255, 255, .45),
+    0 4px 14px rgba(60, 101, 189, .45),
+    inset 0 1px 0 rgba(255, 255, 255, .25),
     inset 0 -1px 0 rgba(0, 0, 0, .15);
 }
 
