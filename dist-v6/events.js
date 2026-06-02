@@ -10,7 +10,7 @@
    - shared visuals must come from components.css classes
      (here: the .event-card family — a horizontal date-stub ticket)
    - feature-only positioning is the shared bottom-sheet scaffold in
-     v6.css (.events-page / -head / -title, shared with Contests)
+     v6.css (.events-page + shared .tab-head, shared with Contests)
    ============================================================ */
 (() => {
   const root = document.getElementById('eventsRoot');
@@ -48,8 +48,8 @@
   // scaffold with the Contests tab — see .events-page in v6.css).
   root.innerHTML = `
     <div class="events-page">
-      <div class="events-head">
-        <h2 class="events-title">Events</h2>
+      <div class="tab-head tab-head--bleed">
+        <h2 class="tab-head-title">Events</h2>
       </div>
       ${EVENTS.map(eventCard).join('')}
     </div>`;

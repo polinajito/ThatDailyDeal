@@ -255,41 +255,45 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
      16px from the bottom). */
   padding: 0 var(--space-5) calc(var(--space-8) + var(--space-6));
 }
-/* Header pins to the top while the cards scroll beneath it. Full-bleed across
-   the page's horizontal padding (negative side margins + matching padding) so
-   scrolling content passes cleanly under an opaque bar; the background matches
-   the sheet's top colour. */
-.contests-head,
-.events-head {
-  position: sticky;
-  top: 0;
-  z-index: 2;
+/* Shared tab header — one opaque band with a left-aligned title at the top of
+   every feature tab (Fun, Events, Cart…). The --bleed modifier adds the
+   sticky, full-bleed behaviour for tabs whose whole page scrolls beneath the
+   header (Contests/Events): negative side margins break the bar out across the
+   page's horizontal padding so content passes cleanly under it. Cart omits
+   --bleed — its header is a fixed band in a flex column whose parent has no
+   side padding. An optional trailing element (e.g. a close button) is pushed
+   right by space-between; a lone title stays at the left edge. */
+.tab-head {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  margin: 0 calc(var(--space-5) * -1);
   padding: var(--space-5) var(--space-5) var(--space-3);
   background: var(--color-blue-dark);
 }
-.contests-title,
-.events-title,
-.cart-title {
+.tab-head--bleed {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  margin: 0 calc(var(--space-5) * -1);
+}
+.tab-head-title {
   margin: 0;
   font-family: var(--font-family-primary);
-  font-size:   var(--type-headline-small-size);
-  font-weight: 800;
+  font-size:      var(--type-headline-large-size);
+  font-weight:    var(--type-headline-large-weight);
+  line-height:    var(--type-headline-large-lh);
+  letter-spacing: var(--type-headline-large-tracking);
   color: var(--color-white);
+  text-align: left;
 }
-/* "See all" (a glass button) sits flush-right in the header and shouldn't
-   shrink when the title is long. */
-.contests-more { flex-shrink: 0; }
 
 /* ============== CART TAB ============== */
-/* Like Contests/Events, but the totals + checkout pin to the bottom while
-   the line items scroll between a fixed header and that footer. The header
-   isn't full-bleed via the shared rule here (its parent has no side padding),
-   so the Cart tab owns its own header band. */
+/* Like Contests/Events, but the totals + checkout pin to the bottom while the
+   line items scroll between the fixed header and that footer. The header is
+   the shared .tab-head band (without --bleed, since .cart-page has no side
+   padding to break out of). */
 #cartRoot {
   flex: 1;
   min-width: 0;
@@ -302,11 +306,6 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   min-height: 0;
   display: flex;
   flex-direction: column;
-}
-.cart-head {
-  flex-shrink: 0;
-  padding: var(--space-5) var(--space-5) var(--space-3);
-  background: var(--color-blue-dark);
 }
 .cart-scroll {
   flex: 1;

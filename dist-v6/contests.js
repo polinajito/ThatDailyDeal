@@ -134,9 +134,8 @@
   // below; its Current/Finished contents are designed later).
   root.innerHTML = `
     <div class="contests-page">
-      <div class="contests-head">
-        <h2 class="contests-title">Fun</h2>
-        <button class="btn btn-glass btn-sm contests-more" id="challengesSeeAll">See all &rarr;</button>
+      <div class="tab-head tab-head--bleed">
+        <h2 class="tab-head-title">Fun</h2>
       </div>
       ${featureHTML}
     </div>`;
@@ -159,9 +158,7 @@
         ${historyHTML}
       </div>`;
 
-    const open = () => { document.body.classList.add('challenges-open'); page.setAttribute('aria-hidden', 'false'); };
     const close = () => { document.body.classList.remove('challenges-open'); page.setAttribute('aria-hidden', 'true'); };
-    root.querySelector('#challengesSeeAll').addEventListener('click', open);
     pageRoot.querySelector('#challengesBack').addEventListener('click', close);
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && document.body.classList.contains('challenges-open')) close();
@@ -183,7 +180,7 @@
 
   /* ---- How-it-works sheet (placeholder) ----
      Bottom sheet opened by "Learn more" on a challenge card. Inner layout
-     reuses the contests-page/-head/-title/-placeholder classes. The real
+     reuses the contests-page/-placeholder + shared .tab-head classes. The real
      START/ACCEPT explainer content is designed later. */
   const howto = document.getElementById('howtoSheet');
   const howtoRoot = document.getElementById('howtoRoot');
@@ -192,8 +189,8 @@
     const closeIcon = '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>';
     howtoRoot.innerHTML = `
       <div class="contests-page">
-        <div class="contests-head">
-          <h2 class="contests-title">How it works</h2>
+        <div class="tab-head tab-head--bleed">
+          <h2 class="tab-head-title">How it works</h2>
           <button class="btn btn-glass btn-icon-only btn-md" id="howtoClose" aria-label="Close">${closeIcon}</button>
         </div>
         <p class="contests-placeholder">Challenge rules &amp; rewards explained here soon.</p>

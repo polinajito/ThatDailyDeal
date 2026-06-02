@@ -114,14 +114,14 @@
     if (!items.length) {
       root.innerHTML = `
         <div class="cart-page">
-          <header class="cart-head"><h2 class="cart-title">Cart</h2></header>
+          <header class="tab-head"><h2 class="tab-head-title">Cart</h2></header>
           ${emptyHTML()}
         </div>`;
       return;
     }
     root.innerHTML = `
       <div class="cart-page">
-        <header class="cart-head"><h2 class="cart-title">Cart</h2></header>
+        <header class="tab-head"><h2 class="tab-head-title">Cart</h2></header>
         <div class="cart-scroll">
           <div class="cart-list">
             ${items.map(lineHTML).join('')}

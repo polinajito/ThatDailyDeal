@@ -40,9 +40,8 @@
 
   // ----- Screen chrome: header / tabs / points hero / list -----
   root.innerHTML = `
-    <header class="half-sheet-header">
-      <h2 class="half-sheet-title">Rewards</h2>
-      <p class="half-sheet-sub">Earn points, redeem coupons.</p>
+    <header class="tab-head tab-head--bleed">
+      <h2 class="tab-head-title">Rewards</h2>
     </header>
 
     <div class="rewards-tabs" role="tablist">
