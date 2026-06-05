@@ -338,7 +338,7 @@
    gesture, or persistently on sold-out cards. The base class
    hides the stamp by default (opacity: 0) — visibility is owned
    by the consumer (e.g. .deal-card in the prototype toggles
-   .show-add / .show-back / .show-next / .show-notify / .sold-out to reveal
+   .show-add / .show-skip / .show-notify / .sold-out to reveal
    the matching stamp). Stamps need a positioned ancestor.
    ============================================================ */
 .swipe-stamp {
@@ -359,22 +359,15 @@
   z-index: 4;
   transition: opacity .12s ease;
 }
-/* Add / Notify ride the up-swipe, so they sit top-centre. */
-.stamp-add  { left: 50%; color: var(--color-green); transform: translateX(-50%) rotate(-8deg); }
-/* Back / Next ride the horizontal swipe: Next hugs the left edge, Back the
-   right. Both are self-contained glass badge artwork (assets/next.svg,
-   back.svg), so they drop the text-stamp border/padding and just size the
-   image. */
-.stamp-back,
-.stamp-next {
-  width: 220px;
-  height: auto;
-  border: 0;
-  padding: 0;
-  border-radius: 0;
-}
-.stamp-next { left:  var(--space-5); transform: rotate(-12deg); }
-.stamp-back { right: var(--space-5); transform: rotate( 12deg); }
+/* Add / Notify ride the right-swipe (add to cart) and hug the left edge;
+   Skip rides the left-swipe and hugs the right edge. Each tilts toward its
+   direction of travel. */
+.stamp-add  { left: var(--space-5);  color: var(--color-green); transform: rotate(-12deg); }
+.stamp-skip { right: var(--space-5); color: var(--color-red);   transform: rotate( 12deg); }
+/* Muted skip — used when the underlying product is unavailable, so the
+   skip cue stays semantically meaningful without the "you're losing a
+   good deal" red urgency. */
+.stamp-skip.is-muted { color: var(--color-gray-300); }
 .stamp-soldout {
   left: 50%;
   color: var(--color-red);
@@ -382,9 +375,9 @@
   white-space: nowrap;
 }
 .stamp-notify {
-  left: 50%;
+  left: var(--space-5);
   color: var(--color-gold);
-  transform: translateX(-50%) rotate(-8deg);
+  transform: rotate(-12deg);
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);

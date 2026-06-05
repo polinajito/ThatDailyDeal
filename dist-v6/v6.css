@@ -213,13 +213,15 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   opacity: .65;
 }
 
-/* ============== CONTESTS / EVENTS TABS ============== */
+/* ============== FEATURE TABS (Fun / Events / Rewards…) ============== */
 /* Bottom-sheet screens (sizing/transform set on .screen[data-tab] above).
    The feature root fills its sheet and scrolls; the cards themselves are
    shared components from components.css (.challenge-mini for Contests,
-   .event-card for Events). The page/head/title scaffold below is shared by
-   both tabs — same sticky header + scrolling body — so the rules are listed
-   once rather than duplicated per feature. */
+   .event-card for Events). The .tab-page scaffold below is the single shared
+   page wrapper for every feature tab — same sticky header + column body — so
+   each feature renders into <div class="tab-page"> rather than defining its
+   own per-feature page class. (Rewards reuses it too but pins its hero/tabs
+   and scrolls an inner list instead of the whole page — see rewards.css.) */
 #contestsRoot,
 #eventsRoot {
   flex: 1;
@@ -228,8 +230,7 @@ body[data-tab="cart"]     .screen[data-tab="cart"] {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
-.contests-page,
-.events-page {
+.tab-page {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
@@ -489,15 +490,6 @@ body.deals-complete .deck { display: none; }
   transform: translateX(-140vw) rotate(-22deg) !important;
   opacity: 0;
 }
-/* Back-swipe on the first card — nothing behind it, so nudge and spring. */
-@keyframes deck-bounce {
-  0%   { transform: none; }
-  32%  { transform: translateX(-28px) rotate(-2deg); }
-  100% { transform: none; }
-}
-.deal-card.bounce,
-.challenge-card.bounce { animation: deck-bounce .32s ease; }
-
 .card-video {
   position: absolute;
   inset: 0;
@@ -518,14 +510,13 @@ body.deals-complete .deck { display: none; }
 /* Swipe-stamp visibility — visual rules for .swipe-stamp + variants
    live in components.css; this block only wires the deal-card state
    classes (set by the swipe gesture) to the matching stamp's opacity.
-   Drag up → Add (available) / Notify (sold-out); left → Back; right → Next. */
+   Drag right → Add (available) / Notify (sold-out); left → Skip. */
 .deal-card.show-add  .stamp-add  { opacity: 1; }
-.deal-card.show-back .stamp-back { opacity: 1; }
-.deal-card.show-next .stamp-next { opacity: 1; }
+.deal-card.show-skip .stamp-skip { opacity: 1; }
 .deal-card.sold-out .stamp-soldout { opacity: 1; }
 .deal-card:not(.sold-out) .stamp-soldout { display: none; }
 /* Hide the persistent centred "Sold Out" stamp while the Notify swipe
-   stamp (also centred) is showing on an up-swipe. */
+   stamp (also centred) is showing on a right-swipe. */
 .deal-card.sold-out.show-notify .stamp-soldout { opacity: 0; }
 
 /* ============== TOAST ============== */
@@ -923,6 +914,15 @@ body.confirm-open .confirm-sheet { transform: translate(-50%, 0); }
   flex-direction: column;
   gap: var(--space-3);
 }
+/* Back button — left-side counterpart to the action stack, same baseline.
+   Screen chrome (sibling of the deck), so it stays put while cards fly off. */
+.deck-back {
+  position: absolute;
+  left: var(--space-4);
+  bottom: 84px;
+  z-index: 5;
+}
+.deck-back[hidden] { display: none; }
 /* .act-btn now consumes its visual from components.css (.btn.btn-glass
    .btn-icon-only.btn-md). The rules below are prototype-only behavior:
    a stronger :active scale, the like-state color shift, and the icon
